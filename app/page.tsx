@@ -34,7 +34,7 @@ export default function DashboardPage() {
       <div className="flex flex-col">
         <div className="border-b">
           <div className="flex h-16 items-center px-4">
-            <TeamSwitcher />
+            <Image src="/logo.png" width={120} height={120} alt='logo'/>
             <MainNav className="mx-6" />
             <div className="ml-auto flex items-center space-x-4">
               <Search />
