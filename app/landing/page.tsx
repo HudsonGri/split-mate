@@ -118,37 +118,39 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <div className="sm:grid sm:grid-flow-col gap-4 lg:pt-10">
-                            <motion.div variants={cardVariants} custom={0.2} initial="hidden" animate="visible">
-                                <Card className="w-full sm:w-[350px] mt-9">
-                                    <CardHeader>
-                                        <CardTitle className="text-xl sm:text-2xl">Join an existing group</CardTitle>
-                                        <CardDescription>Join an already created group by inputing the group code below.</CardDescription>
-                                    </CardHeader>
-                                    <CardContent>
-                                        <Input type="text" placeholder="KBX-Q2N" />
-                                    </CardContent>
-                                    <CardFooter className="justify-center">
-                                        <Button className="w-1/2">Join</Button>
-                                    </CardFooter>
-                                </Card>
+                            <div className="grid sm:grid-cols-2 gap-4 lg:pt-6">
+                                <motion.div variants={cardVariants} custom={0.2} initial="hidden" animate="visible">
+                                    <Card className="w-full mt-9 h-full flex flex-col">
+                                        <CardHeader>
+                                            <CardTitle className="text-xl sm:text-2xl">Join an existing group</CardTitle>
+                                            <CardDescription>Join an already created group by inputing the group code below.</CardDescription>
+                                        </CardHeader>
+                                        <CardContent>
+                                            <Input type="text" placeholder="KBX-Q2N" />
+                                        </CardContent>
+                                        <CardFooter className="justify-center">
+                                            <Button className="w-1/2">Join</Button>
+                                        </CardFooter>
+                                    </Card>
                                 </motion.div>
-                                
+
                                 <motion.div variants={cardVariants} custom={0.4} initial="hidden" animate="visible">
-                                    <Card className="w-full sm:w-[350px] mt-9">
-                                    <CardHeader>
-                                        <CardTitle className="text-xl sm:text-2xl">Create a new group</CardTitle>
-                                        <CardDescription>Create a new group and invite others by clicking the button below.</CardDescription>
-                                    </CardHeader>
-                                    <CardFooter className="justify-center">
-                                        <Button className="w-1/2">Create</Button>
-                                    </CardFooter>
-                                </Card>
+                                    <Card className="w-full mt-9 h-full flex flex-col">
+                                        <CardHeader>
+                                            <CardTitle className="text-xl sm:text-2xl">Create a new group</CardTitle>
+                                            <CardDescription>Create a new group and invite others by clicking the button below.</CardDescription>
+                                        </CardHeader>
+                                        <CardContent className="">
+                                        </CardContent>
+                                        <CardFooter className="justify-center">
+                                            <Button className="w-1/2">Create</Button>
+                                        </CardFooter>
+                                    </Card>
                                 </motion.div>
                             </div>
                         </motion.div>
                     </div>
-                    
+
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
