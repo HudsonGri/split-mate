@@ -1,5 +1,4 @@
 "use client";
-import { Metadata } from "next"
 import Image from "next/image"
 import { motion } from 'framer-motion';
 import { Button } from "../../components/ui/button"
@@ -11,25 +10,8 @@ import {
     CardTitle,
     CardFooter
 } from "@/components/ui/card"
-import {
-    Tabs,
-    TabsContent,
-    TabsList,
-    TabsTrigger,
-} from "../../components/ui/tabs"
-import { CalendarDateRangePicker } from "../../components/date-range-picker"
-import { MainNav } from "../../components/main-nav"
-import { Overview } from "../../components/overview"
-import { RecentSales } from "../../components/recent-sales"
-import { Search } from "../../components/search"
-import TeamSwitcher from "../../components/team-switcher"
-import { UserNav } from "../../components/user-nav"
 import mainLogo from "../../public/split-mate-logo.svg";
 import { Input } from "@/components/ui/input"
-import { Label } from "@/components/ui/label"
-import { useState } from 'react';
-
-import Head from 'next/head'
 
 import { CurrencyDollarIcon, ShoppingCartIcon, ChartPieIcon } from '@heroicons/react/24/solid'
 
@@ -71,6 +53,16 @@ export default function LandingPage() {
         }
     };
 
+    // Card variants for staggering appearance
+    const cardVariants = {
+        hidden: { opacity: 0, y: 20 },
+        visible: (delay) => ({
+            opacity: 1,
+            y: 0,
+            transition: { duration: 0.5, delay }
+        })
+    };
+
     // Variants for the container to stagger the child animations
     const containerVariants = {
         hidden: { opacity: 1 },
@@ -79,12 +71,9 @@ export default function LandingPage() {
             transition: { staggerChildren: 0.1 }
         }
     };
-    const [menuOpen, setMenuOpen] = useState(false);
     return (
         <>
-            <Head>
-                <title>Placeholder Title</title>
-            </Head>
+
 
             <div className="min-h-screen">
                 <nav className="sticky top-0 z-50 bg-black/70 backdrop-blur">
@@ -129,7 +118,8 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <motion.div variants={wordVariants} className="sm:grid sm:grid-flow-col gap-4">
+                            <div className="sm:grid sm:grid-flow-col gap-4 lg:pt-10">
+                            <motion.div variants={cardVariants} custom={0.2} initial="hidden" animate="visible">
                                 <Card className="w-full sm:w-[350px] mt-9">
                                     <CardHeader>
                                         <CardTitle className="text-xl sm:text-2xl">Join an existing group</CardTitle>
@@ -142,7 +132,10 @@ export default function LandingPage() {
                                         <Button className="w-1/2">Join</Button>
                                     </CardFooter>
                                 </Card>
-                                <Card className="w-full sm:w-[350px] mt-9">
+                                </motion.div>
+                                
+                                <motion.div variants={cardVariants} custom={0.4} initial="hidden" animate="visible">
+                                    <Card className="w-full sm:w-[350px] mt-9">
                                     <CardHeader>
                                         <CardTitle className="text-xl sm:text-2xl">Create a new group</CardTitle>
                                         <CardDescription>Create a new group and invite others by clicking the button below.</CardDescription>
@@ -151,10 +144,11 @@ export default function LandingPage() {
                                         <Button className="w-1/2">Create</Button>
                                     </CardFooter>
                                 </Card>
-                            </motion.div>
+                                </motion.div>
+                            </div>
                         </motion.div>
-
                     </div>
+                    
                     <motion.div
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
