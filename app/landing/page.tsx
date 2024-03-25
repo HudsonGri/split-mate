@@ -27,6 +27,7 @@ import { UserNav } from "../../components/user-nav"
 import mainLogo from "../../public/split-mate-logo.svg";
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { useState } from 'react';
 
 import Head from 'next/head'
 
@@ -34,24 +35,24 @@ import { CurrencyDollarIcon, ShoppingCartIcon, ChartPieIcon } from '@heroicons/r
 
 const features = [
     {
-      name: 'Shared Cart Management',
-      description:
-        'Any roommate can add items to a unified list — pending mutual approval — for perfect pantry parity.',
-      icon: ShoppingCartIcon,
+        name: 'Shared Cart Management',
+        description:
+            'Any roommate can add items to a unified list — pending mutual approval — for perfect pantry parity.',
+        icon: ShoppingCartIcon,
     },
     {
-      name: 'Selective Splitting',
-      description:
-        'Choose who pays for what with advanced splitting, ensuring everyone only covers their share, like for that milk not everyone drinks.',
-      icon: ChartPieIcon,
+        name: 'Selective Splitting',
+        description:
+            'Choose who pays for what with advanced splitting, ensuring everyone only covers their share, like for that milk not everyone drinks.',
+        icon: ChartPieIcon,
     },
     {
-      name: 'Payment Simplified',
-      description:
-        'Seamlessly integrate with Venmo or CashApp to settle up instantly, right from within the app.',
-      icon: CurrencyDollarIcon,
+        name: 'Payment Simplified',
+        description:
+            'Seamlessly integrate with Venmo or CashApp to settle up instantly, right from within the app.',
+        icon: CurrencyDollarIcon,
     },
-  ]
+]
 
 
 
@@ -78,6 +79,7 @@ export default function LandingPage() {
             transition: { staggerChildren: 0.1 }
         }
     };
+    const [menuOpen, setMenuOpen] = useState(false);
     return (
         <>
             <Head>
@@ -94,23 +96,27 @@ export default function LandingPage() {
                                     src={mainLogo}
                                     width={200}
                                     alt="Split Mate"
+                                    className="w-32 sm:w-40"
                                 />
                             </div>
-                            <div className="flex items-center space-x-4">
-                                <a href="/dashboard" className="px-3 py-2 rounded-md">Dashboard</a>
-                                <a href="/login" className="px-3 py-2 rounded-md ">Login</a>
+                            <div className="hidden sm:flex items-center space-x-4 text-zinc-300">
+                                <a href="/dashboard" className="px-3 py-2 rounded-md text-sm sm:text-base">Dashboard</a>
+                                <a href="/login" className="px-3 py-2 rounded-md text-sm sm:text-base">Login</a>
+                            </div>
+                            <div className="sm:hidden flex items-center text-zinc-300">
+                                <a href="/login" className="px-3 py-2 rounded-md text-sm sm:text-base">Login</a>
                             </div>
                         </div>
                     </div>
                 </nav>
 
-                <header className="py-8 grid grid-flow-col">
-                    <div className="max-w-4xl ml-24 py-10 text-zinc-50">
+                <header className="py-8 sm:grid sm:grid-flow-col">
+                    <div className="max-w-4xl px-4 mx-auto lg:ml-12 py-2 sm:py-10 text-zinc-50">
                         <motion.div
                             variants={containerVariants}
                             initial="hidden"
                             animate="visible"
-                            className="text-5xl font-semibold leading-tight"
+                            className="text-4xl sm:text-5xl font-semibold leading-tight"
                         >
                             {headerWords.map((word, index) => (
                                 <motion.span key={index} variants={wordVariants} style={{ display: 'inline-block', marginRight: '0.5rem' }}>
@@ -123,10 +129,10 @@ export default function LandingPage() {
                             initial="hidden"
                             animate="visible"
                         >
-                            <motion.div variants={wordVariants} className="grid grid-flow-col">
-                                <Card className="w-[350px] mt-9">
+                            <motion.div variants={wordVariants} className="sm:grid sm:grid-flow-col gap-4">
+                                <Card className="w-full sm:w-[350px] mt-9">
                                     <CardHeader>
-                                        <CardTitle className="text-2xl">Join an existing group</CardTitle>
+                                        <CardTitle className="text-xl sm:text-2xl">Join an existing group</CardTitle>
                                         <CardDescription>Join an already created group by inputing the group code below.</CardDescription>
                                     </CardHeader>
                                     <CardContent>
@@ -136,9 +142,9 @@ export default function LandingPage() {
                                         <Button className="w-1/2">Join</Button>
                                     </CardFooter>
                                 </Card>
-                                <Card className="w-[350px] mt-9">
+                                <Card className="w-full sm:w-[350px] mt-9">
                                     <CardHeader>
-                                        <CardTitle className="text-2xl">Create a new group</CardTitle>
+                                        <CardTitle className="text-xl sm:text-2xl">Create a new group</CardTitle>
                                         <CardDescription>Create a new group and invite others by clicking the button below.</CardDescription>
                                     </CardHeader>
                                     <CardFooter className="justify-center">
@@ -149,16 +155,17 @@ export default function LandingPage() {
                         </motion.div>
 
                     </div>
-                    <motion.div 
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    transition={{ duration: 0.3 }}
-                    className="py-10 hidden lg:block lg:px-2 text-zinc-50">
+                    <motion.div
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.3 }}
+                        className="hidden lg:block lg:px-2 text-zinc-50">
                         <Image
                             src="/hero-graphic.png"
-                            width={800}
-                            height={800}
-                            alt="Hero illustration test"
+                            width={700}
+                            height={700}
+                            alt="Hero illustration"
+                            className="sm:w-auto sm:max-w-sm lg:max-w-lg" // Responsive image sizes
                         />
 
                     </motion.div>
@@ -166,33 +173,33 @@ export default function LandingPage() {
                 </header>
 
                 <main>
-                <div className=" py-24 sm:py-32">
-      <div className="mx-auto max-w-7xl px-6 lg:px-8">
-        <div className="mx-auto max-w-2xl lg:text-center">
-          <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
-          Streamline your groceries, split expenses effortlessly.
-          </p>
-          <p className="mt-6 text-lg leading-8 text-gray-300">
-          Shared shopping simplified — never debate who owes what again. Our app is your ultimate roommate harmony tool: half grocery list, half expense manager. Stay organized with a communal list for shared groceries and supplies, like dish soap, and rest easy as every purchase made is fairly split among the roommates.
-          </p>
-        </div>
-        <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
-          <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
-            {features.map((feature) => (
-              <div key={feature.name} className="flex flex-col">
-                <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
-                  <feature.icon className="h-6 w-6 flex-none text-green-400" aria-hidden="true" />
-                  {feature.name}
-                </dt>
-                <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
-                  <p className="flex-auto">{feature.description}</p>
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
-      </div>
-    </div>
+                    <div className="py-24 sm:py-32">
+                        <div className="mx-auto max-w-7xl px-6 lg:px-8">
+                            <div className="mx-auto max-w-2xl lg:text-center">
+                                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                                    Streamline your groceries, split expenses effortlessly.
+                                </p>
+                                <p className="mt-6 text-lg leading-8 text-gray-300">
+                                    Shared shopping simplified — never debate who owes what again. Our app is your ultimate roommate harmony tool: half grocery list, half expense manager. Stay organized with a communal list for shared groceries and supplies, like dish soap, and rest easy as every purchase made is fairly split among the roommates.
+                                </p>
+                            </div>
+                            <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+                                <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+                                    {features.map((feature) => (
+                                        <div key={feature.name} className="flex flex-col">
+                                            <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+                                                <feature.icon className="h-6 w-6 flex-none text-green-400" aria-hidden="true" />
+                                                {feature.name}
+                                            </dt>
+                                            <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                                                <p className="flex-auto">{feature.description}</p>
+                                            </dd>
+                                        </div>
+                                    ))}
+                                </dl>
+                            </div>
+                        </div>
+                    </div>
                     <div className="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
                         <div className="px-4 py-6 sm:px-0">
                             <div className="border-4 border-dashed border-gray-200 rounded-lg h-96 flex justify-around items-center">
