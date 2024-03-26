@@ -1,197 +1,231 @@
-import { Metadata } from "next"
-import Image from "next/image"
-
-import { Button } from "../components/ui/button"
+"use client";
+import Image from "next/image";
+import { motion, useAnimation } from "framer-motion";
+import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,
-  CardHeader,
+  CardDescription,  CardHeader,
   CardTitle,
-} from "../components/ui/card"
+  CardFooter,
+} from "@/components/ui/card";
+import mainLogo from "../../public/split-mate-logo.svg";
+import { Input } from "@/components/ui/input";
 import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../components/ui/tabs"
-import { CalendarDateRangePicker } from "../components/date-range-picker"
-import { MainNav } from "../components/main-nav"
-import { Overview } from "../components/overview"
-import { RecentSales } from "../components/recent-sales"
-import { Search } from "../components/search"
-import TeamSwitcher from "../components/team-switcher"
-import { UserNav } from "../components/user-nav"
+  CurrencyDollarIcon,
+  ShoppingCartIcon,
+  ChartPieIcon,
+} from "@heroicons/react/24/solid";
+import { useEffect } from "react";
+import { useInView } from "react-intersection-observer";
+import { NavBar } from "@/components/nav";
 
-export const metadata: Metadata = {
-  title: "Dashboard",
-  description: "Example dashboard app built using the components.",
-}
+const features = [
+  {
+    name: "Shared Cart Management",
+    description:
+      "Any roommate can add items to a unified list — pending mutual approval — for perfect pantry parity.",
+    icon: ShoppingCartIcon,
+  },
+  {
+    name: "Selective Splitting",
+    description:
+      "Choose who pays for what with advanced splitting, ensuring everyone only covers their share, like for that milk not everyone drinks.",
+    icon:  ChartPieIcon,
+},
+  {
+    name: "Payment Simplified",
+    description:
+      "Seamlessly integrate with Venmo or CashApp to settle up instantly, right from within the app.",
+    icon: CurrencyDollarIcon,
+  },
+];
 
-export default function DashboardPage() {
+export default function LandingPage() {
+  const headerWords = "Manage group expenses the fair way with smarter splits.".split(    " "
+  );
+  const controls = useAnimation();
+  const [ref, inView] = useInView({ threshold: 0.2 });
+
+  useEffect(() => {
+    if (inView) {
+      controls.start("visible");
+    }
+  }, [controls, inView]);
+
+  const wordVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5 },
+    },
+  };
+
+  const cardVariants = {
+    hidden: { opacity: 0, y: 20 },
+    visible: (delay) => ({
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.5, delay },
+    }),
+  };
+
+  const containerVariants = {
+    hidden: { opacity: 1 },
+    visible: {
+      opacity: 1,
+      transition: { staggerChildren: 0.1 },
+    },
+  };
   return (
     <>
-      <div className="flex flex-col">
-        <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <Image src="/logo.png" width={120} height={120} alt='logo'/>
-            <MainNav className="mx-6" />
-            <div className="ml-auto flex items-center space-x-4">
-              <Search />
-              <UserNav />
-            </div>
-          </div>
-        </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
-          <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-            <div className="flex items-center space-x-2">
-              <CalendarDateRangePicker />
-              <Button>Download</Button>
-            </div>
-          </div>
-          <Tabs defaultValue="overview" className="space-y-4">
-            <TabsList>
-              <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analytics
-              </TabsTrigger>
-              <TabsTrigger value="reports" disabled>
-                Reports
-              </TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Notifications
-              </TabsTrigger>
-            </TabsList>
-            <TabsContent value="overview" className="space-y-4">
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Total Revenue
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M12 2v20M17 5H9.5a3.5 3.5 0 0 0 0 7h5a3.5 3.5 0 0 1 0 7H6" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">$45,231.89</div>
-                    <p className="text-xs text-muted-foreground">
-                      +20.1% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Subscriptions
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
-                      <circle cx="9" cy="7" r="4" />
-                      <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+2350</div>
-                    <p className="text-xs text-muted-foreground">
-                      +180.1% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">Sales</CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <rect width="20" height="14" x="2" y="5" rx="2" />
-                      <path d="M2 10h20" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+12,234</div>
-                    <p className="text-xs text-muted-foreground">
-                      +19% from last month
-                    </p>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                    <CardTitle className="text-sm font-medium">
-                      Active Now
-                    </CardTitle>
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      viewBox="0 0 24 24"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      strokeWidth="2"
-                      className="h-4 w-4 text-muted-foreground"
-                    >
-                      <path d="M22 12h-4l-3 9L9 3l-3 9H2" />
-                    </svg>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold">+573</div>
-                    <p className="text-xs text-muted-foreground">
-                      +201 since last hour
-                    </p>
-                  </CardContent>
-                </Card>
+      <div className="min-h-screen">
+        
+        <NavBar/>
+        <header className="py-8 sm:grid sm:grid-flow-col">
+          <div className="max-w-4xl px-4 mx-auto lg:ml-12 py-2 sm:py-10 text-zinc-50">
+            <motion.div
+              variants={containerVariants}       
+                initial="hidden"
+              animate="visible"
+              className="text-4xl sm:text-5xl font-semibold"
+            >
+              {headerWords.map((word, index) => (
+                <motion.span
+                  key={index}
+                  variants={wordVariants}
+                  className="inline-block mr-[0.5rem] leading-tight"
+               
+                >
+                  {word}
+                </motion.span>
+              ))}
+            </motion.div>
+            <motion.div
+              variants={containerVariants}
+              initial="hidden"
+              animate="visible"
+            >
+              <div className="grid sm:grid-cols-2 gap-4 lg:pt-6">
+                <motion.div
+                  variants={cardVariants}
+                  custom={0.2}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Card className="w-full mt-9 h-full flex flex-col">
+                    <CardHeader>
+                      <CardTitle className="text-xl sm:text-3xl">
+                        Join an existing group
+                      </CardTitle>
+                      <CardDescription>Join an already created group by inputing the group code
+                        below.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent>
+                      <Input type="text" placeholder="KBX-Q2N" />
+                    </CardContent>
+                    <CardFooter className="justify-center">
+                      <Button className="w-1/2">Join</Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
+                <motion.div
+                  variants={cardVariants}
+                  custom={0.4}
+                  initial="hidden"
+                  animate="visible"
+                >
+                  <Card className="w-full mt-9 h-full flex flex-col">
+                    <CardHeader>
+                      <CardTitle className="text-xl sm:text-3xl">
+                        Create a new group
+                      </CardTitle>
+                      <CardDescription>
+                        Create a new group and invite others by clicking the
+                        button below.
+                      </CardDescription>
+                    </CardHeader>
+                    <CardContent className=""></CardContent>
+                    <CardFooter className="justify-center">
+                      <Button className="w-1/2">Create</Button>
+                    </CardFooter>
+                  </Card>
+                </motion.div>
               </div>
-              <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
-                <Card className="col-span-4">
-                  <CardHeader>
-                    <CardTitle>Overview</CardTitle>
-                  </CardHeader>
-                  <CardContent className="pl-2">
-                    <Overview />
-                  </CardContent>
-                </Card>
-                <Card className="col-span-3">
-                  <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
-                    <CardDescription>
-                      You made 265 sales this month.
-                    </CardDescription>
-                  </CardHeader>
-                  <CardContent>
-                    <RecentSales />
-                  </CardContent>
-                </Card>
+            </motion.div>
+          </div>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.3 }}
+            className="hidden lg:block lg:px-2 text-zinc-50"
+          >
+            <Image
+              src="/hero-graphic.png"
+              width={700}
+              height={700}
+              alt="Hero illustration"
+              className="sm:w-auto sm:max-w-sm lg:max-w-lg"
+            />
+          </motion.div>
+        </header>
+        <main>
+          {/* Feature section */}
+          <motion.div
+            ref={ref}
+            initial="hidden"
+            animate={controls}
+            variants={containerVariants}
+            className="py-24 sm:py-32"
+          >
+            <div className="mx-auto max-w-7xl px-6 lg:px-8">
+              <div className="mx-auto max-w-2xl lg:text-center">
+                <motion.p
+                  variants={wordVariants}
+                  className="mt-2 text-3xl font-semibold text-white sm:text-4xl"
+                >
+                  Streamline your groceries, split expenses effortlessly.
+                </motion.p>
+                <motion.p
+                  variants={wordVariants}
+                  className="mt-6 text-lg leading-8 text-gray-300"
+                >
+                  Shared shopping simplified — never debate who owes what again.
+                  Our app is your ultimate roommate harmony tool: half grocery
+                  list, half expense manager. Stay organized with a communal
+                  list for shared groceries and supplies, like dish soap, and
+                  rest easy as every purchase made is fairly split among the                  roommates.
+                </motion.p>
               </div>
-            </TabsContent>
-          </Tabs>
-        </div>
+              <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
+                <dl className="grid max-w-xl grid-cols-1 gap-x-8 gap-y-16 lg:max-w-none lg:grid-cols-3">
+                  {features.map((feature, index) => (
+                    <motion.div
+                      key={feature.name}
+                      variants={cardVariants}
+                      custom={index * 0.2}
+                      className="flex flex-col"
+                    >                      <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+                        <feature.icon
+                          className="h-6 w-6 flex-none text-green-400"
+                          aria-hidden="true"
+                        />
+                        {feature.name}
+                      </dt>
+                      <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                        <p className="flex-auto">{feature.description}</p>
+                      </dd>
+                    </motion.div>
+                  ))}
+                </dl>
+              </div>
+            </div>
+          </motion.div>
+          
+        </main>
       </div>
     </>
-  )
+  );
 }
