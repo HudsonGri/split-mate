@@ -122,7 +122,7 @@ export default function LandingPage() {
                                 <motion.div variants={cardVariants} custom={0.2} initial="hidden" animate="visible">
                                     <Card className="w-full mt-9 h-full flex flex-col">
                                         <CardHeader>
-                                            <CardTitle className="text-xl sm:text-2xl">Join an existing group</CardTitle>
+                                            <CardTitle className="text-xl sm:text-3xl">Join an existing group</CardTitle>
                                             <CardDescription>Join an already created group by inputing the group code below.</CardDescription>
                                         </CardHeader>
                                         <CardContent>
@@ -137,8 +137,8 @@ export default function LandingPage() {
                                 <motion.div variants={cardVariants} custom={0.4} initial="hidden" animate="visible">
                                     <Card className="w-full mt-9 h-full flex flex-col">
                                         <CardHeader>
-                                            <CardTitle className="text-xl sm:text-2xl">Create a new group</CardTitle>
-                                            <CardDescription>Create a new group and invite others by clicking the button below.</CardDescription>
+                                            <CardTitle className="text-xl sm:text-3xl">Create a new group</CardTitle>
+                                            <CardDescription >Create a new group and invite others by clicking the button below.</CardDescription>
                                         </CardHeader>
                                         <CardContent className="">
                                         </CardContent>
@@ -169,10 +169,11 @@ export default function LandingPage() {
                 </header>
 
                 <main>
+                    {/* Feature section */}
                     <div className="py-24 sm:py-32">
                         <div className="mx-auto max-w-7xl px-6 lg:px-8">
                             <div className="mx-auto max-w-2xl lg:text-center">
-                                <p className="mt-2 text-3xl font-bold tracking-tight text-white sm:text-4xl">
+                                <p className="mt-2 text-3xl font-bold text-white sm:text-4xl">
                                     Streamline your groceries, split expenses effortlessly.
                                 </p>
                                 <p className="mt-6 text-lg leading-8 text-gray-300">
