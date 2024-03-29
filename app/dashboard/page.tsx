@@ -6,6 +6,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "../../components/ui/card"
@@ -22,6 +23,11 @@ import { RecentSales } from "../../components/recent-sales"
 import { Search } from "../../components/search"
 import TeamSwitcher from "../../components/team-switcher"
 import { UserNav } from "../../components/user-nav"
+import { NavBar } from "@/components/nav"
+import { PlusIcon } from "@radix-ui/react-icons"
+import Link from 'next/link'
+import { buttonVariants } from "@/components/ui/button"
+
 
 export const metadata: Metadata = {
   title: "Dashboard",
@@ -29,35 +35,33 @@ export const metadata: Metadata = {
 }
 
 export default function DashboardPage() {
+
+
   return (
     <>
       <div className="flex flex-col">
-        <div className="border-b">
-          <div className="flex h-16 items-center px-4">
-            <Image src="/logo.png" width={120} height={120} alt='logo'/>
-            <MainNav className="mx-6" />
-            <div className="ml-auto flex items-center space-x-4">
-              <Search />
-              <UserNav />
-            </div>
-          </div>
-        </div>
-        <div className="flex-1 space-y-4 p-8 pt-6">
+        <NavBar />
+
+
+        <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-between space-y-2">
-            <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            <div>
+              <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+            
+              
+            </div>
             <div className="flex items-center space-x-2">
-              <CalendarDateRangePicker />
-              <Button>Download</Button>
+              <Link className={buttonVariants({})} href='/request'>Something Item</Link>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="analytics" disabled>
-                Analytics
+              <TabsTrigger value="history">
+                History
               </TabsTrigger>
-              <TabsTrigger value="reports" disabled>
-                Reports
+              <TabsTrigger value="people">
+                People
               </TabsTrigger>
               <TabsTrigger value="notifications" disabled>
                 Notifications
@@ -178,7 +182,7 @@ export default function DashboardPage() {
                 </Card>
                 <Card className="col-span-3">
                   <CardHeader>
-                    <CardTitle>Recent Sales</CardTitle>
+                    <CardTitle>Request List</CardTitle>
                     <CardDescription>
                       You made 265 sales this month.
                     </CardDescription>
@@ -186,6 +190,9 @@ export default function DashboardPage() {
                   <CardContent>
                     <RecentSales />
                   </CardContent>
+                  <CardFooter className="justify-center">
+                  <Button variant="outline">Request Item</Button>
+                  </CardFooter>
                 </Card>
               </div>
             </TabsContent>
