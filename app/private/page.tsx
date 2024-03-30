@@ -9,6 +9,8 @@ export default async function PrivatePage() {
   if (error || !data?.user) {
     redirect('/')
   }
+  console.log(data.user.email)
+  
 
   return <p>Hello {data.user.email}</p>
 }
