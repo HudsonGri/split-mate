@@ -55,7 +55,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               autoCapitalize="none"
               autoComplete="email"
               autoCorrect="off"
-              disabled={isLoading}
+              disabled={gitHubIsLoading || isLoading} 
             />
           </div>
           <div className="grid gap-1">
@@ -69,10 +69,10 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               type="password"
               autoComplete="current-password"
               autoCorrect="off"
-              disabled={isLoading}
+              disabled={gitHubIsLoading || isLoading} 
             />
           </div>
-          <Button disabled={isLoading}>
+          <Button disabled={gitHubIsLoading || isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}

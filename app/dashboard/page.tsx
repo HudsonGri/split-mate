@@ -73,7 +73,6 @@ export default async function DashboardPage() {
               
             </div>
             <div className="flex items-center space-x-2">
-              <Link className={buttonVariants({})} href='/logout'>Log Out</Link>
               <Button>test</Button>
             </div>
           </div>
