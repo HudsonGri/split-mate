@@ -19,6 +19,8 @@ import {
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import { NavBar } from "@/components/nav";
+import { createClient } from '@/utils/supabase/client'
+
 
 const features = [
   {
@@ -78,11 +80,14 @@ export default function LandingPage() {
       transition: { staggerChildren: 0.1 },
     },
   };
+
+  
+
   return (
     <>
       <div className="min-h-screen">
         
-        <NavBar/>
+        <NavBar links={["Log In"]} />
         <header className="py-8 sm:grid sm:grid-flow-col">
           <div className="max-w-4xl px-4 mx-auto lg:ml-12 py-2 sm:py-10 text-zinc-50">
             <motion.div

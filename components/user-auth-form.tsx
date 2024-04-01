@@ -8,18 +8,35 @@ import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
+import { signInWithGithub, login } from "@/app/login/actions"
+
 interface UserAuthFormProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
   const [isLoading, setIsLoading] = React.useState<boolean>(false)
 
-  async function onSubmit(event: React.SyntheticEvent) {
-    event.preventDefault()
-    setIsLoading(true)
+  const [gitHubIsLoading, setGitHubIsLoading] = React.useState<boolean>(false)
 
-    setTimeout(() => {
-      setIsLoading(false)
-    }, 3000)
+  async function onSubmit(event: React.SyntheticEvent) {
+    event.preventDefault();
+    setIsLoading(true);
+    console.log("here")
+
+    const formData = new FormData(event.currentTarget as HTMLFormElement)
+    console.log("FORM Data Print:")
+    console.log(formData)
+
+    await login(formData);
+    
+    setIsLoading(false); 
+  }
+
+  async function gitHubSubmit(event: React.SyntheticEvent) {
+    event.preventDefault()
+    setGitHubIsLoading(true)
+    signInWithGithub();
+    
+
   }
 
   return (
@@ -32,6 +49,7 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
             </Label>
             <Input
               id="email"
+              name="email"
               placeholder="name@example.com"
               type="email"
               autoCapitalize="none"
@@ -40,11 +58,25 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
               disabled={isLoading}
             />
           </div>
+          <div className="grid gap-1">
+            <Label className="sr-only" htmlFor="password">
+              Password
+            </Label>
+            <Input
+              id="password"
+              name="password"
+              placeholder="Password"
+              type="password"
+              autoComplete="current-password"
+              autoCorrect="off"
+              disabled={isLoading}
+            />
+          </div>
           <Button disabled={isLoading}>
             {isLoading && (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
             )}
-            Sign Up with Email
+            Sign In
           </Button>
         </div>
       </form>
@@ -58,8 +90,8 @@ export function UserAuthForm({ className, ...props }: UserAuthFormProps) {
           </span>
         </div>
       </div>
-      <Button variant="outline" type="button" disabled={isLoading}>
-        {isLoading ? (
+      <Button variant="outline" type="button" disabled={gitHubIsLoading || isLoading} onClick={gitHubSubmit}>
+        {gitHubIsLoading  ? (
           <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
         ) : (
           <Icons.gitHub className="mr-2 h-4 w-4" />

@@ -27,6 +27,9 @@ import { NavBar } from "@/components/nav"
 import { PlusIcon } from "@radix-ui/react-icons"
 import Link from 'next/link'
 import { buttonVariants } from "@/components/ui/button"
+import { createClient } from '@/utils/supabase/server'
+import { link } from "fs"
+import { redirect } from 'next/navigation'
 
 
 export const metadata: Metadata = {
@@ -34,15 +37,34 @@ export const metadata: Metadata = {
   description: "Example dashboard app built using the components.",
 }
 
-export default function DashboardPage() {
+export default async function DashboardPage() {
 
+  const supabase = createClient()
 
+  const { data, error } = await supabase.auth.getUser()
+  console.log(error)
+  if (error || !data?.user) {
+    console.log("redirect to main")
+    redirect('/')
+  }
+  const user = data.user
+
+  const handleLogout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error('Logout error:', error.message);
+    } else {
+      // Optionally, redirect user after logout
+      window.location.href = '/login'; // Adjust the path to your login page as necessary
+    }
+  }
+  
+
+  
   return (
     <>
       <div className="flex flex-col">
-        <NavBar />
-
-
+      <NavBar links={["Profile"]} user_details={user}/>
         <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-between space-y-2">
             <div>
@@ -51,7 +73,8 @@ export default function DashboardPage() {
               
             </div>
             <div className="flex items-center space-x-2">
-              <Link className={buttonVariants({})} href='/request'>Something Item</Link>
+              <Link className={buttonVariants({})} href='/logout'>Log Out</Link>
+              <Button>test</Button>
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
