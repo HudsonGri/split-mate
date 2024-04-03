@@ -18,13 +18,13 @@ import {
 } from "../../components/ui/tabs"
 import {
   Table,
-  TableHeader,
   TableBody,
-  TableFooter,
-  TableHead,
-  TableRow,
-  TableCell,
   TableCaption,
+  TableCell,
+  TableHead,
+  TableHeader,
+  TableRow,
+  TableFooter,
 } from "../../components/ui/table"
 import { CalendarDateRangePicker } from "../../components/date-range-picker"
 import { MainNav } from "../../components/main-nav"
@@ -43,7 +43,7 @@ import { redirect } from 'next/navigation'
 
 
 export const metadata: Metadata = {
-  title: "Dashboard",
+  title: "Request List",
   description: "Example dashboard app built using the components.",
 }
 
@@ -58,18 +58,7 @@ export default async function DashboardPage() {
     redirect('/')
   }
   const user = data.user
-
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-    if (error) {
-      console.error('Logout error:', error.message);
-    } else {
-      // Optionally, redirect user after logout
-      window.location.href = '/login'; // Adjust the path to your login page as necessary
-    }
-  }
   
-
   
   return (
     <>
@@ -78,7 +67,7 @@ export default async function DashboardPage() {
         <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-between space-y-2">
             <div>
-              <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+              <h2 className="text-3xl font-bold tracking-tight">Request List</h2>
             
               
             </div>

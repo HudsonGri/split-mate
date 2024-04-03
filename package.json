@@ -23,6 +23,7 @@
     "@supabase/auth-helpers-react": "^0.4.2",
     "@supabase/ssr": "^0.1.0",
     "@supabase/supabase-js": "^2.41.1",
+    "@tanstack/react-table": "^8.15.3",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "cmdk": "^0.2.1",
