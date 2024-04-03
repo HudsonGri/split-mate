@@ -16,6 +16,16 @@ import {
   TabsList,
   TabsTrigger,
 } from "../../components/ui/tabs"
+import {
+  Table,
+  TableHeader,
+  TableBody,
+  TableFooter,
+  TableHead,
+  TableRow,
+  TableCell,
+  TableCaption,
+} from "../../components/ui/table"
 import { CalendarDateRangePicker } from "../../components/date-range-picker"
 import { MainNav } from "../../components/main-nav"
 import { Overview } from "../../components/overview"
@@ -217,6 +227,30 @@ export default async function DashboardPage() {
                   </CardFooter>
                 </Card>
               </div>
+            </TabsContent>
+            <TabsContent value="people" className="space-y-4">
+            <Table>
+              <TableCaption>A list of people in this group.</TableCaption>
+              <TableHeader>
+                <TableRow>
+                  <TableHead className="w-[200px]">Name</TableHead>
+                  <TableHead>Email</TableHead>
+                  <TableHead className="text-right">Phone Number</TableHead>
+                </TableRow>
+              </TableHeader>
+              <TableBody>
+                <TableRow>
+                  <TableCell className="font-medium">Albert Gator</TableCell>
+                  <TableCell>algator@ufl.edu</TableCell>
+                  <TableCell className="text-right">123-456-7890</TableCell>
+                </TableRow>
+                <TableRow>
+                  <TableCell className="font-medium">Alberta Gator</TableCell>
+                  <TableCell>alberta.gator@ufl.edu</TableCell>
+                  <TableCell className="text-right">111-444-7777</TableCell>
+                </TableRow>
+              </TableBody>
+            </Table>
             </TabsContent>
           </Tabs>
         </div>
