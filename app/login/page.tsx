@@ -6,15 +6,25 @@ import { cn } from "@/lib/utils"
 import { buttonVariants } from "@/components/ui/button"
 import { UserAuthForm } from "@/components/user-auth-form"
 import { NavBar } from "@/components/nav"
-import { signInWithGithub } from "./actions"
-import { login } from "./actions"
+import { createClient } from '@/utils/supabase/server'
+import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
   title: "Authentication",
   description: "Authentication forms built using the components.",
 }
 
-export default function AuthenticationPage() {
+export default async function AuthenticationPage() {
+
+  const supabase = createClient()
+
+
+  const { data, error } = await supabase.auth.getUser()
+  
+  // If the user is logged in already, then redirect to dashboard
+  if (data?.user && !error) {
+    redirect('/dashboard')
+  }
 
   return (
     <>
