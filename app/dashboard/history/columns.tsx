@@ -1,7 +1,8 @@
+"use client"
 // columns.tsx
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Checkbox } from "../../components/ui/checkbox"
+import { Checkbox } from "../../../components/ui/checkbox"
 import { Button } from "@/components/ui/button"
 import {
     DropdownMenu,
@@ -10,7 +11,7 @@ import {
     DropdownMenuLabel,
     DropdownMenuSeparator,
     DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
+} from "../../../components/ui/dropdown-menu"
 
 export type Request = {
     id: string
