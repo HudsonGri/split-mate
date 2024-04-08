@@ -27,27 +27,27 @@ export function UserNav({ user_details }: { user_details?: any }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <DropdownMenuLabel className="font-normal">
-          <div className="flex flex-col space-y-1">
-            <p className="text-sm font-medium leading-none">Name</p>
-            <p className="text-xs leading-none text-muted-foreground">
-              {user_details.email}
-            </p>
-          </div>
-        </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <a href="/profile">
+          <DropdownMenuLabel className="font-normal">
+            <div className="flex flex-col space-y-1">
+              <p className="text-sm font-medium leading-none">Name</p>
+              <p className="text-xs leading-none text-muted-foreground">
+                {user_details.email}
+              </p>
+            </div>
+          </DropdownMenuLabel>
+        </a>
+      <DropdownMenuSeparator />
         <DropdownMenuGroup>
-         
           <DropdownMenuItem>
             Settings
           </DropdownMenuItem>
-
         </DropdownMenuGroup>
-        <DropdownMenuSeparator />
+      <DropdownMenuSeparator />
         <a href="/logout">
-        <DropdownMenuItem>
-          Log out
-        </DropdownMenuItem>
+          <DropdownMenuItem>
+            Log out
+          </DropdownMenuItem>
         </a>
       </DropdownMenuContent>
     </DropdownMenu>
