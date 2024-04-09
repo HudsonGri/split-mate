@@ -40,9 +40,11 @@ export function UserNav({ user_details }: { user_details?: any }) {
         </a>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <DropdownMenuItem>
-            Settings
-          </DropdownMenuItem>
+          <a href="/settings">
+            <DropdownMenuItem>
+              Settings
+            </DropdownMenuItem>
+          </a>
         </DropdownMenuGroup>
       <DropdownMenuSeparator />
         <a href="/logout">
