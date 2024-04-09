@@ -509,11 +509,11 @@ export default async function ProfilePage() {
                 <TableHeader>
                   <TableRow>
                     <TableHead className="w-[100px]">Date</TableHead>
-                    <TableHead>Amount</TableHead>
-                    <TableHead>Roommate</TableHead>
-                    <TableHead>Expense</TableHead>
-                    <TableHead>Amount Pending</TableHead>
-                    <TableHead className="text-right">Amount Owed</TableHead>
+                    <TableHead className="text-center">Amount</TableHead>
+                    <TableHead className="text-center">Roommate</TableHead>
+                    <TableHead className="text-center">Expense</TableHead>
+                    <TableHead className="text-center">Amount Pending</TableHead>
+                    <TableHead className="text-center">Amount Owed</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
