@@ -93,10 +93,23 @@ export default async function RequestListPage() {
                 <DialogHeader>
                   <DialogTitle>Log Expense</DialogTitle>
                   <DialogDescription>
-                    Select item(s) purchased and log total amount of the expense to split with group. Click submit when finished.
+                    Select item purchased and log total amount of the expense to split with group. Click submit when finished.
                   </DialogDescription>
                 </DialogHeader>
                 <div className="grid gap-4 py-4">
+                  <div className="grid grid-cols-4 items-center gap-4">
+                    <Label htmlFor="list" className="text-right">
+                      Items
+                    </Label>
+                    <Input
+                      list="items"
+                      id="list"
+                      className="col-span-3"
+                    />
+                      <datalist id="items">
+                        <option value="Paper Towels"/>
+                      </datalist>
+                  </div>
                   <div className="grid grid-cols-4 items-center gap-4">
                     <Label htmlFor="amount" className="text-right">
                       Amount
@@ -104,6 +117,7 @@ export default async function RequestListPage() {
                     <Input
                       type="number"
                       min={0.00}
+                      placeholder="0.00"
                       pattern="^[0-9]{1,}\.[0-9]{2}$"
                       id="amount"
                       className="col-span-3"
