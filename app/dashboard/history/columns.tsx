@@ -13,13 +13,15 @@ import {
     DropdownMenuTrigger,
 } from "../../../components/ui/dropdown-menu"
 
+import { User } from "lucide-react"
+
 export type Request = {
     id: string
-    date: string
+    date: Date
     amount: string
     sender: string
     expense: string
-    typeOfAction: "Payment" | "Requested item" // Add more if needed
+    typeOfAction: "Payment" | "Request" // Add more if needed
     receiver: string
 }
 
@@ -51,16 +53,38 @@ export const columns: ColumnDef<Request>[] = [
         },
     },
     {
+        accessorFn: (row) => new Date(row.date),
         accessorKey: "date",
         header: "Date",
-    },
-    {
-        accessorKey: "amount",
-        header: "Amount",
+        cell: ({ cell }) => {
+            const date = cell.getValue() as Date;
+            return <div>{date.toLocaleDateString()}</div>
+        }
     },
     {
         accessorKey: "sender",
         header: "Sender",
+        cell: ({ row }) => {
+            const request = row.original;
+            const handleClick = () => {
+                console.log("View profile of", request.sender);
+            }
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger>{request.sender}</DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                    <DropdownMenuItem onSelect={handleClick}>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                    </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        },
+    },
+    {
+        accessorKey: "amount",
+        header: "Amount",
     },
     {
         accessorKey: "receiver",
