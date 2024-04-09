@@ -41,22 +41,6 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
-  Sheet,
-  SheetClose,
-  SheetContent,
-  SheetDescription,
-  SheetFooter,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "@/components/ui/sheet"
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "../../components/ui/tabs"
-import {
   Table,
   TableHeader,
   TableBody,
@@ -66,7 +50,6 @@ import {
   TableCell,
   TableCaption,
 } from "../../components/ui/table"
-import { Switch } from "@/components/ui/switch"
 
 
 export const metadata: Metadata = {
@@ -264,54 +247,16 @@ export default async function ProfilePage() {
           <div className="lg:col-start-1 lg:col-span-3 flex flex-col">
 
             {/* settings (temp) */}
-            <Sheet>
-              <SheetTrigger asChild>
-                <div className="cursor-pointer">
-                  <Card className="flex items-center justify-between p-4 mb-4">
-                    <CardTitle>Settings</CardTitle>
-                    <FiChevronRight className="text-base"/>
-                  </Card>
-                </div>
-              </SheetTrigger>
-              <SheetContent side="left">
-                <div className="space-y-8 p-4"> {/* Add padding here if needed */}
-                  <div className="space-y-2">
-                    <h2 className="text-lg font-medium leading-6">Account Settings</h2>
-                    <div className="flex justify-between">
-                      <Label htmlFor="profile-visibility" className="flex-initial">Profile visibility</Label>
-                      <Switch defaultChecked id="profile-visibility" />
-                    </div>
-                  </div>
-                  <div className="border-t border-gray-200 dark:border-gray-800 pt-8 space-y-2">
-                    <h2 className="text-lg font-medium leading-6">Privacy Settings</h2>
-                    <div className="flex justify-between">
-                      <Label htmlFor="allow-dms" className="flex-initial font-medium">Allow direct messages</Label>
-                      <Switch id="allow-dms" />
-                    </div>
-                    <div className="flex justify-between">
-                      <Label htmlFor="last-online" className="flex-initial font-medium">Show when I was last online</Label>
-                      <Switch defaultChecked id="last-online" />
-                    </div>
-                  </div>
-                  <div className="border-t border-gray-200 dark:border-gray-800 pt-8 space-y-2">
-                    <h2 className="text-lg font-medium leading-6">Notification Settings</h2>
-                    <div className="flex justify-between">
-                      <Label htmlFor="email-notifications" className="flex-initial font-medium">Email notifications</Label>
-                      <Switch defaultChecked id="email-notifications" />
-                    </div>
-                    <div className="flex justify-between">
-                      <Label htmlFor="push-notifications" className="flex-initial font-medium">Push notifications</Label>
-                      <Switch id="push-notifications" />
-                    </div>
-                  </div>
-                </div>
-                <SheetFooter>
-                  <SheetClose asChild>
-                    <Button type="submit">Save changes</Button>
-                  </SheetClose>
-                </SheetFooter>
-              </SheetContent>
-            </Sheet>
+            <a href="/settings" className="flex justify-between">
+              <Card className="flex-1 mb-4">
+                <CardHeader>
+                  <CardTitle className="flex items-center">
+                    <span>Settings</span>
+                    <FiChevronRight className="text-base" />
+                  </CardTitle>
+                </CardHeader>
+              </Card>
+            </a>
 
             {/* groups */}
             <Card className="flex-1 mb-4">
