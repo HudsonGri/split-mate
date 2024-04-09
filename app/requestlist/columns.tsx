@@ -18,10 +18,10 @@ import {
 // You can use a Zod schema here if you want.
 export type Request = {
   id: string
+  date: string
   name: string
   user_submitted: string
-  status: "pending approval" | "claimed" | "purchased" | "unclaimed"
-    // Should we include date of request? If so, how?
+  status: "Pending approval" | "Claimed" | "Purchased" | "Unclaimed"
 }
 
 export const columns: ColumnDef<Request>[] = [
@@ -80,6 +80,10 @@ export const columns: ColumnDef<Request>[] = [
     {
         accessorKey: "name",
         header: "Name",
+    },
+    {
+        accessorKey: "date",
+        header: "Date",
     },
     {
         accessorKey: "user_submitted",
