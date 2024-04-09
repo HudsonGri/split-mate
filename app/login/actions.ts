@@ -36,6 +36,7 @@ export async function signup(formData: FormData): Promise<boolean>  {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
+      emailRedirectTo: 'http://localhost:3000/login',
       data: {
         first_name: formData.get('first-name') as string,
         last_name: formData.get('last-name') as string,
