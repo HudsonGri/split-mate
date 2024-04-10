@@ -60,14 +60,14 @@ export default async function ProfilePage() {
 
                     {/* nav menu */}
                     <div className="w-1/4 sticky top-[80px] space-y-4 mr-8 z-10" style={{height: 'fit-content'}}>
-                        <nav className="space-y-2">
+                        <nav className="divide-y divide-gray-200 dark:divide-gray-700">
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#account">
                                 Account
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
                                 Security
                             </a>
-                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#display">
                                 Display
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#notifications">
@@ -134,17 +134,17 @@ export default async function ProfilePage() {
                             <Card>
                                 <CardHeader>Security</CardHeader>
                                 <CardContent>
-                                    <div className="space-y-4">
-                                        <Label htmlFor="password">Password</Label>
-                                        <Input id="password" placeholder="Password" type="password" className="w-64" />
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <button className="underline flex justify-center items-center gap-2 text-gray-500 dark:text-gray-400">
-                                                    <span className="text-sm italic">Change Password</span>
-                                                    <FiChevronRight className="text-base" />
-                                                </button>
-                                            </DialogTrigger>
-                                            <DialogContent>
+                                <div className="space-y-4">
+                                    <Label htmlFor="password">Password</Label>
+                                    <div className="flex items-center space-x-2">
+                                    <Input id="password" defaultValue={user.email} type="password" className="w-64" />
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                        <button className="text-base flex items-center justify-center">
+                                            <FiEdit2 />
+                                        </button>
+                                        </DialogTrigger>
+                                        <DialogContent>
                                                 <DialogHeader>Change Your Password</DialogHeader>
                                                 <div className="space-y-4">
                                                     <div>
@@ -169,17 +169,18 @@ export default async function ProfilePage() {
                                                     </div>
                                                 </div>
                                             </DialogContent>
-                                        </Dialog>
+                                    </Dialog>
                                     </div>
-                                    <br></br>
-                                    <div className="flex items-center justify-between">
-                                        <Label>Two-Factor Authentication (2FA)</Label>
-                                        <Switch/>
-                                    </div>
-                                    <br></br>
+                                </div>
+                                <br></br>
+                                <div className="flex items-center justify-between">
+                                    <Label>Two-Factor Authentication (2FA)</Label>
+                                    <Switch />
+                                </div>
+                                <br></br>
                                 </CardContent>
                                 <CardFooter className="flex justify-end">
-                                    <Button>Save Changes</Button>
+                                <Button>Save Changes</Button>
                                 </CardFooter>
                             </Card>
                         </div>
