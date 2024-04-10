@@ -30,6 +30,7 @@ import {
 } from 'react-icons/fi';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import Link from 'next/link';
 import { NavBar } from "@/components/nav"
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation'
@@ -247,7 +248,7 @@ export default async function ProfilePage() {
           <div className="lg:col-start-1 lg:col-span-3 flex flex-col">
 
             {/* settings (temp) */}
-            <a href="/settings" className="flex justify-between">
+            <Link href="/settings" className="flex justify-between">
               <Card className="flex-1 mb-4">
                 <CardHeader>
                   <CardTitle className="flex items-center">
@@ -256,7 +257,7 @@ export default async function ProfilePage() {
                   </CardTitle>
                 </CardHeader>
               </Card>
-            </a>
+            </Link>
 
             {/* groups */}
             <Card className="flex-1 mb-4">

@@ -8,7 +8,7 @@ import Link from 'next/link'
 
 export function NavBar({ links, user_details }: { links: string[], user_details?: any }) {
   return (
-    <nav className="sticky top-0 z-50 bg-black/70 backdrop-blur">
+    <nav className="sticky top-0 z-50 backdrop-blur dark:bg-black/70 bg-white">
       <div className="px-4 sm:px-6 lg:px-16">
         <div className="flex justify-between items-center h-20">
           <a href='/'>

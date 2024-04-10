@@ -30,6 +30,7 @@ import { NavBar } from "@/components/nav"
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation'
 import { Switch } from "@/components/ui/switch"
+import { ModeToggle } from "@/components/ui/toggle-mode";
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -65,6 +66,9 @@ export default async function ProfilePage() {
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
                                 Security
+                            </a>
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
+                                Display
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#notifications">
                                 Notifications
@@ -177,6 +181,22 @@ export default async function ProfilePage() {
                                 <CardFooter className="flex justify-end">
                                     <Button>Save Changes</Button>
                                 </CardFooter>
+                            </Card>
+                        </div>
+
+                        {/* display settings */}
+                        <div id="display">
+                            <Card>
+                                <CardHeader>Display</CardHeader>
+                                <CardContent>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="theme">Appearance</Label>
+                                        <div className="pl-4"> {/* Adjust the number as needed for more or less indentation */}
+                                        <ModeToggle></ModeToggle>
+                                        </div>
+                                    </div>
+                                    <br></br>
+                                </CardContent>
                             </Card>
                         </div>
 
