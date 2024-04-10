@@ -14,6 +14,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "./ui/dropdown-menu"
+import Link from 'next/link';
 
 export function UserNav({ user_details }: { user_details?: any }) {
   return (
@@ -28,8 +29,8 @@ export function UserNav({ user_details }: { user_details?: any }) {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-56" align="end" forceMount>
-        <a href="/profile">
-          <DropdownMenuLabel className="font-normal">
+        <Link href="/profile" className="font-normal">
+          <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
               <p className="text-sm font-medium leading-none">{user_details.user_metadata.full_name}</p>
               <p className="text-xs leading-none text-muted-foreground">
@@ -37,14 +38,14 @@ export function UserNav({ user_details }: { user_details?: any }) {
               </p>
             </div>
           </DropdownMenuLabel>
-        </a>
+        </Link>
         <DropdownMenuSeparator />
         <DropdownMenuGroup>
-          <a href="/settings">
+          <Link href="/settings">
             <DropdownMenuItem>
               Settings
             </DropdownMenuItem>
-          </a>
+          </Link>
         </DropdownMenuGroup>
       <DropdownMenuSeparator />
         <a href="/logout">

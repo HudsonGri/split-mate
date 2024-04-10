@@ -30,14 +30,9 @@ export function UserAuthFormSignUp({ className, ...props }: UserAuthFormProps) {
   const [isDialogOpen, setIsDialogOpen] = React.useState<boolean>(false);
 
   async function onSubmit(event: React.SyntheticEvent) {
-    //MUST MODIFY TO ALSO HANDLE NAME
     event.preventDefault();
     setIsLoading(true);
-    console.log("here")
-
     const formData = new FormData(event.currentTarget as HTMLFormElement)
-    console.log("FORM Data Print:")
-    console.log(event)
 
     const signupSuccess = await signup(formData);
     setIsLoading(false);

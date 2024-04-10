@@ -18,6 +18,7 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
+import { useTheme } from 'next-themes';
 import { NavBar } from "@/components/nav";
 import { createClient } from '@/utils/supabase/client'
 
@@ -81,7 +82,9 @@ export default function LandingPage() {
     },
   };
 
-  
+  const { theme } = useTheme();
+  const imageSrc = theme === 'dark' ? '/hero-graphic.png' : '/hero-graphic-light.png';
+  const isLightTheme = theme === 'light';
 
   return (
     <>
@@ -100,7 +103,7 @@ export default function LandingPage() {
                 <motion.span
                   key={index}
                   variants={wordVariants}
-                  className="inline-block mr-[0.5rem] leading-tight"
+                  className="inline-block mr-[0.5rem] leading-tight text-black dark:text-white"
                
                 >
                   {word}
@@ -168,11 +171,11 @@ export default function LandingPage() {
             className="hidden lg:block lg:px-2 text-zinc-50"
           >
             <Image
-              src="/hero-graphic.png"
+              src={imageSrc}
               width={700}
               height={700}
               alt="Hero illustration"
-              className="sm:w-auto sm:max-w-sm lg:max-w-lg"
+              className={`sm:w-auto sm:max-w-sm lg:max-w-lg ${isLightTheme ? 'min-w-[500px] min-h-[500px]' : ''}`}
             />
           </motion.div>
         </header>
@@ -189,13 +192,13 @@ export default function LandingPage() {
               <div className="mx-auto max-w-2xl lg:text-center">
                 <motion.p
                   variants={wordVariants}
-                  className="mt-2 text-3xl font-semibold text-white sm:text-4xl"
+                  className="mt-2 text-3xl font-semibold text-black dark:text-white sm:text-4xl"
                 >
                   Streamline your groceries, split expenses effortlessly.
                 </motion.p>
                 <motion.p
                   variants={wordVariants}
-                  className="mt-6 text-lg leading-8 text-gray-300"
+                  className="mt-6 text-lg leading-8 text-gray-700 dark:text-gray-300"
                 >
                   Shared shopping simplified — never debate who owes what again.
                   Our app is your ultimate roommate harmony tool: half grocery
@@ -212,14 +215,14 @@ export default function LandingPage() {
                       variants={cardVariants}
                       custom={index * 0.2}
                       className="flex flex-col"
-                    >                      <dt className="flex items-center gap-x-3 text-base font-semibold leading-7 text-white">
+                    >                      <dt className="flex items-center gap-x-3 text-gray-800 dark:text-white font-semibold leading-7 text-white">
                         <feature.icon
                           className="h-6 w-6 flex-none text-green-400"
                           aria-hidden="true"
                         />
                         {feature.name}
                       </dt>
-                      <dd className="mt-4 flex flex-auto flex-col text-base leading-7 text-gray-300">
+                      <dd className="mt-4 flex flex-auto flex-col text-gray-600 dark:text-white leading-7 text-gray-300">
                         <p className="flex-auto">{feature.description}</p>
                       </dd>
                     </motion.div>

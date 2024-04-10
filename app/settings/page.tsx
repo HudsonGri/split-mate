@@ -1,4 +1,4 @@
-import { Metadata } from "next"
+
 import { Button } from "../../components/ui/button"
 import {
   Card,
@@ -25,10 +25,12 @@ import {
 } from 'react-icons/fi';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { Metadata } from "next"
 import { NavBar } from "@/components/nav"
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation'
 import { Switch } from "@/components/ui/switch"
+import { ModeToggle } from "@/components/ui/toggle-mode";
 
 export const metadata: Metadata = {
   title: "Settings",
@@ -55,22 +57,26 @@ export default async function ProfilePage() {
                 <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
                 <br></br>
                 <div className="flex flex-row">
-                    <div className="w-1/4 space-y-4 mr-8">
-                        <header className="space-y-2">
-                        <p className="text-gray-500 dark:text-gray-400">Manage your account settings here.</p>
-                        </header>
-                        <nav className="space-y-2">
-                        <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 dark:text-gray-400" href="#account">
-                            Account
-                        </a>
-                        <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 dark:text-gray-400" href="#security">
-                            Security
-                        </a>
-                        <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 dark:text-gray-400" href="#notifications">
-                            Notifications
-                        </a>
+
+                    {/* nav menu */}
+                    <div className="w-1/4 sticky top-[80px] space-y-4 mr-8 z-10" style={{height: 'fit-content'}}>
+                        <nav className="divide-y divide-gray-200 dark:divide-gray-700">
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#account">
+                                Account
+                            </a>
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
+                                Security
+                            </a>
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#display">
+                                Display
+                            </a>
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#notifications">
+                                Notifications
+                            </a>
                         </nav>
                     </div>
+
+                    {/* account settings */}
                     <div className="w-3/4 space-y-4">
                         <div id="account">
                         <Card>
@@ -99,22 +105,22 @@ export default async function ProfilePage() {
                                 <div className="flex space-x-4">
                                     <div className="w-1/2 space-y-2">
                                     <Label htmlFor="firstName">First Name</Label>
-                                    <Input id="firstName" placeholder="Albert" />
+                                    <Input id="firstName" defaultValue="Albert" />
                                     </div>
                                     <div className="w-1/2 space-y-2">
                                     <Label htmlFor="lastName">Last Name</Label>
-                                    <Input id="lastName" placeholder="Gator" />
+                                    <Input id="lastName" defaultValue="Gator" />
                                     </div>
                                 </div>
                                 <br></br>
                                 <div className="space-y-2">
                                     <Label htmlFor="email">Email</Label>
-                                    <Input id="email" placeholder={user.email} type="email" />
+                                    <Input id="email" defaultValue={user.email} type="email" />
                                 </div>
                                 <br></br>
                                 <div className="space-y-2">
                                     <Label htmlFor="phone">Phone Number</Label>
-                                    <Input id="phone" placeholder={user.phone} type="tel" className="w-64" />
+                                    <Input id="phone" defaultValue={user.phone} type="tel" className="w-64" />
                                 </div>
                             </CardContent>
                             <CardFooter className="flex justify-end">
@@ -122,21 +128,23 @@ export default async function ProfilePage() {
                             </CardFooter>
                         </Card>
                         </div>
+
+                        {/* security settings */}
                         <div id="security">
                             <Card>
                                 <CardHeader>Security</CardHeader>
                                 <CardContent>
-                                    <div className="space-y-4">
-                                        <Label htmlFor="password">Password</Label>
-                                        <Input id="password" placeholder="Password" type="password" className="w-64" />
-                                        <Dialog>
-                                            <DialogTrigger asChild>
-                                                <button className="underline flex justify-center items-center gap-2">
-                                                    <span className="text-sm italic">Change Password</span>
-                                                    <FiChevronRight className="text-base" />
-                                                </button>
-                                            </DialogTrigger>
-                                            <DialogContent>
+                                <div className="space-y-4">
+                                    <Label htmlFor="password">Password</Label>
+                                    <div className="flex items-center space-x-2">
+                                    <Input id="password" defaultValue={user.email} type="password" className="w-64" />
+                                    <Dialog>
+                                        <DialogTrigger asChild>
+                                        <button className="text-base flex items-center justify-center">
+                                            <FiEdit2 />
+                                        </button>
+                                        </DialogTrigger>
+                                        <DialogContent>
                                                 <DialogHeader>Change Your Password</DialogHeader>
                                                 <div className="space-y-4">
                                                     <div>
@@ -161,20 +169,39 @@ export default async function ProfilePage() {
                                                     </div>
                                                 </div>
                                             </DialogContent>
-                                        </Dialog>
+                                    </Dialog>
                                     </div>
-                                    <br></br>
-                                    <div className="flex items-center justify-between">
-                                        <Label>Two-Factor Authentication (2FA)</Label>
-                                        <Switch/>
-                                    </div>
-                                    <br></br>
+                                </div>
+                                <br></br>
+                                <div className="flex items-center justify-between">
+                                    <Label>Two-Factor Authentication (2FA)</Label>
+                                    <Switch />
+                                </div>
+                                <br></br>
                                 </CardContent>
                                 <CardFooter className="flex justify-end">
-                                    <Button>Save Changes</Button>
+                                <Button>Save Changes</Button>
                                 </CardFooter>
                             </Card>
                         </div>
+
+                        {/* display settings */}
+                        <div id="display">
+                            <Card>
+                                <CardHeader>Display</CardHeader>
+                                <CardContent>
+                                    <div className="space-y-2">
+                                        <Label htmlFor="theme">Appearance</Label>
+                                        <div className="pl-4"> {/* Adjust the number as needed for more or less indentation */}
+                                        <ModeToggle></ModeToggle>
+                                        </div>
+                                    </div>
+                                    <br></br>
+                                </CardContent>
+                            </Card>
+                        </div>
+
+                        {/* notifications settings */}
                         <div id="notifications">
                             <Card>
                                 <CardHeader>Notifications</CardHeader>
