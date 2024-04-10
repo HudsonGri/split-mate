@@ -42,6 +42,22 @@ import {
   SelectValue,
 } from "@/components/ui/select"
 import {
+  Sheet,
+  SheetClose,
+  SheetContent,
+  SheetDescription,
+  SheetFooter,
+  SheetHeader,
+  SheetTitle,
+  SheetTrigger,
+} from "@/components/ui/sheet"
+import {
+  Tabs,
+  TabsContent,
+  TabsList,
+  TabsTrigger,
+} from "../../components/ui/tabs"
+import {
   Table,
   TableHeader,
   TableBody,
@@ -51,6 +67,8 @@ import {
   TableCell,
   TableCaption,
 } from "../../components/ui/table"
+import { Switch } from "@/components/ui/switch"
+import { UserEdit } from "@/components/user-edit"
 
 
 export const metadata: Metadata = {
@@ -69,6 +87,8 @@ export default async function ProfilePage() {
   }
 
   const user = data.user
+  console.log(user)
+
 
   {/* sample placeholder data */}
   const groups = [
@@ -150,6 +170,7 @@ export default async function ProfilePage() {
       <NavBar links={["Profile"]} user_details={user}/>
       <div className="flex-1 space-y-4 px-8 pb-8">
         <h2 className="text-3xl font-bold tracking-tight">Profile</h2>
+
         <Card>
           {/* avatar */} 
           <div className="flex items-center justify-center space-y-2">
@@ -157,7 +178,7 @@ export default async function ProfilePage() {
               <br></br> 
               <Avatar className="h-32 w-32 mx-auto">
                 <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{user.email.charAt(0).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>{user.email.slice(0,2).toUpperCase()}</AvatarFallback>
               </Avatar>
             </div>
           </div>
@@ -166,78 +187,10 @@ export default async function ProfilePage() {
           <div className="order-0 md:order-none flex-1 flex items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center">
-                <h1 className="font-bold text-2xl mr-4">Albert Gator</h1>
+                <h1 className="font-bold text-2xl mr-4">{user.user_metadata.full_name}</h1>
 
                 {/* edit name, email, and avatar */}
-                <Dialog>
-                  <DialogTrigger asChild>
-                    <button className="text-base">
-                      <FiEdit2 />
-                    </button>
-                  </DialogTrigger>
-                  <DialogContent className="sm:max-w-[425px]">
-                    <DialogHeader>
-                      <DialogTitle>Edit profile</DialogTitle>
-                      <DialogDescription>
-                        Make changes to your profile
-                      </DialogDescription>
-                    </DialogHeader>
-                    <div className="flex flex-col gap-4 py-4">
-                      <div className="grid grid-cols-4 items-center gap-4">
-                        {/* Avatar section with left-aligned label */}
-                        <div className="col-span-1">
-                          <Label htmlFor="file" className="font-medium cursor-pointer">
-                            Profile Picture
-                          </Label>
-                        </div>
-                        <div className="col-span-3 flex items-center gap-4">
-                          <img
-                            alt="Your avatar"
-                            className="rounded-full"
-                            src="https://github.com/shadcn.png"
-                            style={{
-                              aspectRatio: "1 / 1",
-                              objectFit: "cover",
-                              width: "64px",
-                              height: "64px",
-                            }}
-                          />
-                          <Input accept="image/*" className="sr-only" id="file" type="file" />
-                          <Label htmlFor="file" className="cursor-pointer">
-                            Change
-                          </Label>
-                        </div>
-                      </div>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="name" className="col-span-1">
-                            Name
-                          </Label>
-                          <Input
-                            id="name"
-                            defaultValue="Albert Gator"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="email" className="col-span-1">
-                            Email
-                          </Label>
-                          <Input
-                            id="username"
-                            placeholder={user.email}
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                    </div>
-                    <DialogFooter>
-                      <DialogClose asChild>
-                        <Button type="submit">Save changes</Button>
-                      </DialogClose>
-                    </DialogFooter>
-                  </DialogContent>
-                </Dialog>
+                <UserEdit user_details={user}/>
               </div>
               <p className="text-gray-500 dark:text-gray-400">{user.email}</p>
             </div>
