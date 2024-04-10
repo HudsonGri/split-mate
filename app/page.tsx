@@ -215,14 +215,14 @@ export default function LandingPage() {
                       variants={cardVariants}
                       custom={index * 0.2}
                       className="flex flex-col"
-                    >                      <dt className="flex items-center gap-x-3 text-gray-800 dark:text-white font-semibold leading-7 text-white">
+                    >                      <dt className="flex items-center gap-x-3 text-primary font-semibold leading-7 ">
                         <feature.icon
                           className="h-6 w-6 flex-none text-green-400"
                           aria-hidden="true"
                         />
                         {feature.name}
                       </dt>
-                      <dd className="mt-4 flex flex-auto flex-col text-gray-600 dark:text-white leading-7 text-gray-300">
+                      <dd className="mt-4 flex flex-auto flex-col leading-7 text-primary">
                         <p className="flex-auto">{feature.description}</p>
                       </dd>
                     </motion.div>

@@ -22,8 +22,8 @@ export function UserNav({ user_details }: { user_details?: any }) {
       <DropdownMenuTrigger asChild>
         <Button variant="ghost" className="relative h-8 w-8 rounded-full">
           <Avatar className="h-8 w-8">
-            {user_details.user_metadata.full_name ? 
-            <AvatarFallback>{user_details.user_metadata.full_name.slice(0,2).toUpperCase()}</AvatarFallback>
+            {user_details.user_metadata.first_name ? 
+            <AvatarFallback>{user_details.user_metadata.first_name.slice(0,1).toUpperCase()}{user_details.user_metadata.last_name.slice(0,1).toUpperCase()}</AvatarFallback>
             : <AvatarFallback>{user_details.email.slice(0,2).toUpperCase()}</AvatarFallback>}
           </Avatar>
         </Button>

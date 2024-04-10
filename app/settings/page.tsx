@@ -52,7 +52,7 @@ export default async function ProfilePage() {
   return (
     <>
         <div className="flex flex-col">
-            <NavBar links={["Profile"]} user_details={user}/>
+            <NavBar links={["Dashboard", "Profile"]} user_details={user}/>
             <div className="flex-1 px-8 pb-8">
                 <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
                 <br></br>
