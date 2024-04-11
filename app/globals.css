@@ -66,6 +66,10 @@
   }
 }
  
+*, *::before, *::after {
+  transition: background-color 0.5s ease, color 0.5s ease;
+}
+
 @layer base {
   * {
     @apply border-border;

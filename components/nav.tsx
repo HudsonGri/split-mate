@@ -1,25 +1,36 @@
 // components/NavBar.js
+"use client"
 import Image from "next/image";
 import mainLogo from "../public/split-mate-logo.svg";
 import { UserNav } from "./user-nav";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import Link from 'next/link'
+import { useTheme } from 'next-themes';
+import React, { useState, useEffect } from 'react';
 
 export function NavBar({ links, user_details }: { links: string[], user_details?: any }) {
+  const { theme } = useTheme();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+  const imageSrc = mounted ? (theme === 'dark' ? mainLogo : '/logo-light.png') : null;
+
   return (
-    <nav className="sticky top-0 z-50 bg-black/70 backdrop-blur">
+    <nav className="sticky top-0 z-50 backdrop-blur dark:bg-black/70 bg-white">
       <div className="px-4 sm:px-6 lg:px-16">
         <div className="flex justify-between items-center h-20">
           <a href='/'>
             <div className="flex-shrink-0 flex items-center">
-              <Image
-                priority
-                src={mainLogo}
+              {imageSrc && <Image
+                src={imageSrc}
+                height={200}
                 width={200}
                 alt="Split Mate Logo"
                 className="w-32 sm:w-40"
-              />
+              />}
             </div>
           </a>
 
