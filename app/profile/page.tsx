@@ -111,7 +111,7 @@ export default async function ProfilePage() {
       name: "PayPal",
       type: "",
       identifier: "algator@ufl.edu",
-      url: "https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-mark-monotone-transparent.svg",
+      url: "https://www.paypalobjects.com/paypal-ui/logos/svg/paypal-mark-color.svg",
     },
     {
       name: "Chase Sapphire Reserve",
@@ -178,7 +178,7 @@ export default async function ProfilePage() {
               <br></br> 
               <Avatar className="h-32 w-32 mx-auto">
                 <AvatarImage src="https://github.com/shadcn.png" />
-                <AvatarFallback>{user.email.slice(0,2).toUpperCase()}</AvatarFallback>
+                <AvatarFallback>{user.user_metadata.first_name.slice(0, 1).toUpperCase()}{user.user_metadata.last_name.slice(0, 1).toUpperCase()}</AvatarFallback>
               </Avatar>
             </div>
           </div>
@@ -202,7 +202,7 @@ export default async function ProfilePage() {
         <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
           <div className="lg:col-start-1 lg:col-span-3 flex flex-col">
 
-            {/* settings (temp) */}
+            {/* settings */}
             <Link href="/settings" className="flex justify-between">
               <Card className="flex-1 mb-4">
                 <CardHeader>
@@ -390,7 +390,7 @@ export default async function ProfilePage() {
 
                 {/* view all payment methods in settings */}
                 <div className="mt-4 flex justify-center items-center gap-2 p-4">
-                  <a href="" className="flex items-center gap-2 underline">
+                  <a href="/settings#payment-methods" className="flex items-center gap-2 underline">
                     <span>Manage Payment Methods</span>
                     <FiChevronRight className="text-base" />
                   </a>

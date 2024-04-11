@@ -1,4 +1,9 @@
 "use client"
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+  } from "@/components/ui/avatar"
 import { Button } from "./ui/button"
 import { useState } from "react";
 import {
@@ -63,26 +68,18 @@ export function UserEdit({ user_details }: { user_details?: any }) {
                 <form onSubmit={handleSaveChanges}>
                     <div className="flex flex-col gap-4 py-4">
                         <div className="grid grid-cols-4 items-center gap-4">
-                            {/* Avatar section with left-aligned label */}
                             <div className="col-span-1">
                                 <Label htmlFor="file" className="font-medium cursor-pointer">
-                                    Avatar
+                                    Profile Picture
                                 </Label>
                             </div>
                             <div className="col-span-3 flex items-center gap-4">
-                                <img
-                                    alt="Your avatar"
-                                    className="rounded-full"
-                                    src="https://github.com/shadcn.png"
-                                    style={{
-                                        aspectRatio: "1 / 1",
-                                        objectFit: "cover",
-                                        width: "64px",
-                                        height: "64px",
-                                    }}
-                                />
+                                <Avatar className="w-32 h-32 ml-4">
+                                    <AvatarImage src="https://github.com/shadcn.png" className="w-full h-full object-cover rounded-full" />
+                                    <AvatarFallback>{user_details.user_metadata.first_name.slice(0, 1).toUpperCase()}{user_details.user_metadata.last_name.slice(0, 1).toUpperCase()}</AvatarFallback>
+                                </Avatar>
                                 <Input accept="image/*" className="sr-only" id="file" type="file" />
-                                <Label htmlFor="file" className="cursor-pointer">
+                                <Label htmlFor="file" className="cursor-pointer underline">
                                     Change
                                 </Label>
                             </div>
