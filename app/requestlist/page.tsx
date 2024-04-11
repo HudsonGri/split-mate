@@ -7,6 +7,7 @@ import { redirect } from 'next/navigation'
 import {
   Dialog,
   DialogContent,
+  DialogClose,
   DialogDescription,
   DialogFooter,
   DialogHeader,
@@ -15,23 +16,60 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
+import { json } from "stream/consumers"
 
 async function getData(): Promise<Request[]> {
   // Fetch data from your API here.
-  return [
-    {
-      id: "1",
-      date: new Date().toDateString(),
-      name: "Paper Towels",
-      user_submitted: "John B.",
-      status: "Pending approval",
-    },
+  
+  const supabase = createClient()
+
+  let { data, error } = await supabase
+  .from('item_list')
+  .select("*")
+  .eq('purchased', false);
+
+  if (error) {
+    console.log("redirect to main")
+    redirect('/')
+  }
+  if (data) {
+
+
+  const items: Request[] = data?.map(setItems);
+
+  console.log(items)
+  return items
+    // {
+    //   id: "1",
+    //   date: new Date().toDateString(),
+    //   name: "Paper Towels",
+    //   user_submitted: "John B.",
+    //   status: "Pending approval",
+    // },
     // ...
-  ]
+
+}
+
+}
+function setItems(value) {
+  var item: Request = {
+    id: value.item_id,
+    date: value.creation_date,
+    name: value.name,
+    user_submitted: value.creator,
+    status: "Unclaimed",
+  }
+  if (value.approved == false) {
+    item.status = "Pending approval"
+  }
+  else if (value.claimer == null) {
+    item.status = "Claimed"
+  }
+  return item
 }
 
 export default async function RequestListPage() {
-  const requestdata = await getData()
+  //
 
   const supabase = createClient()
 
@@ -42,8 +80,8 @@ export default async function RequestListPage() {
     redirect('/')
   }
   const user = data.user
+  const requestdata = await getData()
 
-    
   return (
     <>
       <div className="flex flex-col">
@@ -60,7 +98,7 @@ export default async function RequestListPage() {
         <div className="container mx-auto py-10">
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline">Add Item</Button>
+                <Button className="m-1">Add Item</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -81,13 +119,16 @@ export default async function RequestListPage() {
                   </div>
                 </div>
                 <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
                   <Button type="submit">Submit</Button>
                 </DialogFooter>
               </DialogContent>
             </Dialog>
             <Dialog>
               <DialogTrigger asChild>
-                <Button variant="outline">Log Expense</Button>
+                <Button className="m-1">Log Expense</Button>
               </DialogTrigger>
               <DialogContent className="sm:max-w-[425px]">
                 <DialogHeader>
@@ -125,6 +166,9 @@ export default async function RequestListPage() {
                   </div>
                 </div>
                 <DialogFooter>
+                  <DialogClose asChild>
+                    <Button variant="outline">Cancel</Button>
+                  </DialogClose>
                   <Button type="submit">Submit</Button>
                 </DialogFooter>
               </DialogContent>
