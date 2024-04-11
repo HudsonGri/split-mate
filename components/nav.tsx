@@ -2,6 +2,7 @@
 "use client"
 import Image from "next/image";
 import mainLogo from "../public/split-mate-logo.svg";
+import lightLogo from "../public/logo-light.png";
 import { UserNav } from "./user-nav";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
@@ -10,13 +11,14 @@ import { useTheme } from 'next-themes';
 import React, { useState, useEffect } from 'react';
 
 export function NavBar({ links, user_details }: { links: string[], user_details?: any }) {
-  const { theme } = useTheme();
+  const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
     setMounted(true);
   }, []);
-  const imageSrc = mounted ? (theme === 'dark' ? mainLogo : '/logo-light.png') : null;
+  const effectiveTheme = theme === 'system' ? resolvedTheme : theme;
+  const imageSrc = mounted ? (effectiveTheme === 'dark' ? mainLogo : lightLogo) : null;
 
   return (
     <nav className="sticky top-0 z-50 backdrop-blur dark:bg-black/70 bg-white">

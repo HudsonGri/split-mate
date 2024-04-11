@@ -1,4 +1,8 @@
-
+import {
+    Avatar,
+    AvatarFallback,
+    AvatarImage,
+  } from "@/components/ui/avatar"
 import { Button } from "../../components/ui/button"
 import {
   Card,
@@ -21,23 +25,33 @@ import {
 } from "@/components/ui/dialog"
 import { 
   FiEdit2,
-  FiChevronRight
+  FiPlus
 } from 'react-icons/fi';
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Metadata } from "next"
+import { ModeToggle } from "@/components/ui/toggle-mode";
 import { NavBar } from "@/components/nav"
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation'
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectLabel,
+    SelectTrigger,
+    SelectValue,
+  } from "@/components/ui/select"
 import { Switch } from "@/components/ui/switch"
-import { ModeToggle } from "@/components/ui/toggle-mode";
+import { UserEdit } from "@/components/user-edit"
 
 export const metadata: Metadata = {
   title: "Settings",
   description: "User settings page.",
 }
 
-export default async function ProfilePage() {
+export default async function SettingsPage() {
   const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
@@ -61,11 +75,14 @@ export default async function ProfilePage() {
                     {/* nav menu */}
                     <div className="w-1/4 sticky top-[80px] space-y-4 mr-8 z-10" style={{height: 'fit-content'}}>
                         <nav className="divide-y divide-gray-200 dark:divide-gray-700">
-                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#account">
-                                Account
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#profile">
+                                Profile
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#security">
                                 Security
+                            </a>
+                            <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#payment-methods">
+                                Payment Methods
                             </a>
                             <a className="flex items-center rounded-md font-medium px-3 py-2 text-gray-500 hover:bg-gray-200 dark:text-gray-400 dark:hover:bg-gray-700 hover:text-gray-700 dark:hover:text-white transition-colors" href="#display">
                                 Display
@@ -76,56 +93,49 @@ export default async function ProfilePage() {
                         </nav>
                     </div>
 
-                    {/* account settings */}
+                    {/* profile settings */}
                     <div className="w-3/4 space-y-4">
-                        <div id="account">
+                        <div id="profile">
                         <Card>
-                            <CardHeader>Account</CardHeader>
+                        <CardHeader className="flex justify-between">
+                            <div className="flex">
+                            <span className="mr-2">Profile</span>
+                                <UserEdit user_details={user}/>
+                            </div>
+                        </CardHeader>
                             <CardContent>
-                                {/* profile picture scuffs layout --> allows user to scroll horizontally */}
-
-                                {/*
                                 <div className="space-y-2">
                                     <Label>Profile Picture</Label>
                                     <div className="flex justify-start items-center space-x-4">
-                                        <Avatar className="w-20 h-20 relative">
+                                        <Avatar className="w-32 h-32 ml-4">
                                             <AvatarImage src="https://github.com/shadcn.png" className="w-full h-full object-cover rounded-full" />
-                                            <AvatarFallback>{user.email.charAt(0).toUpperCase()}</AvatarFallback>
+                                            <AvatarFallback>{user.user_metadata.first_name.slice(0, 1).toUpperCase()}{user.user_metadata.last_name.slice(0, 1).toUpperCase()}</AvatarFallback>
                                         </Avatar>
-                                        <div className="flex items-center space-x-2">
-                                            <Input accept="image/*" id="file" type="file" className="sr-only" />
-                                            <Label htmlFor="file" className="cursor-pointer underline">
-                                                Change
-                                            </Label>
-                                        </div>
                                     </div>
                                 </div>
                                 <br></br>
-                                */}
+                                
                                 <div className="flex space-x-4">
                                     <div className="w-1/2 space-y-2">
-                                    <Label htmlFor="firstName">First Name</Label>
-                                    <Input id="firstName" defaultValue="Albert" />
+                                        <Label>First Name</Label>
+                                        <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.first_name}</div>
                                     </div>
                                     <div className="w-1/2 space-y-2">
-                                    <Label htmlFor="lastName">Last Name</Label>
-                                    <Input id="lastName" defaultValue="Gator" />
+                                        <Label>Last Name</Label>
+                                        <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.last_name}</div>
                                     </div>
                                 </div>
                                 <br></br>
                                 <div className="space-y-2">
-                                    <Label htmlFor="email">Email</Label>
-                                    <Input id="email" defaultValue={user.email} type="email" />
+                                    <Label>Email</Label>
+                                    <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.email}</div>
                                 </div>
                                 <br></br>
                                 <div className="space-y-2">
-                                    <Label htmlFor="phone">Phone Number</Label>
-                                    <Input id="phone" defaultValue={user.phone} type="tel" className="w-64" />
+                                    <Label>Phone Number</Label>
+                                    <div className="w-64 text-gray-600 dark:text-gray-400">{user.user_metadata.Phone}</div>
                                 </div>
                             </CardContent>
-                            <CardFooter className="flex justify-end">
-                                <Button>Save Changes</Button>
-                            </CardFooter>
                         </Card>
                         </div>
 
@@ -134,9 +144,8 @@ export default async function ProfilePage() {
                             <Card>
                                 <CardHeader>Security</CardHeader>
                                 <CardContent>
-                                <div className="space-y-4">
-                                    <Label htmlFor="password">Password</Label>
-                                    <div className="flex items-center space-x-2">
+                                <div className="flex items-center space-x-3">
+                                    <Label>Password</Label>
                                     <Input id="password" defaultValue={user.email} type="password" className="w-64" />
                                     <Dialog>
                                         <DialogTrigger asChild>
@@ -145,32 +154,31 @@ export default async function ProfilePage() {
                                         </button>
                                         </DialogTrigger>
                                         <DialogContent>
-                                                <DialogHeader>Change Your Password</DialogHeader>
-                                                <div className="space-y-4">
-                                                    <div>
-                                                        <Label htmlFor="current-password">Current Password</Label>
-                                                        <Input id="current-password" type="password" placeholder="Enter current password" className="mt-1 block w-full" />
-                                                    </div>
-                                                    <div>
-                                                        <Label htmlFor="new-password">New Password</Label>
-                                                        <Input id="new-password" type="password" placeholder="Enter new password" className="mt-1 block w-full" />
-                                                    </div>
-                                                    <div>
-                                                        <Label htmlFor="confirm-password">Confirm New Password</Label>
-                                                        <Input id="confirm-password" type="password" placeholder="Confirm new password" className="mt-1 block w-full" />
-                                                    </div>
-                                                    <div className="flex justify-end gap-4">
-                                                        <DialogClose asChild>
-                                                            <Button variant="outline">Cancel</Button>
-                                                        </DialogClose>
-                                                        <DialogClose asChild>
-                                                            <Button>Save</Button>
-                                                        </DialogClose>
-                                                    </div>
-                                                </div>
-                                            </DialogContent>
+                                        <DialogHeader>Change Your Password</DialogHeader>
+                                        <div className="space-y-4">
+                                            <div>
+                                            <Label htmlFor="current-password">Current Password</Label>
+                                            <Input id="current-password" type="password" placeholder="Enter current password" className="mt-1 block w-full" />
+                                            </div>
+                                            <div>
+                                            <Label htmlFor="new-password">New Password</Label>
+                                            <Input id="new-password" type="password" placeholder="Enter new password" className="mt-1 block w-full" />
+                                            </div>
+                                            <div>
+                                            <Label htmlFor="confirm-password">Confirm New Password</Label>
+                                            <Input id="confirm-password" type="password" placeholder="Confirm new password" className="mt-1 block w-full" />
+                                            </div>
+                                            <div className="flex justify-end gap-4">
+                                            <DialogClose asChild>
+                                                <Button variant="outline">Cancel</Button>
+                                            </DialogClose>
+                                            <DialogClose asChild>
+                                                <Button>Save</Button>
+                                            </DialogClose>
+                                            </div>
+                                        </div>
+                                        </DialogContent>
                                     </Dialog>
-                                    </div>
                                 </div>
                                 <br></br>
                                 <div className="flex items-center justify-between">
@@ -180,7 +188,109 @@ export default async function ProfilePage() {
                                 <br></br>
                                 </CardContent>
                                 <CardFooter className="flex justify-end">
-                                <Button>Save Changes</Button>
+                                    <Button>Save Changes</Button>
+                                </CardFooter>
+                            </Card>
+                        </div>
+
+                        {/* payment methods settings */}
+                        <div id="payment-methods">
+                            <Card>
+                                <CardHeader>Payment Methods</CardHeader>
+                                <CardContent>
+                                    <br></br>
+                                </CardContent>
+                                <CardFooter className="justify-center">
+                                    <Dialog>
+                                        <div className="z-40"></div>
+                                        <div className="max-w-md">
+                                        <DialogTrigger asChild>
+                                            <div className="flex items-center gap-2 underline">
+                                                <span>Add new payment method</span>
+                                                <FiPlus className="text-base" />
+                                            </div>
+                                        </DialogTrigger>
+                                        <DialogContent className="flex flex-col justify-between" style={{ minHeight: '80vh' }}>
+                                            <div>
+                                            <div className="flex items-center space-x-2 mb-4">
+                                                <DialogTitle>Add New Payment Method</DialogTitle>
+                                            </div>
+                                            <div className="space-y-4">
+                                                <div className="space-y-2">
+                                                <Label htmlFor="card_name">Card Name</Label>
+                                                <Input id="card_name" placeholder="Enter a name for this card" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                <Label htmlFor="name">Cardholder Name</Label>
+                                                <Input id="name" placeholder="Enter your name" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                <Label htmlFor="number">Card Number</Label>
+                                                <Input id="number" placeholder="Enter your card number"/>
+                                                </div>
+                                                <div className="grid grid-cols-3 gap-4">
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="month">Expires</Label>
+                                                    <Select>
+                                                    <SelectTrigger aria-label="Month" id="month">
+                                                        <SelectValue placeholder="Month" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="1">January</SelectItem>
+                                                        <SelectItem value="2">February</SelectItem>
+                                                        <SelectItem value="3">March</SelectItem>
+                                                        <SelectItem value="4">April</SelectItem>
+                                                        <SelectItem value="5">May</SelectItem>
+                                                        <SelectItem value="6">June</SelectItem>
+                                                        <SelectItem value="7">July</SelectItem>
+                                                        <SelectItem value="8">August</SelectItem>
+                                                        <SelectItem value="9">September</SelectItem>
+                                                        <SelectItem value="10">October</SelectItem>
+                                                        <SelectItem value="11">November</SelectItem>
+                                                        <SelectItem value="12">December</SelectItem>
+                                                    </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="year">Year</Label>
+                                                    <Select>
+                                                    <SelectTrigger aria-label="Year" id="year">
+                                                        <SelectValue placeholder="Year" />
+                                                    </SelectTrigger>
+                                                    <SelectContent>
+                                                        <SelectItem value="2023">2023</SelectItem>
+                                                        <SelectItem value="2024">2024</SelectItem>
+                                                        <SelectItem value="2025">2025</SelectItem>
+                                                        <SelectItem value="2026">2026</SelectItem>
+                                                        <SelectItem value="2027">2027</SelectItem>
+                                                        <SelectItem value="2028">2028</SelectItem>
+                                                        <SelectItem value="2029">2029</SelectItem>
+                                                        <SelectItem value="2030">2030</SelectItem>
+                                                    </SelectContent>
+                                                    </Select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <Label htmlFor="cvc">CVV</Label>
+                                                    <Input id="cvc" placeholder="CVC" />
+                                                </div>
+                                                </div>
+                                            </div>
+                                            </div>
+                                            <div className="mt-4">
+                                            <div className="flex justify-end items-center">
+                                                <div className="flex gap-2">
+                                                    <DialogClose asChild>
+                                                    <Button variant="outline">Cancel</Button>
+                                                    </DialogClose>
+                                                    <DialogClose asChild>
+                                                    <Button>Add</Button>
+                                                    </DialogClose>
+                                                </div>
+                                            </div>
+                                            </div>
+                                        </DialogContent>
+                                        </div>
+                                    </Dialog>
                                 </CardFooter>
                             </Card>
                         </div>
@@ -192,8 +302,8 @@ export default async function ProfilePage() {
                                 <CardContent>
                                     <div className="space-y-2">
                                         <Label htmlFor="theme">Appearance</Label>
-                                        <div className="pl-4"> {/* Adjust the number as needed for more or less indentation */}
-                                        <ModeToggle></ModeToggle>
+                                        <div className="pl-4">
+                                            <ModeToggle></ModeToggle>
                                         </div>
                                     </div>
                                     <br></br>
