@@ -82,9 +82,11 @@ export default function LandingPage() {
     },
   };
 
-  const { theme } = useTheme();
-  const imageSrc = theme === 'dark' ? '/hero-graphic.png' : '/hero-graphic-light.png';
-  const isLightTheme = theme === 'light';
+  const { theme, resolvedTheme } = useTheme();
+  const effectiveTheme = theme === 'system' ? resolvedTheme : theme;
+  const isLightTheme = effectiveTheme === 'light';
+  const imageSrc = effectiveTheme === 'dark' ? '/hero-graphic.png' : '/hero-graphic-light.png';
+
 
   return (
     <>
