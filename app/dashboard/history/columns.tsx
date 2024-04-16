@@ -19,7 +19,7 @@ export type Request = {
     id: string
     date: Date
     amount: string
-    sender: string
+    payer: string
     expense: string
     typeOfAction: "Payment" | "Request" // Add more if needed
     receiver: string
@@ -62,16 +62,16 @@ export const columns: ColumnDef<Request>[] = [
         }
     },
     {
-        accessorKey: "sender",
-        header: "Sender",
+        accessorKey: "payer",
+        header: "Payer",
         cell: ({ row }) => {
             const request = row.original;
             const handleClick = () => {
-                console.log("View profile of", request.sender);
+                console.log("View profile of", request.payer);
             }
             return (
                 <DropdownMenu>
-                    <DropdownMenuTrigger>{request.sender}</DropdownMenuTrigger>
+                    <DropdownMenuTrigger>{request.payer}</DropdownMenuTrigger>
                     <DropdownMenuContent>
                     <DropdownMenuItem onSelect={handleClick}>
                         <User className="mr-2 h-4 w-4" />

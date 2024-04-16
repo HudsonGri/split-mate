@@ -8,17 +8,35 @@ import { redirect } from 'next/navigation'
 
 async function getData(): Promise<Request[]> {
   // Fetch data from your API here.
-  return [
-    {
-      id: "1",
-      date: new Date("2021-10-01"),
-      amount: "100",
-      sender: "John B.",
-      expense: "Paper Towels",
-      typeOfAction: "Payment",
-      receiver: "Jane D.",
-    },
-  ]
+  const supabase = createClient()
+
+  let { data: expenses, error } = await supabase
+  .from('expenses')
+  .select('*')
+
+  if (error) {
+    console.log("redirect to main")
+    redirect('/')
+  }
+
+
+  if (expenses) {
+    console.log("got here");
+    const requests: Request[] = expenses.map((item: any) => ({
+      id: item.id,
+      date: new Date(item.date),
+      amount: item.amount,
+      payer: item.payer_id,
+      expense: item.expense,
+      typeOfAction: item.typeOfAction,
+      receiver: item.receiver,
+    }));
+
+    return requests;
+  }
+  
+
+  return [];
 }
 
 export default async function History() {
