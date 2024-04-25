@@ -12,7 +12,7 @@ async function getData(): Promise<Request[]> {
   // Fetch data from your API here.
   const supabase = createClient()
   
-  const { data, error: error1 } = await supabase.auth.getUser()
+  const { data, error: error1 } = await supabase.auth.getUser() //get self user
   console.log(error1)
   if (error1 || !data?.user) {
     console.log("redirect to main")
@@ -20,45 +20,45 @@ async function getData(): Promise<Request[]> {
   }
   const user = data.user;
 
-  let { data: expenses, error } = await supabase
-  .from('expenses')
-  .select('*')
+  //filter & select correct group
+  let { data: userGroup, error: error2 } = await supabase //get group
+    .from('group_membership')
+    .select('group_id')
+    .eq('user_id', user.id);
 
-  if (error) {
+  if (error2 || !userGroup || userGroup.length === 0) {
+    console.log("redirect to main");
+    redirect('/dashboard');
+  }
+
+  const groupId = userGroup[0].group_id;
+  console.log("groupId = ", groupId);
+
+  let { data: expenses, error: error3 } = await supabase //get expenses in group & get payer names
+    .from('expenses')
+    .select('*')
+    .eq('group_id', groupId)
+
+  if (error3 || !expenses) {
     console.log("redirect to main")
     redirect('/dashboard')
   } 
-  
-  // let { data: myGroup, error: error1 } = await supabase
-  // .from('groups')
-  // .select('*')
-  // .eq('name', 'test');
-
-  
-  // let { data: expenses, error: error2 } = await supabase
-  // .from('users')
-  // .select(`
-  //   *,
-  //   groups (
-  //     group_id
-  //   )
-  // `)
-  // .eq('groups.group_id', myGroup);
-
-  // if (error1 || error2) {
-  //   console.log("redirect to main")
-  //   redirect('/dashboard')
-  // } 
-
-
 
   
   if (expenses) {
+
+    const payerIds = expenses.map((item: any) => item.payer_id);
+
+    const { data: payerNames, error: error4 } = await supabase //get payer names
+      .from('auth.users')
+      .select('full_name')
+      .in('id', payerIds);
+
     const requests: Request[] = expenses.map((item: any) => ({
       id: item.id,
       date: new Date(item.creation_date), //rdy
       amount: item.amount, //rdy
-      payer: user?.full_name, //rdy
+      payer: item.payer_id, //rdy
       expense: item.description, //rdy
       typeOfAction: item.testingshit, //NOT IN TABLE
       receiver: item.receiver, //NOT IN TABLE
@@ -86,7 +86,7 @@ export default async function History() {
   return (
     <>
       <div>
-        {/* <h1><pre>{JSON.stringify(data.user.user_metadata.full_name, null, 2)}</pre></h1> */}
+        <h1><pre>{JSON.stringify(data.user.user_metadata.full_name, null, 2)}</pre></h1><br></br>
         <h1><pre>{JSON.stringify(user, null, 2)}</pre></h1>
       </div>
       <div className="container mx-auto">
