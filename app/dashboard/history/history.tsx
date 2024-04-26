@@ -19,6 +19,13 @@ async function getData(): Promise<Request[]> {
     redirect('/')
   }
   const user = data.user;
+  
+  //get all users
+  const { data: allUsers, error: errorAllUsers } = await supabase.auth.getUser() //get all users
+
+  const { data: test, error: errortest } = await supabase // test all users
+  .from('auth.users')
+  .select('*');
 
   //filter & select correct group
   let { data: userGroup, error: error2 } = await supabase //get group
@@ -47,18 +54,26 @@ async function getData(): Promise<Request[]> {
   
   if (expenses) {
 
-    const payerIds = expenses.map((item: any) => item.payer_id);
+    // const payerIds = expenses.map((item: any) => item.payer_id);
 
-    const { data: payerNames, error: error4 } = await supabase //get payer names
-      .from('auth.users')
-      .select('full_name')
-      .in('id', payerIds);
+    // const { data: payerNames, error: error4 } = await supabase //get payer names
+    //   .from('auth.users')
+    //   .select('full_name')
+    //   .in('id', payerIds);
+    
+    // if (error4 || !payerNames) {
+    //   console.log("redirect to main")
+    //   redirect('/dashboard')
+    // }
+
+    // const payerMap = new Map(payerNames.map((payer) => [payer.id, payer.full_name]));
 
     const requests: Request[] = expenses.map((item: any) => ({
       id: item.id,
       date: new Date(item.creation_date), //rdy
       amount: item.amount, //rdy
-      payer: item.payer_id, //rdy
+      // payer: payerMap.get(item.payer_id), //NEED FIXING
+      payer: item.payer_id, //NEED FIXING
       expense: item.description, //rdy
       typeOfAction: item.testingshit, //NOT IN TABLE
       receiver: item.receiver, //NOT IN TABLE
