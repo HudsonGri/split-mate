@@ -13,6 +13,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "../../components/ui/dropdown-menu"
+import { User } from "lucide-react"
 
 // This type is used to define the shape of our data.
 // You can use a Zod schema here if you want.
@@ -82,8 +83,13 @@ export const columns: ColumnDef<Request>[] = [
         header: "Name",
     },
     {
+        accessorFn: (row) => new Date(row.date),
         accessorKey: "date",
         header: "Date",
+        cell: ({ cell }) => {
+            const date = cell.getValue() as Date;
+            return <div>{date.toLocaleDateString()}</div>
+        }
     },
     {
         accessorKey: "user_submitted",
@@ -98,6 +104,23 @@ export const columns: ColumnDef<Request>[] = [
               </Button>
             )
           },
+        cell: ({ row }) => {
+            const request = row.original;
+            const handleClick = () => {
+                console.log("View profile of", request.user_submitted);
+            }
+            return (
+                <DropdownMenu>
+                    <DropdownMenuTrigger>{request.user_submitted}</DropdownMenuTrigger>
+                    <DropdownMenuContent>
+                    <DropdownMenuItem onSelect={handleClick}>
+                        <User className="mr-2 h-4 w-4" />
+                        <span>Profile</span>
+                    </DropdownMenuItem>
+                    </DropdownMenuContent>
+                </DropdownMenu>
+            )
+        },
     },
     {
         accessorKey: "status",

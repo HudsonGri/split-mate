@@ -41,13 +41,25 @@ export function DataTable<TData, TValue>({
   columns,
   data,
 }: DataTableProps<TData, TValue>) {
-    const [sorting, setSorting] = React.useState<SortingState>([])
+    const [sorting, setSorting] = React.useState<SortingState>([
+        { id: "date", desc: true}
+    ])
     const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
         []
     )
     const [columnVisibility, setColumnVisibility] =
         React.useState<VisibilityState>({})
     const [rowSelection, setRowSelection] = React.useState({})
+
+    const [searchValue, setSearchValue] = React.useState("");
+
+    const globalFilterFn = (row: any, columnId: any, filterValue: string) => {
+        const columnValue = row.getValue(columnId);
+        if (typeof columnValue === "string") {
+            return columnValue.toLowerCase().includes(filterValue.toLowerCase());
+        }
+        return false;
+    }
 
     const table = useReactTable({
         data,
@@ -65,17 +77,19 @@ export function DataTable<TData, TValue>({
             columnFilters,
             columnVisibility,
             rowSelection,
+            globalFilter: searchValue,
         },
+        globalFilterFn,
     })
 
   return (
     <div>
         <div className="flex items-center py-4">
             <Input
-            placeholder="Filter users..."
-            value={(table.getColumn("user_submitted")?.getFilterValue() as string) ?? ""}
+            placeholder="Search"
+            value={searchValue}
             onChange={(event) =>
-                table.getColumn("user_submitted")?.setFilterValue(event.target.value)
+                setSearchValue(event.target.value)
             }
             className="max-w-sm"
             />
