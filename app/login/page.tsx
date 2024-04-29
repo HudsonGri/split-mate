@@ -6,7 +6,6 @@ import { UserAuthForm } from "@/components/user-auth-form";
 import { NavBar } from "@/components/nav";
 import { createClient } from "@/utils/supabase/client";
 import { redirect, useSearchParams } from "next/navigation";
-import { ExclamationTriangleIcon } from "@radix-ui/react-icons";
 
 
 export default async function AuthenticationPage() {

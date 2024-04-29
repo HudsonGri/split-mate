@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
+import { CreateGroup } from "@/components/create-group";
 
 export default async function Create() {
   const supabase = createClient();
@@ -42,39 +43,20 @@ export default async function Create() {
     <>
       <div className="flex flex-col">
         <NavBar links={["Dashboard", "Create a Group"]} />
-        <Card className="w-full max-w-lg">
-          <CardHeader>
-            <CardTitle className="text-2xl">Create a new group</CardTitle>
-            <CardDescription>
-              Groups are a great way to share with and learn from your friends.
-            </CardDescription>
-          </CardHeader>
-          <CardContent className="space-y-4">
-            <div className="space-y-2">
-              <Label htmlFor="group-name">Group Name</Label>
-              <Input id="group-name" placeholder="The Great Group" />
+        <div className="container relative h-[600px] pt-10 flex-col items-center justify-center md:pt-0 md:grid lg:max-w-none lg:px-0">
+          <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
+            <div className="flex flex-col space-y-2 text-center">
+              <h1 className="text-2xl font-semibold tracking-tight">
+                Create a new group
+              </h1>
+              <p className="text-sm text-muted-foreground">
+                Groups can be for any purpose from roomates to a local
+                organization.
+              </p>
             </div>
-            <div className="space-y-2">
-              <Label>Members</Label>
-              <div>
-                Start typing to add members to your group. You can add up to 100
-                members.
-              </div>
-              <div className="mt-1" />
-            </div>
-            <div className="space-y-2">
-              <Label htmlFor="rules">Group Rules</Label>
-              <Textarea
-                className="min-h-[100px]"
-                id="rules"
-                placeholder="Enter the rules of the group"
-              />
-            </div>
-          </CardContent>
-          <CardFooter>
-            <Button size="lg">Create Group</Button>
-          </CardFooter>
-        </Card>
+            <CreateGroup />
+          </div>
+        </div>
       </div>
     </>
   );
