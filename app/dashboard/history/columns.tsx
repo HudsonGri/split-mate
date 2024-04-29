@@ -21,7 +21,7 @@ export type Request = {
     amount: string
     payer: string
     expense: string
-    typeOfAction: "Payment" | "Request" // Add more if needed
+    typeOfAction: "Payment" | "Request" | "Purchase" // Add more if needed
     receiver: string
 }
 
@@ -94,8 +94,8 @@ export const columns: ColumnDef<Request>[] = [
         accessorKey: "expense",
         header: "Expense",
     },
-    {
-        accessorKey: "typeOfAction",
-        header: "Type of Action",
-    },
+    // {
+    //     accessorKey: "typeOfAction",
+    //     header: "Type of Action",
+    // },
 ]

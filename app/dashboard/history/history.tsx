@@ -20,13 +20,6 @@ async function getData(): Promise<Request[]> {
   }
   const user = data.user;
   
-  //get all users
-  const { data: allUsers, error: errorAllUsers } = await supabase.auth.getUser() //get all users
-
-  const { data: test, error: errortest } = await supabase // test all users
-  .from('auth.users')
-  .select('*');
-
   //filter & select correct group
   let { data: userGroup, error: error2 } = await supabase //get group
     .from('group_membership')
@@ -39,7 +32,6 @@ async function getData(): Promise<Request[]> {
   }
 
   const groupId = userGroup[0].group_id;
-  console.log("groupId = ", groupId);
 
   let { data: expenses, error: error3 } = await supabase //get expenses in group & get payer names
     .from('expenses')
@@ -51,34 +43,53 @@ async function getData(): Promise<Request[]> {
     redirect('/dashboard')
   } 
 
+  let { data: paybacks, error: error4 } = await supabase
+    .from('paybacks')
+    .select('*')
+    .eq('group_id', groupId);
+
+  if (error4) {
+    console.error('Error fetching paybacks:', error4.message);
+  }
+
+  let {data: allusers, error: error5} = await supabase //get all users
+    .from('auth_view')
+    .select('*') //MAYBE optimize by groupid
   
-  if (expenses) {
+  if (error5) {
+    console.error('Error fetching all users:', error5.message);
+  } else {
+    console.log("All users = ", allusers);
+  }
+  
+  if (expenses && allusers && paybacks) {
 
-    // const payerIds = expenses.map((item: any) => item.payer_id);
+    const userName = new Map(allusers.map((user: any) => [user.id, user.raw_user_meta_data.full_name]));
 
-    // const { data: payerNames, error: error4 } = await supabase //get payer names
-    //   .from('auth.users')
-    //   .select('full_name')
-    //   .in('id', payerIds);
-    
-    // if (error4 || !payerNames) {
-    //   console.log("redirect to main")
-    //   redirect('/dashboard')
-    // }
-
-    // const payerMap = new Map(payerNames.map((payer) => [payer.id, payer.full_name]));
-
-    const requests: Request[] = expenses.map((item: any) => ({
+    const expenseRequests: Request[] = expenses.map((item: any) => ({
       id: item.id,
-      date: new Date(item.creation_date), //rdy
-      amount: item.amount, //rdy
-      // payer: payerMap.get(item.payer_id), //NEED FIXING
-      payer: item.payer_id, //NEED FIXING
-      expense: item.description, //rdy
-      typeOfAction: item.testingshit, //NOT IN TABLE
-      receiver: item.receiver, //NOT IN TABLE
+      date: new Date(item.creation_date),
+      amount: item.amount,
+      payer: userName.get(item.payer_id) || item.payer_id,
+      expense: item.description,
+      receiver: item.receiver,
+      typeOfAction: "Purchase",
     }));
-    return requests;
+
+    const paybackRequests: Request[] = paybacks.map((item: any) => ({
+      id: item.payback_id,
+      date: new Date(item.creation_date),
+      amount: item.amount,
+      payer: userName.get(item.payer_id) || item.payer_id,
+      expense: item.description,
+      typeOfAction: "Payment",
+      receiver: userName.get(item.recipient_id) || item.recipient_id,
+    }));
+
+    const allRequests = [...expenseRequests, ...paybackRequests];
+    allRequests.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    return allRequests;
   }
   
 
@@ -100,10 +111,11 @@ export default async function History() {
 
   return (
     <>
-      <div>
+      {/* <div>
         <h1><pre>{JSON.stringify(data.user.user_metadata.full_name, null, 2)}</pre></h1><br></br>
-        <h1><pre>{JSON.stringify(user, null, 2)}</pre></h1>
-      </div>
+        <h1><pre>{JSON.stringify(data, null, 2)}</pre></h1>
+        <h1><pre>{data.user.}</pre></h1>
+      </div> */}
       <div className="container mx-auto">
         <DataTable columns={columns} data={requestdata} />
       </div>
