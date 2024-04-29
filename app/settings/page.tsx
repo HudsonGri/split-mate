@@ -30,7 +30,7 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { Metadata } from "next"
-import { ModeToggle } from "@/components/ui/toggle-mode";
+import { ModeToggle } from "@/components/toggle-mode";
 import { NavBar } from "@/components/nav"
 import React, { useState } from 'react';
 import { redirect } from 'next/navigation'
@@ -43,6 +43,7 @@ import {
     SelectTrigger,
     SelectValue,
   } from "@/components/ui/select"
+import { Separator } from "@/components/ui/separator"
 import { Switch } from "@/components/ui/switch"
 import { UserEdit } from "@/components/user-edit"
 
@@ -66,7 +67,7 @@ export default async function SettingsPage() {
   return (
     <>
         <div className="flex flex-col">
-            <NavBar links={["Dashboard", "Profile"]} user_details={user}/>
+            <NavBar links={["Profile"]} user_details={user}/>
             <div className="flex-1 px-8 pb-8">
                 <h2 className="text-3xl font-bold tracking-tight">Settings</h2>
                 <br></br>
@@ -106,6 +107,8 @@ export default async function SettingsPage() {
                             <CardContent>
                                 <div className="space-y-2">
                                     <Label>Profile Picture</Label>
+                                    <br></br>
+                                    <br></br>
                                     <div className="flex justify-start items-center space-x-4">
                                         <Avatar className="w-32 h-32 ml-4">
                                             <AvatarImage src="https://github.com/shadcn.png" className="w-full h-full object-cover rounded-full" />
@@ -114,27 +117,41 @@ export default async function SettingsPage() {
                                     </div>
                                 </div>
                                 <br></br>
+                                <Separator></Separator>
+                                <br></br>
                                 
                                 <div className="flex space-x-4">
                                     <div className="w-1/2 space-y-2">
                                         <Label>First Name</Label>
                                         <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.first_name}</div>
                                     </div>
+
+                                    <div className="w-0.5 bg-border self-stretch"></div>
+
                                     <div className="w-1/2 space-y-2">
                                         <Label>Last Name</Label>
                                         <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.last_name}</div>
                                     </div>
                                 </div>
                                 <br></br>
+                                <Separator></Separator>
+                                <br></br>
+
                                 <div className="space-y-2">
                                     <Label>Email</Label>
                                     <div className="text-gray-600 dark:text-gray-400">{user.user_metadata.email}</div>
                                 </div>
                                 <br></br>
+
+                                {/* 
+                                <Separator></Separator>
+                                <br></br>
+
                                 <div className="space-y-2">
                                     <Label>Phone Number</Label>
-                                    <div className="w-64 text-gray-600 dark:text-gray-400">{user.user_metadata.Phone}</div>
+                                    <div className="w-64 text-gray-600 dark:text-gray-400">{user.user_metadata.email}</div>
                                 </div>
+                                */}
                             </CardContent>
                         </Card>
                         </div>
@@ -146,7 +163,7 @@ export default async function SettingsPage() {
                                 <CardContent>
                                 <div className="flex items-center space-x-3">
                                     <Label>Password</Label>
-                                    <Input id="password" defaultValue={user.email} type="password" className="w-64" />
+                                    <Input id="password" defaultValue={user.email} type="password" className="w-32" disabled />
                                     <Dialog>
                                         <DialogTrigger asChild>
                                         <button className="text-base flex items-center justify-center">
@@ -154,7 +171,7 @@ export default async function SettingsPage() {
                                         </button>
                                         </DialogTrigger>
                                         <DialogContent>
-                                        <DialogHeader>Change Your Password</DialogHeader>
+                                        <DialogTitle>Change Your Password</DialogTitle>
                                         <div className="space-y-4">
                                             <div>
                                             <Label htmlFor="current-password">Current Password</Label>
@@ -181,6 +198,8 @@ export default async function SettingsPage() {
                                     </Dialog>
                                 </div>
                                 <br></br>
+                                <Separator></Separator>
+                                <br></br>
                                 <div className="flex items-center justify-between">
                                     <Label>Two-Factor Authentication (2FA)</Label>
                                     <Switch />
@@ -201,96 +220,90 @@ export default async function SettingsPage() {
                                     <br></br>
                                 </CardContent>
                                 <CardFooter className="justify-center">
-                                    <Dialog>
-                                        <div className="z-40"></div>
-                                        <div className="max-w-md">
+                                <Dialog>
+                                    <div className="z-40"></div>
+                                    <div className="max-w-md">
                                         <DialogTrigger asChild>
-                                            <div className="flex items-center gap-2 underline">
-                                                <span>Add new payment method</span>
-                                                <FiPlus className="text-base" />
-                                            </div>
-                                        </DialogTrigger>
-                                        <DialogContent className="flex flex-col justify-between" style={{ minHeight: '80vh' }}>
-                                            <div>
-                                            <div className="flex items-center space-x-2 mb-4">
-                                                <DialogTitle>Add New Payment Method</DialogTitle>
-                                            </div>
-                                            <div className="space-y-4">
-                                                <div className="space-y-2">
-                                                <Label htmlFor="card_name">Card Name</Label>
-                                                <Input id="card_name" placeholder="Enter a name for this card" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                <Label htmlFor="name">Cardholder Name</Label>
-                                                <Input id="name" placeholder="Enter your name" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                <Label htmlFor="number">Card Number</Label>
-                                                <Input id="number" placeholder="Enter your card number"/>
-                                                </div>
-                                                <div className="grid grid-cols-3 gap-4">
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="month">Expires</Label>
-                                                    <Select>
-                                                    <SelectTrigger aria-label="Month" id="month">
-                                                        <SelectValue placeholder="Month" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="1">January</SelectItem>
-                                                        <SelectItem value="2">February</SelectItem>
-                                                        <SelectItem value="3">March</SelectItem>
-                                                        <SelectItem value="4">April</SelectItem>
-                                                        <SelectItem value="5">May</SelectItem>
-                                                        <SelectItem value="6">June</SelectItem>
-                                                        <SelectItem value="7">July</SelectItem>
-                                                        <SelectItem value="8">August</SelectItem>
-                                                        <SelectItem value="9">September</SelectItem>
-                                                        <SelectItem value="10">October</SelectItem>
-                                                        <SelectItem value="11">November</SelectItem>
-                                                        <SelectItem value="12">December</SelectItem>
-                                                    </SelectContent>
-                                                    </Select>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="year">Year</Label>
-                                                    <Select>
-                                                    <SelectTrigger aria-label="Year" id="year">
-                                                        <SelectValue placeholder="Year" />
-                                                    </SelectTrigger>
-                                                    <SelectContent>
-                                                        <SelectItem value="2023">2023</SelectItem>
-                                                        <SelectItem value="2024">2024</SelectItem>
-                                                        <SelectItem value="2025">2025</SelectItem>
-                                                        <SelectItem value="2026">2026</SelectItem>
-                                                        <SelectItem value="2027">2027</SelectItem>
-                                                        <SelectItem value="2028">2028</SelectItem>
-                                                        <SelectItem value="2029">2029</SelectItem>
-                                                        <SelectItem value="2030">2030</SelectItem>
-                                                    </SelectContent>
-                                                    </Select>
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <Label htmlFor="cvc">CVV</Label>
-                                                    <Input id="cvc" placeholder="CVC" />
-                                                </div>
-                                                </div>
-                                            </div>
-                                            </div>
-                                            <div className="mt-4">
-                                            <div className="flex justify-end items-center">
-                                                <div className="flex gap-2">
-                                                    <DialogClose asChild>
-                                                    <Button variant="outline">Cancel</Button>
-                                                    </DialogClose>
-                                                    <DialogClose asChild>
-                                                    <Button>Add</Button>
-                                                    </DialogClose>
-                                                </div>
-                                            </div>
-                                            </div>
-                                        </DialogContent>
+                                        <div className="flex items-center gap-2 underline">
+                                            <span>Add new payment method</span>
+                                            <FiPlus className="text-base" />
                                         </div>
-                                    </Dialog>
+                                        </DialogTrigger>
+                                        <DialogContent className="flex flex-col">
+                                        <div className="flex items-center space-x-2 mb-4">
+                                            <DialogTitle>Add New Payment Method</DialogTitle>
+                                        </div>
+                                        <div className="space-y-4">
+                                            <div className="space-y-2">
+                                            <Label htmlFor="card_name">Card Name</Label>
+                                            <Input id="card_name" placeholder="Enter a name for this card" />
+                                            </div>
+                                            <div className="space-y-2">
+                                            <Label htmlFor="name">Cardholder Name</Label>
+                                            <Input id="name" placeholder="Enter your name" />
+                                            </div>
+                                            <div className="space-y-2">
+                                            <Label htmlFor="number">Card Number</Label>
+                                            <Input id="number" placeholder="Enter your card number"/>
+                                            </div>
+                                            <div className="grid grid-cols-3 gap-4">
+                                            <div className="space-y-2">
+                                                <Label htmlFor="month">Expires</Label>
+                                                <Select>
+                                                <SelectTrigger aria-label="Month" id="month">
+                                                    <SelectValue placeholder="Month" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="1">January</SelectItem>
+                                                    <SelectItem value="2">February</SelectItem>
+                                                    <SelectItem value="3">March</SelectItem>
+                                                    <SelectItem value="4">April</SelectItem>
+                                                    <SelectItem value="5">May</SelectItem>
+                                                    <SelectItem value="6">June</SelectItem>
+                                                    <SelectItem value="7">July</SelectItem>
+                                                    <SelectItem value="8">August</SelectItem>
+                                                    <SelectItem value="9">September</SelectItem>
+                                                    <SelectItem value="10">October</SelectItem>
+                                                    <SelectItem value="11">November</SelectItem>
+                                                    <SelectItem value="12">December</SelectItem>
+                                                </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="year">Year</Label>
+                                                <Select>
+                                                <SelectTrigger aria-label="Year" id="year">
+                                                    <SelectValue placeholder="Year" />
+                                                </SelectTrigger>
+                                                <SelectContent>
+                                                    <SelectItem value="2023">2023</SelectItem>
+                                                    <SelectItem value="2024">2024</SelectItem>
+                                                    <SelectItem value="2025">2025</SelectItem>
+                                                    <SelectItem value="2026">2026</SelectItem>
+                                                    <SelectItem value="2027">2027</SelectItem>
+                                                    <SelectItem value="2028">2028</SelectItem>
+                                                    <SelectItem value="2029">2029</SelectItem>
+                                                    <SelectItem value="2030">2030</SelectItem>
+                                                </SelectContent>
+                                                </Select>
+                                            </div>
+                                            <div className="space-y-2">
+                                                <Label htmlFor="cvc">CVV</Label>
+                                                <Input id="cvc" placeholder="CVC" />
+                                            </div>
+                                            </div>
+                                        </div>
+                                        <div className="mt-4 flex gap-2 justify-end">
+                                            <DialogClose asChild>
+                                            <Button variant="outline">Cancel</Button>
+                                            </DialogClose>
+                                            <DialogClose asChild>
+                                            <Button>Add</Button>
+                                            </DialogClose>
+                                        </div>
+                                        </DialogContent>
+                                    </div>
+                                </Dialog>
                                 </CardFooter>
                             </Card>
                         </div>
@@ -302,7 +315,7 @@ export default async function SettingsPage() {
                                 <CardContent>
                                     <div className="space-y-2">
                                         <Label htmlFor="theme">Appearance</Label>
-                                        <div className="pl-4">
+                                        <div className="pl-2">
                                             <ModeToggle></ModeToggle>
                                         </div>
                                     </div>

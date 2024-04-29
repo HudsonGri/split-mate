@@ -281,7 +281,7 @@ export default async function ProfilePage() {
                           <DialogTrigger asChild>
                             <Button>Edit</Button>
                           </DialogTrigger>
-                          <DialogContent className="flex flex-col justify-between" style={{ minHeight: '80vh' }}>
+                          <DialogContent className="flex flex-col justify-between">
                             <div>
                               <div className="flex items-center space-x-2 mb-4">
                                 <DialogTitle>Edit Payment Method</DialogTitle>
@@ -307,7 +307,6 @@ export default async function ProfilePage() {
                                         <SelectValue placeholder="Month" />
                                       </SelectTrigger>
                                       <SelectContent>
-                                        {/* Assuming your Select component works like this, adjust if different */}
                                         <SelectItem value="1">January</SelectItem>
                                         <SelectItem value="2">February</SelectItem>
                                         <SelectItem value="3">March</SelectItem>
