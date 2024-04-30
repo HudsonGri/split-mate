@@ -32,9 +32,9 @@ export function GroupSelect() {
       <SelectContent>
         <SelectGroup>
         <SelectLabel>
-            Groups</SelectLabel>
+            Your Groups</SelectLabel>
           {groups.map(group => (
-            <SelectItem key={group.id} value={group.id}>{group.name}</SelectItem>
+            <SelectItem key={group.id} value={group.group_id}>{group.name}</SelectItem>
           ))}
         </SelectGroup>
       </SelectContent>
