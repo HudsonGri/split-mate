@@ -7,18 +7,105 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
 async function getData(): Promise<Request[]> {
+
+  
   // Fetch data from your API here.
-  return [
-    {
-      id: "1",
-      date: new Date("2021-10-01"),
-      amount: "100",
-      sender: "John B.",
-      expense: "Paper Towels",
+  const supabase = createClient()
+  
+  const { data, error: error1 } = await supabase.auth.getUser() //get self user
+  console.log(error1)
+  if (error1 || !data?.user) {
+    console.log("redirect to main")
+    redirect('/')
+  }
+  const user = data.user;
+  
+  //filter & select correct group
+  let { data: userGroup, error: error2 } = await supabase //get group
+    .from('group_membership')
+    .select('group_id')
+    .eq('user_id', user.id);
+
+  if (error2 || !userGroup || userGroup.length === 0) {
+    console.log("redirect to main");
+    redirect('/dashboard');
+  }
+
+  const groupId = userGroup[0].group_id;
+
+  let { data: expenses, error: error3 } = await supabase //get expenses in group & get payer names
+    .from('expenses')
+    .select('*')
+    .eq('group_id', groupId)
+
+  if (error3 || !expenses) {
+    console.log("redirect to main")
+    redirect('/dashboard')
+  } 
+
+  let { data: paybacks, error: error4 } = await supabase
+    .from('paybacks')
+    .select('*')
+    .eq('group_id', groupId);
+
+  if (error4) {
+    console.error('Error fetching paybacks:', error4.message);
+  }
+
+  let {data: allusers, error: error5} = await supabase //get all users
+    .from('auth_view')
+    .select('*') //MAYBE optimize by groupid
+  
+  if (error5) {
+    console.error('Error fetching all users:', error5.message);
+  } else {
+    console.log("All users = ", allusers);
+  }
+  
+  if (expenses && allusers && paybacks) {
+
+    const getUserName = (user: any) => {
+      if (user.raw_user_meta_data?.full_name) {
+        return user.raw_user_meta_data.full_name;
+      } else if (user.raw_user_meta_data?.first_name) {
+        return user.raw_user_meta_data.first_name;
+      } else if (user.raw_user_meta_data?.last_name) {
+        return user.raw_user_meta_data.last_name;
+      } else {
+        return user.email;
+      }
+    };
+
+    const userName = new Map(allusers.map((user: any) => [user.id, getUserName(user)]));
+
+    const expenseRequests: Request[] = expenses.map((item: any) => ({
+      id: item.id,
+      date: new Date(item.creation_date),
+      amount: item.amount,
+      payer: userName.get(item.payer_id) || item.payer_id,
+      expense: item.description,
+      receiver: item.receiver,
+      typeOfAction: "Purchase",
+    }));
+
+    const paybackRequests: Request[] = paybacks.map((item: any) => ({
+      id: item.payback_id,
+      date: new Date(item.creation_date),
+      amount: item.amount,
+      payer: userName.get(item.payer_id) || item.payer_id,
+      expense: item.description,
       typeOfAction: "Payment",
-      receiver: "Jane D.",
-    },
-  ]
+      receiver: userName.get(item.recipient_id) || item.recipient_id,
+    }));
+
+    const allRequests = [...expenseRequests, ...paybackRequests];
+    allRequests.sort((a, b) => b.date.getTime() - a.date.getTime());
+
+    return allRequests;
+  }
+  
+
+  return [];
 }
 
 export default async function History() {
@@ -32,15 +119,21 @@ export default async function History() {
     console.log("redirect to main")
     redirect('/')
   }
-  const user = data.user
+  const user = data.user;
 
   return (
     <>
+      {/* <div>
+        <h1><pre>{JSON.stringify(data.user.user_metadata.full_name, null, 2)}</pre></h1><br></br>
+        <h1><pre>{JSON.stringify(data, null, 2)}</pre></h1>
+        <h1><pre>{data.user.}</pre></h1>
+      </div> */}
       <div className="container mx-auto">
         <DataTable columns={columns} data={requestdata} />
       </div>
+      
     </>
-  )
+  );
 }
 
 export { History };
