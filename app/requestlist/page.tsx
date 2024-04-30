@@ -1,3 +1,4 @@
+
 import { Request, columns } from "./columns"
 import { Button } from "../../components/ui/button"
 import { DataTable } from "../../components/ui/data-table"
@@ -16,11 +17,17 @@ import {
 } from "@/components/ui/dialog"
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
-import { json } from "stream/consumers"
+import { AddRequest } from "@/components/add-request";
+import {
+  Group_ID,
+  SelectGroups,
+} from "../../components/ui/select-groups"
+
+export const dynamic = "force-dynamic";
+
 
 async function getData(): Promise<Request[]> {
   // Fetch data from your API here.
-  
   const supabase = createClient()
 
   let { data, error } = await supabase
@@ -29,28 +36,18 @@ async function getData(): Promise<Request[]> {
   .eq('purchased', false);
 
   if (error) {
-    console.log("redirect to main")
-    redirect('/')
+    console.log(error)
+    redirect('/error')
   }
   if (data) {
+    const items: Request[] = data?.map(setItems);
 
-
-  const items: Request[] = data?.map(setItems);
-
-  console.log(items)
-  return items
-    // {
-    //   id: "1",
-    //   date: new Date().toDateString(),
-    //   name: "Paper Towels",
-    //   user_submitted: "John B.",
-    //   status: "Pending approval",
-    // },
-    // ...
+    //console.log(items)
+    return items
+  }
 
 }
 
-}
 function setItems(value) {
   var item: Request = {
     id: value.item_id,
@@ -68,9 +65,45 @@ function setItems(value) {
   return item
 }
 
-export default async function RequestListPage() {
-  //
+async function getGroups(user_details: any): Promise<Group_ID[]>{
+  // Fetch data from your API here.
+  const supabase = createClient()
 
+  let { data, error } = await supabase
+  .from('group_membership')
+  .select("group_id")
+  .eq('user_id', user_details.id);
+
+  if (error) {
+    console.log(error)
+    redirect('/error')
+  }
+  if (data) {
+    const groups: Group_ID[] = data.map(setGroups);
+    return groups;
+  }
+}
+
+function setGroups(value) {
+  var item: Group_ID = {
+    id: value.group_id,
+  }
+  return item
+}
+
+
+export default async function RequestListPage({
+  searchParams,
+}: {
+  searchParams?: { [key: string]: string | string[] | undefined };
+}) {
+  const selectedSearch = searchParams?.selected ?? "";
+  const selected = Array.isArray(selectedSearch)
+    ? selectedSearch[0]
+    : selectedSearch;
+
+  const selectedGroup = await selected;
+  //////////////////////////////////////////////
   const supabase = createClient()
 
   const { data, error } = await supabase.auth.getUser()
@@ -79,8 +112,12 @@ export default async function RequestListPage() {
     console.log("redirect to main")
     redirect('/')
   }
-  const user = data.user
+  const user = data.user;
+  //console.log(user);
   const requestdata = await getData()
+  const groups = await getGroups(user)
+  
+
 
   return (
     <>
@@ -96,36 +133,17 @@ export default async function RequestListPage() {
       </div>
       
         <div className="container mx-auto py-10">
-            <Dialog>
-              <DialogTrigger asChild>
-                <Button className="m-1">Add Item</Button>
-              </DialogTrigger>
-              <DialogContent className="sm:max-w-[425px]">
-                <DialogHeader>
-                  <DialogTitle>Add Item</DialogTitle>
-                  <DialogDescription>
-                    Add an item to the request list here. Click submit when finished.
-                  </DialogDescription>
-                </DialogHeader>
-                <div className="grid gap-4 py-4">
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="name" className="text-right">
-                      Name
-                    </Label>
-                    <Input
-                      id="name"
-                      className="col-span-3"
-                    />
-                  </div>
-                </div>
-                <DialogFooter>
-                  <DialogClose asChild>
-                    <Button variant="outline">Cancel</Button>
-                  </DialogClose>
-                  <Button type="submit">Submit</Button>
-                </DialogFooter>
-              </DialogContent>
-            </Dialog>
+          <div className="flex justify-end items-center space-x-2">
+              <SelectGroups data={groups} selected={selected || ""} />
+              {/* {selectedGroup ? (
+                <section>
+                  {selectedGroup}
+                </section>
+              ) : (
+                <p>Select a group</p>
+              )} */}
+          </div>
+            <AddRequest user_details={user} group_id={selectedGroup}/>
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="m-1">Log Expense</Button>
@@ -148,7 +166,9 @@ export default async function RequestListPage() {
                       className="col-span-3"
                     />
                       <datalist id="items">
-                        <option value="Paper Towels"/>
+                        {requestdata.map((item) => (
+                          <option key={item.id} value={item.name} />
+                        ))}
                       </datalist>
                   </div>
                   <div className="grid grid-cols-4 items-center gap-4">
@@ -173,8 +193,7 @@ export default async function RequestListPage() {
                 </DialogFooter>
               </DialogContent>
             </Dialog>
-
-
+            
             <DataTable columns={columns} data={requestdata} />
         </div>
   </>
