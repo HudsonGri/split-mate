@@ -64,7 +64,19 @@ async function getData(): Promise<Request[]> {
   
   if (expenses && allusers && paybacks) {
 
-    const userName = new Map(allusers.map((user: any) => [user.id, user.raw_user_meta_data.full_name]));
+    const getUserName = (user: any) => {
+      if (user.raw_user_meta_data?.full_name) {
+        return user.raw_user_meta_data.full_name;
+      } else if (user.raw_user_meta_data?.first_name) {
+        return user.raw_user_meta_data.first_name;
+      } else if (user.raw_user_meta_data?.last_name) {
+        return user.raw_user_meta_data.last_name;
+      } else {
+        return user.email;
+      }
+    };
+
+    const userName = new Map(allusers.map((user: any) => [user.id, getUserName(user)]));
 
     const expenseRequests: Request[] = expenses.map((item: any) => ({
       id: item.id,
