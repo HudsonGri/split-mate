@@ -37,7 +37,7 @@ export function CreateGroup({ className, ...props }: CreateGroupProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ groupName }),
+      body: JSON.stringify({ groupName, emails }),
     });
 
     const data = await response.json();
