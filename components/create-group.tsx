@@ -99,7 +99,7 @@ export function CreateGroup({ className, ...props }: CreateGroupProps) {
               onClick={handleAddEmail}
               disabled={isLoading}
             >
-              + Add an email
+              + Add email
             </Button>
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
             <div>

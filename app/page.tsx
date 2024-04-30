@@ -23,6 +23,7 @@ import { useTheme } from "next-themes";
 import { NavBar } from "@/components/nav";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
+import { JoinGroup } from "@/components/join-group";
 
 const features = [
   {
@@ -125,23 +126,7 @@ export default function LandingPage() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <Card className="w-full mt-9 h-full flex flex-col">
-                    <CardHeader>
-                      <CardTitle className="text-xl sm:text-3xl">
-                        Join an existing group
-                      </CardTitle>
-                      <CardDescription>
-                        Join an already created group by inputing the group code
-                        below.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Input type="text" placeholder="KBX-Q2N" />
-                    </CardContent>
-                    <CardFooter className="justify-center">
-                      <Button className="w-1/2">Join</Button>
-                    </CardFooter>
-                  </Card>
+                  <JoinGroup/>
                 </motion.div>
                 <motion.div
                   variants={cardVariants}
