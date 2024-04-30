@@ -27,7 +27,9 @@ export default async function AuthenticationPage() {
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
           <div className="flex flex-col space-y-2 text-center">
             <h1 className="text-2xl font-semibold tracking-tight">
-            {group ? `Please log in to join a group` : "Welcome Back"}
+            {group === 'create' ? 'Please log in to create a group' :
+            group === 'join' ? 'Please log in to join a group' :
+            group ? 'Welcome Back' : 'Welcome Back'}
             </h1>
             <p className="text-sm text-muted-foreground">
               Enter your email and password to sign in to your account

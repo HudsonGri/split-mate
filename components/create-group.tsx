@@ -37,7 +37,7 @@ export function CreateGroup({ className, ...props }: CreateGroupProps) {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ groupName }),
+      body: JSON.stringify({ groupName, emails }),
     });
 
     const data = await response.json();
@@ -99,7 +99,7 @@ export function CreateGroup({ className, ...props }: CreateGroupProps) {
               onClick={handleAddEmail}
               disabled={isLoading}
             >
-              + Add an email
+              + Add email
             </Button>
             {emailError && <p className="text-red-500 text-sm">{emailError}</p>}
             <div>

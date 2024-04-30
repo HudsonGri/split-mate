@@ -1,7 +1,15 @@
-import { createClient } from "@/utils/supabase/server"; // Adjust the path as necessary
+import { createClient } from "@/utils/supabase/server";
+import { sendInvitationEmails } from "./email";
+
+function generateGroupCode() {
+  const chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+  const randomChar = () => chars[Math.floor(Math.random() * chars.length)];
+  return `${randomChar()}${randomChar()}${randomChar()}-${randomChar()}${randomChar()}${randomChar()}`;
+}
+
 
 export async function POST(req: Request, res: Response) {
-  const { groupName } = await req.json(); 
+  const { groupName, emails } = await req.json();
 
   // Create a Supabase client instance
   const supabase = createClient();
@@ -12,7 +20,6 @@ export async function POST(req: Request, res: Response) {
     error: authError,
   } = await supabase.auth.getUser();
 
-  console.log(user);
 
   // Check if the user is authenticated
   if (authError || !user) {
@@ -22,14 +29,51 @@ export async function POST(req: Request, res: Response) {
     });
   }
 
-  // Create a new row in the 'groups' table
+  let unique = false;
+  let groupCode = "";
+  let retries = 0;
+
+  while (!unique && retries < 10) {
+    groupCode = generateGroupCode();
+    console.log("Checking group code uniqueness:", groupCode);
+    const { data: existingGroups, error } = await supabase
+      .from("groups")
+      .select("group_code")
+      .eq("group_code", groupCode);
+
+    if (error) {
+      console.error("Error checking group code uniqueness:", error);
+      return new Response(
+        JSON.stringify({ success: false, error: error }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
+    if (existingGroups.length === 0) {
+      unique = true;
+    } else {
+      retries++;
+    }
+  }
+  if (!unique) {
+    return new Response(
+      JSON.stringify({ success: false, error: "Failed to generate a unique group code" }),
+      {
+        status: 500,
+        headers: { "Content-Type": "application/json" },
+      },
+    );
+  }
+
+  // Create a new row in the 'groups' table with the unique group_code
   const { data: group, error: groupError } = await supabase
     .from("groups")
-    .insert({ name: groupName, admin: user.id })
+    .insert({ name: groupName, admin: user.id, group_code: groupCode })
     .select();
 
-  console.log(groupError);
-  console.log(group);
+
 
   // Check if there was an error creating the group
   if (groupError) {
@@ -59,6 +103,18 @@ export async function POST(req: Request, res: Response) {
       },
     );
   }
+
+    // Send invitation emails
+    const emailSuccess = await sendInvitationEmails(emails, groupName, groupCode);
+    if (!emailSuccess) {
+      return new Response(
+        JSON.stringify({ success: false, error: "Failed to send invitation emails" }),
+        {
+          status: 500,
+          headers: { "Content-Type": "application/json" },
+        },
+      );
+    }
 
   // Return a success response
   return new Response(JSON.stringify({ success: true }), {
