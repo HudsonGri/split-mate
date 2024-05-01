@@ -1,8 +1,6 @@
 "use client"
 import { Button } from "./ui/button"
 import { useState } from "react";
-// import { createClient } from '@/utils/supabase/server'
-// import { redirect } from 'next/navigation'
 import {
     Dialog,
     DialogClose,
@@ -17,35 +15,13 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 
-  // // Function to handle form submission for adding item
-  // const handleAddItemSubmit = async () => {
-  //   // Perform actions when adding item form is submitted
-  //   // For example, you can submit the item to your backend
-  //   console.log('Add Item form submitted');
-  //   console.log('Item Name:', itemName);
-  //   // Clear input field after submission if needed
-  //   setItemName('');
-  // };
-
-  // // Function to handle form submission for logging expense
-  // const handleLogExpenseSubmit = async () => {
-  //   // Perform actions when logging expense form is submitted
-  //   // For example, you can submit the expense to your backend
-  //   console.log('Log Expense form submitted');
-  //   console.log('Item:', itemName);
-  //   console.log('Amount:', expenseAmount);
-  //   // Clear input fields after submission if needed
-  //   setItemName('');
-  //   setExpenseAmount('');
-  // };
-
 export function AddRequest({ user_details, group_id }: {user_details?: any, group_id: string }) {
     const [itemName, setItemName] = useState('');
 
     const handleAddItem = async (e) => {
         e.preventDefault(); // Prevent the default form submission
-        console.log("GROUP ID (component): ", group_id);
-        
+        //console.log("GROUP ID (component): ", group_id);
+
         // Call your API endpoint to add request
         if (group_id != '') {
             const response = await fetch('/api/addrequest', {
