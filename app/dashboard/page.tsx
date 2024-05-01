@@ -1,8 +1,5 @@
 import { Metadata } from "next";
-import Image from "next/image";
 import { History } from "./history/history";
-
-import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
@@ -21,35 +18,18 @@ import {
   Table,
   TableHeader,
   TableBody,
-  TableFooter,
   TableHead,
   TableRow,
   TableCell,
   TableCaption,
 } from "../../components/ui/table";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectLabel,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/select";
 
-import { CalendarDateRangePicker } from "../../components/date-range-picker";
-import { MainNav } from "../../components/main-nav";
 import { Overview } from "../../components/overview";
 import { RecentRequests } from "../../components/recent-requests";
-import { Search } from "../../components/search";
-import TeamSwitcher from "../../components/team-switcher";
-import { UserNav } from "../../components/user-nav";
 import { NavBar } from "@/components/nav";
-import { PlusIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 import { buttonVariants } from "@/components/ui/button";
 import { createClient } from "@/utils/supabase/server";
-import { link } from "fs";
 import { redirect } from "next/navigation";
 import { GroupSelect } from "@/components/group-select";
 import { DashboardCards } from "@/components/dashboard-cards";
@@ -90,7 +70,6 @@ export default async function DashboardPage() {
               <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
             </div>
             <div className="flex items-center space-x-2">
-              <Button>test</Button>
               <GroupSelect />
             </div>
           </div>
