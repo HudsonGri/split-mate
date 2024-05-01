@@ -25,7 +25,7 @@ export default async function PaybackPage() {
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile"]}
+          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
           user_details={user}
           currentPage="Paybacks"
         />

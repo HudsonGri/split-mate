@@ -94,7 +94,7 @@ export default async function RequestListPage({
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile", "Expenses"]}
+          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
           user_details={user}
           currentPage="Request List"
         />

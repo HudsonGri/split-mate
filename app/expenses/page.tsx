@@ -54,7 +54,7 @@ function setItems(value) {
     id: value.expense_id,
     group: value.group_id,
     payer: value.profiles.first_name + ' ' + value.profiles.last_name,
-    amount: '$' + (value.amount/100).toFixed(2),
+    amount: '$' + (value.amount).toFixed(2),
     date: value.creation_date,
     description: value.description,
   };
@@ -89,7 +89,7 @@ export default async function RequestListPage({
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile", "Expenses"]}
+          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
           user_details={user}
           currentPage="Expenses"
         />
