@@ -7,7 +7,7 @@ import { redirect } from "next/navigation";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Split Mate|Paybacks",
+  title: "Paybacks",
   description: "Split Mate Paybacks Page",
 };
 
