@@ -21,7 +21,6 @@ export async function POST(req: Request, res: Response) {
     .eq("user_id", user.id);
 
   if (membershipError || !memberships) {
-
     return new Response(
       JSON.stringify({ error: "Failed to get group memberships" }),
       {
@@ -52,7 +51,24 @@ export async function POST(req: Request, res: Response) {
     });
   }
 
-  return new Response(JSON.stringify(groups), {
+  // Fetch the number of users in each group
+  const groupsWithUserCount = await Promise.all(
+    groups.map(async (group) => {
+      const { data: members, error: membersError } = await supabase
+        .from("group_membership")
+        .select("user_id", { count: "exact" })
+        .eq("group_id", group.group_id);
+
+      if (membersError) {
+        console.log(membersError);
+        return { ...group, userCount: 0 }; // Fallback in case of an error
+      }
+
+      return { ...group, userCount: members.length };
+    }),
+  );
+
+  return new Response(JSON.stringify(groupsWithUserCount), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });

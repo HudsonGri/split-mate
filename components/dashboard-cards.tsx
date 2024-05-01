@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
 
-export function DashboardCards() {
+export function DashboardCards({ group_id }) {
   const [dashboardData, setDashboardData] = useState({
     paybacksApproved: 0,
     paybacksPending: 0,
@@ -13,6 +13,8 @@ export function DashboardCards() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    console.log(group_id);
+    setLoading(true); // Set loading to true when group_id changes
     async function fetchDashboardData() {
       const response = await fetch("/api/dashboard", {
         method: "POST",
@@ -20,8 +22,8 @@ export function DashboardCards() {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          group_id: "7146eef7-5f38-4113-a212-80ee31b63b8a",
-        }), // Replace 'your-group-id' with actual group ID
+          group_id: group_id,
+        }),
       });
       const data = await response.json();
       setDashboardData(data);
@@ -29,7 +31,7 @@ export function DashboardCards() {
     }
 
     fetchDashboardData();
-  }, []);
+  }, [group_id]);
 
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
