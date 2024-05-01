@@ -53,7 +53,7 @@ async function getData(): Promise<Request[]> {
   }
 
   let {data: allusers, error: error5} = await supabase //get all users
-    .from('auth_view')
+    .from('profiles')
     .select('*') //MAYBE optimize by groupid
   
   if (error5) {
@@ -65,13 +65,10 @@ async function getData(): Promise<Request[]> {
   if (expenses && allusers && paybacks) {
 
     const getUserName = (user: any) => {
-      if (user.raw_user_meta_data?.full_name) {
-        return user.raw_user_meta_data.full_name;
-      } else if (user.raw_user_meta_data?.first_name) {
-        return user.raw_user_meta_data.first_name;
-      } else if (user.raw_user_meta_data?.last_name) {
-        return user.raw_user_meta_data.last_name;
-      } else {
+      if (user?.first_name) {
+        return user.first_name + " " + user.last_name;
+      }
+      else {
         return user.email;
       }
     };
