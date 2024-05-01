@@ -1,6 +1,6 @@
-import { Request, columns } from "./columns";
+import { Expense, columns } from "./columns";
 import { Button } from "../../components/ui/button";
-import { DataTable } from "../../components/ui/data-table";
+import { DataTable } from "./data-table-expense";
 import { NavBar } from "@/components/nav";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
@@ -22,40 +22,42 @@ import { LogExpense } from "@/components/log-expense";
 
 export const dynamic = "force-dynamic";
 
-async function getData(): Promise<Request[]> {
-  // Fetch data from your API here.
-  const supabase = createClient();
+async function getData(selectedGroup: string): Promise<Expense[]> {
+    if (selectedGroup != "") {
+        // Fetch data from your API here.
+        const supabase = createClient();
 
-  let { data, error } = await supabase
-    .from("item_list")
-    .select("item_id, creation_date, name, creator, approved, claimer, profiles!item_list_creator_fkey(id, first_name, last_name)")
-    .eq("purchased", false);
+        let { data, error } = await supabase
+            .from("expenses")
+            .select("*, profiles!expenses_payer_id_fkey(id, first_name, last_name)")
+            .eq("group_id", selectedGroup);
 
-  if (error) {
-    console.log(error);
-    redirect("/error");
-  }
-  if (data) {
-    const items: Request[] = data?.map(setItems);
+        if (error) {
+            console.log(error);
+            redirect("/error");
+        }
+        if (data) {
+            const items: Expense[] = data?.map(setItems);
 
-    //console.log(items)
-    return items;
-  }
+            //console.log(items)
+            return items;
+        }
+    }
+    else {
+        const items: Expense[] = [];
+        return items;
+    }
 }
 
 function setItems(value) {
-  var item: Request = {
-    id: value.item_id,
+  var item: Expense = {
+    id: value.expense_id,
+    group: value.group_id,
+    payer: value.profiles.first_name + ' ' + value.profiles.last_name,
+    amount: '$' + (value.amount/100).toFixed(2),
     date: value.creation_date,
-    name: value.name,
-    user_submitted: value.profiles.first_name + ' ' + value.profiles.last_name,
-    status: "Unclaimed",
+    description: value.description,
   };
-  if (value.approved == false) {
-    item.status = "Pending approval";
-  } else if (value.claimer == null) {
-    item.status = "Claimed";
-  }
   return item;
 }
 
@@ -81,7 +83,7 @@ export default async function RequestListPage({
   }
   const user = data.user;
   //console.log(user);
-  const requestdata = await getData()
+  const expensedata = await getData(selectedGroup)
 
   return (
     <>
@@ -89,13 +91,13 @@ export default async function RequestListPage({
         <NavBar
           links={["Dashboard", "Request List", "Paybacks", "Profile", "Expenses"]}
           user_details={user}
-          currentPage="Request List"
+          currentPage="Expenses"
         />
         <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-center space-y-2">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">
-                Request List
+                Expenses
               </h2>
             </div>
           </div>
@@ -113,9 +115,7 @@ export default async function RequestListPage({
                 <p>Select a group</p>
               )} */}
           </div>
-            <AddRequest user_details={user} group_id={selectedGroup}/>
-            <LogExpense user_details={user} group_id={selectedGroup} requestdata={requestdata}/>
-            <DataTable columns={columns} data={requestdata} />
+            <DataTable columns={columns} data={expensedata} />
         </div>
     </>
   );
