@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { History } from "./history/history";
+import { History } from "../../components/history/history";
 import {
   Card,
   CardContent,

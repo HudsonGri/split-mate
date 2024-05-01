@@ -31,6 +31,8 @@ import { DashboardCards } from "@/components/dashboard-cards";
 import { useState, useEffect } from "react";
 import { Icons } from "@/components/icons";
 
+import { History } from "@/components/history/history";
+
 export function DashboardContent() {
   const [currentGroup, setCurrentGroup] = useState("");
   const [hasGroups, setHasGroups] = useState(false);
@@ -88,10 +90,7 @@ export function DashboardContent() {
           <p className="mb-6">
             You are not part of any groups. Please join or create a new group.
           </p>
-          <Link
-            href="/creategroup"
-            className={buttonVariants({ variant: "default" })}
-          >
+          <Link href="/" className={buttonVariants({ variant: "default" })}>
             Create/Join a Group
           </Link>
         </div>
@@ -153,7 +152,9 @@ export function DashboardContent() {
             </Card>
           </div>
         </TabsContent>
-        <TabsContent value="history" className="space-y-4"></TabsContent>
+        <TabsContent value="history" className="space-y-4">
+          <History groupId={currentGroup} />
+        </TabsContent>
         <TabsContent value="people" className="space-y-4">
           <Table>
             <TableCaption>A list of people in this group.</TableCaption>
