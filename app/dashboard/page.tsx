@@ -1,8 +1,8 @@
-import { Metadata } from "next"
-import Image from "next/image"
-import { History } from "./history/history"
+import { Metadata } from "next";
+import Image from "next/image";
+import { History } from "./history/history";
 
-import { Button } from "../../components/ui/button"
+import { Button } from "../../components/ui/button";
 import {
   Card,
   CardContent,
@@ -10,13 +10,13 @@ import {
   CardFooter,
   CardHeader,
   CardTitle,
-} from "../../components/ui/card"
+} from "../../components/ui/card";
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
-} from "../../components/ui/tabs"
+} from "../../components/ui/tabs";
 import {
   Table,
   TableHeader,
@@ -26,7 +26,7 @@ import {
   TableRow,
   TableCell,
   TableCaption,
-} from "../../components/ui/table"
+} from "../../components/ui/table";
 import {
   Select,
   SelectContent,
@@ -35,53 +35,49 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "@/components/ui/select"
- 
-import { CalendarDateRangePicker } from "../../components/date-range-picker"
-import { MainNav } from "../../components/main-nav"
-import { Overview } from "../../components/overview"
-import { RecentSales } from "../../components/recent-sales"
-import { Search } from "../../components/search"
-import TeamSwitcher from "../../components/team-switcher"
-import { UserNav } from "../../components/user-nav"
-import { NavBar } from "@/components/nav"
-import { PlusIcon } from "@radix-ui/react-icons"
-import Link from 'next/link'
-import { buttonVariants } from "@/components/ui/button"
-import { createClient } from '@/utils/supabase/server'
-import { link } from "fs"
-import { redirect } from 'next/navigation'
-import { GroupSelect } from "@/components/group-select"
+} from "@/components/ui/select";
 
+import { CalendarDateRangePicker } from "../../components/date-range-picker";
+import { MainNav } from "../../components/main-nav";
+import { Overview } from "../../components/overview";
+import { RecentRequests } from "../../components/recent-requests";
+import { Search } from "../../components/search";
+import TeamSwitcher from "../../components/team-switcher";
+import { UserNav } from "../../components/user-nav";
+import { NavBar } from "@/components/nav";
+import { PlusIcon } from "@radix-ui/react-icons";
+import Link from "next/link";
+import { buttonVariants } from "@/components/ui/button";
+import { createClient } from "@/utils/supabase/server";
+import { link } from "fs";
+import { redirect } from "next/navigation";
+import { GroupSelect } from "@/components/group-select";
 
 export const metadata: Metadata = {
   title: "Dashboard",
   description: "Example dashboard app built using the components.",
-}
+};
 
 export default async function DashboardPage() {
+  const supabase = createClient();
 
-  const supabase = createClient()
-
-  const { data, error } = await supabase.auth.getUser()
-  console.log(error)
+  const { data, error } = await supabase.auth.getUser();
+  console.log(error);
   if (error || !data?.user) {
-    console.log("redirect to main")
-    redirect('/')
+    console.log("redirect to main");
+    redirect("/");
   }
-  const user = data.user
+  const user = data.user;
 
   const handleLogout = async () => {
     const { error } = await supabase.auth.signOut();
     if (error) {
-      console.error('Logout error:', error.message);
+      console.error("Logout error:", error.message);
     } else {
       // Optionally, redirect user after logout
-      window.location.href = '/login'; // Adjust the path to your login page as necessary
+      window.location.href = "/login"; // Adjust the path to your login page as necessary
     }
-  }
-
-
+  };
 
   return (
     <>
@@ -91,24 +87,17 @@ export default async function DashboardPage() {
           <div className="flex items-center justify-between space-y-2">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
-
-
             </div>
             <div className="flex items-center space-x-2">
               <Button>test</Button>
-              <GroupSelect  />
-              
+              <GroupSelect />
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
             <TabsList>
               <TabsTrigger value="overview">Overview</TabsTrigger>
-              <TabsTrigger value="history">
-                History
-              </TabsTrigger>
-              <TabsTrigger value="people">
-                People
-              </TabsTrigger>
+              <TabsTrigger value="history">History</TabsTrigger>
+              <TabsTrigger value="people">People</TabsTrigger>
               <TabsTrigger value="notifications" disabled>
                 Notifications
               </TabsTrigger>
@@ -230,11 +219,11 @@ export default async function DashboardPage() {
                   <CardHeader>
                     <CardTitle>Request List</CardTitle>
                     <CardDescription>
-                      You made 265 sales this month.
+                      Recent requests within your current group.
                     </CardDescription>
                   </CardHeader>
                   <CardContent>
-                    <RecentSales />
+                    <RecentRequests />
                   </CardContent>
                   <CardFooter className="justify-center">
                     <Button variant="outline">Request Item</Button>
@@ -243,7 +232,7 @@ export default async function DashboardPage() {
               </div>
             </TabsContent>
             <TabsContent value="history" className="space-y-4">
-              <History></History> 
+              <History></History>
             </TabsContent>
             <TabsContent value="people" className="space-y-4">
               <Table>
@@ -273,5 +262,5 @@ export default async function DashboardPage() {
         </div>
       </div>
     </>
-  )
+  );
 }
