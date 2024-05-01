@@ -87,18 +87,20 @@ export default async function ProfilePage() {
   }
 
   const user = data.user
-  console.log(user)
-
-
-  {/* sample placeholder data */}
-  const groups = [
-    {
-      name: "CHASM",
-      type: "Group",
-      image: "http://localhost:3000/_next/image?url=%2Fhero-graphic.png&w=1920&q=75",
-      url: "https://github.com/HudsonGri/split-mate",
-    }
-  ];
+  
+  const { data: groups, error: groupsError } = await supabase
+  .from('group_membership')
+  .select(`
+    group:group_id (
+      group_id,
+      name
+    )
+  `)
+  .eq('user_id', user.id)
+  if (groupsError) {
+    console.error(groupsError)
+    return <p>Error loading groups</p>
+  }
   
   const payment_methods = [
     {
@@ -220,31 +222,29 @@ export default async function ProfilePage() {
                 <CardTitle>Your Groups</CardTitle>
               </CardHeader>
               <CardContent>
-                {groups.slice(0, 3).map((entry, index) => (
+                {groups.length > 0 ? groups.map(({ group }, index) => (
                   <div key={index} className="divide-y divide-gray-200 dark:divide-gray-800">
                     <div className="flex items-center justify-between p-3">
                       <div className="flex items-center space-x-4">
                         <Avatar className="mx-auto">
-                          <AvatarImage src={entry.image} />
-                          <AvatarFallback>{entry.name.charAt(0)}</AvatarFallback>
+                          <AvatarFallback>{group.name.charAt(0)}</AvatarFallback>
                         </Avatar>
                         <div className="leading-none">
-                          <h3 className="text-sm font-medium leading-none">{entry.name}</h3>
-                          <p className="text-sm font-normal leading-none text-gray-500 dark:text-gray-400">{entry.type}</p>
+                          <h3 className="text-sm font-medium leading-none">{group.name}</h3>
                         </div>
                       </div>
-                      <a href={entry.url}>
+                      <Link href={`/groups/${group.group_id}`}>
                         <Button>View</Button>
-                      </a>
+                      </Link>
                     </div>
                   </div>
-                ))}
+                )) : <p>No groups found.</p>}
                 <div className="mt-4 flex justify-center items-center gap-2 p-4">
-                <a href="" className="flex items-center gap-2 underline">
-                  <span>View All Groups</span>
-                  <FiChevronRight className="text-base" />
-                </a>
-              </div>
+                  <Link href="/groups" className="flex items-center gap-2 underline">
+                    <span>View All Groups</span>
+                    <FiChevronRight className="text-base" />
+                  </Link>
+                </div>
               </CardContent>
             </Card>
 
