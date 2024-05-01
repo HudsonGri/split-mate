@@ -18,6 +18,7 @@ import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { AddRequest } from "@/components/add-request";
 import { SelectGroups } from "../../components/ui/select-groups";
+import { LogExpense } from "@/components/log-expense";
 
 export const dynamic = "force-dynamic";
 
@@ -113,8 +114,8 @@ export default async function RequestListPage({
               )} */}
           </div>
             <AddRequest user_details={user} group_id={selectedGroup}/>
-            
-            <Dialog>
+            <LogExpense user_details={user} group_id={selectedGroup} requestdata={requestdata}/>
+            {/* <Dialog>
               <DialogTrigger asChild>
                 <Button className="m-1">Log Expense</Button>
               </DialogTrigger>
@@ -162,7 +163,7 @@ export default async function RequestListPage({
                   <Button type="submit">Submit</Button>
                 </DialogFooter>
               </DialogContent>
-            </Dialog>
+            </Dialog> */}
             
             <DataTable columns={columns} data={requestdata} />
         </div>
