@@ -22,23 +22,30 @@ import { LogExpense } from "@/components/log-expense";
 
 export const dynamic = "force-dynamic";
 
-async function getData(): Promise<Request[]> {
-  // Fetch data from your API here.
-  const supabase = createClient();
+async function getData(selectedGroup: string): Promise<Request[]> {
+  if (selectedGroup != "") {
+    // Fetch data from your API here.
+    const supabase = createClient();
 
-  let { data, error } = await supabase
-    .from("item_list")
-    .select("item_id, creation_date, name, creator, approved, claimer, profiles!item_list_creator_fkey(id, first_name, last_name)")
-    .eq("purchased", false);
+    let { data, error } = await supabase
+      .from("item_list")
+      .select("item_id, creation_date, name, creator, approved, claimer, profiles!item_list_creator_fkey(id, first_name, last_name)")
+      .eq("purchased", false)
+      .eq("group_id", selectedGroup);
 
-  if (error) {
-    console.log(error);
-    redirect("/error");
+    if (error) {
+      console.log(error);
+      redirect("/error");
+    }
+    if (data) {
+      const items: Request[] = data?.map(setItems);
+
+      //console.log(items)
+      return items;
+    }
   }
-  if (data) {
-    const items: Request[] = data?.map(setItems);
-
-    //console.log(items)
+  else {
+    const items: Request[] = [];
     return items;
   }
 }
@@ -81,7 +88,7 @@ export default async function RequestListPage({
   }
   const user = data.user;
   //console.log(user);
-  const requestdata = await getData()
+  const requestdata = await getData(selectedGroup)
 
   return (
     <>
