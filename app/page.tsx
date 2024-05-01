@@ -5,7 +5,8 @@ import { Button } from "../components/ui/button";
 import {
   Card,
   CardContent,
-  CardDescription,  CardHeader,
+  CardDescription,
+  CardHeader,
   CardTitle,
   CardFooter,
 } from "@/components/ui/card";
@@ -18,10 +19,11 @@ import {
 } from "@heroicons/react/24/solid";
 import { useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import { useTheme } from 'next-themes';
+import { useTheme } from "next-themes";
 import { NavBar } from "@/components/nav";
-import { createClient } from '@/utils/supabase/client'
-
+import { buttonVariants } from "@/components/ui/button";
+import Link from "next/link";
+import { JoinGroup } from "@/components/join-group";
 
 const features = [
   {
@@ -34,8 +36,8 @@ const features = [
     name: "Selective Splitting",
     description:
       "Choose who pays for what with advanced splitting, ensuring everyone only covers their share, like for that milk not everyone drinks.",
-    icon:  ChartPieIcon,
-},
+    icon: ChartPieIcon,
+  },
   {
     name: "Payment Simplified",
     description:
@@ -45,8 +47,8 @@ const features = [
 ];
 
 export default function LandingPage() {
-  const headerWords = "Manage group expenses the fair way with smarter splits.".split(    " "
-  );
+  const headerWords =
+    "Manage group expenses the fair way with smarter splits.".split(" ");
   const controls = useAnimation();
   const [ref, inView] = useInView({ threshold: 0.2 });
 
@@ -82,20 +84,23 @@ export default function LandingPage() {
     },
   };
 
-  const { theme } = useTheme();
-  const imageSrc = theme === 'dark' ? '/hero-graphic.png' : '/hero-graphic-light.png';
-  const isLightTheme = theme === 'light';
+
+  const { theme, resolvedTheme } = useTheme();
+  const effectiveTheme = theme === 'system' ? resolvedTheme : theme;
+  const isLightTheme = effectiveTheme === 'light';
+  const imageSrc = effectiveTheme === 'dark' ? '/hero-graphic.png' : '/hero-graphic-light.png';
+
+
 
   return (
     <>
       <div className="min-h-screen">
-        
         <NavBar links={["Log In"]} />
         <header className="py-8 sm:grid sm:grid-flow-col">
           <div className="max-w-4xl px-4 mx-auto lg:ml-12 py-2 sm:py-10 text-zinc-50">
             <motion.div
-              variants={containerVariants}       
-                initial="hidden"
+              variants={containerVariants}
+              initial="hidden"
               animate="visible"
               className="text-4xl sm:text-5xl font-semibold"
             >
@@ -104,7 +109,6 @@ export default function LandingPage() {
                   key={index}
                   variants={wordVariants}
                   className="inline-block mr-[0.5rem] leading-tight text-black dark:text-white"
-               
                 >
                   {word}
                 </motion.span>
@@ -122,22 +126,7 @@ export default function LandingPage() {
                   initial="hidden"
                   animate="visible"
                 >
-                  <Card className="w-full mt-9 h-full flex flex-col">
-                    <CardHeader>
-                      <CardTitle className="text-xl sm:text-3xl">
-                        Join an existing group
-                      </CardTitle>
-                      <CardDescription>Join an already created group by inputing the group code
-                        below.
-                      </CardDescription>
-                    </CardHeader>
-                    <CardContent>
-                      <Input type="text" placeholder="KBX-Q2N" />
-                    </CardContent>
-                    <CardFooter className="justify-center">
-                      <Button className="w-1/2">Join</Button>
-                    </CardFooter>
-                  </Card>
+                  <JoinGroup/>
                 </motion.div>
                 <motion.div
                   variants={cardVariants}
@@ -157,7 +146,12 @@ export default function LandingPage() {
                     </CardHeader>
                     <CardContent className=""></CardContent>
                     <CardFooter className="justify-center">
-                      <Button className="w-1/2">Create</Button>
+                      <Link
+                        href="/create"
+                        className={`${buttonVariants({ variant: "default" })} w-1/2`}
+                      >
+                        Create
+                      </Link>
                     </CardFooter>
                   </Card>
                 </motion.div>
@@ -175,7 +169,7 @@ export default function LandingPage() {
               width={700}
               height={700}
               alt="Hero illustration"
-              className={`sm:w-auto sm:max-w-sm lg:max-w-lg ${isLightTheme ? 'min-w-[500px] min-h-[500px]' : ''}`}
+              className={`sm:w-auto sm:max-w-sm lg:max-w-lg ${isLightTheme ? "min-w-[500px] min-h-[500px]" : ""}`}
             />
           </motion.div>
         </header>
@@ -204,7 +198,8 @@ export default function LandingPage() {
                   Our app is your ultimate roommate harmony tool: half grocery
                   list, half expense manager. Stay organized with a communal
                   list for shared groceries and supplies, like dish soap, and
-                  rest easy as every purchase made is fairly split among the                  roommates.
+                  rest easy as every purchase made is fairly split among the
+                  roommates.
                 </motion.p>
               </div>
               <div className="mx-auto mt-16 max-w-2xl sm:mt-20 lg:mt-24 lg:max-w-none">
@@ -215,7 +210,9 @@ export default function LandingPage() {
                       variants={cardVariants}
                       custom={index * 0.2}
                       className="flex flex-col"
-                    >                      <dt className="flex items-center gap-x-3 text-primary font-semibold leading-7 ">
+                    >
+                      {" "}
+                      <dt className="flex items-center gap-x-3 text-primary font-semibold leading-7 ">
                         <feature.icon
                           className="h-6 w-6 flex-none text-green-400"
                           aria-hidden="true"
@@ -231,7 +228,6 @@ export default function LandingPage() {
               </div>
             </div>
           </motion.div>
-          
         </main>
       </div>
     </>

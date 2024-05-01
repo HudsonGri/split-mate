@@ -27,6 +27,16 @@ import {
   TableCell,
   TableCaption,
 } from "../../components/ui/table"
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select"
+ 
 import { CalendarDateRangePicker } from "../../components/date-range-picker"
 import { MainNav } from "../../components/main-nav"
 import { Overview } from "../../components/overview"
@@ -41,6 +51,7 @@ import { buttonVariants } from "@/components/ui/button"
 import { createClient } from '@/utils/supabase/server'
 import { link } from "fs"
 import { redirect } from 'next/navigation'
+import { GroupSelect } from "@/components/group-select"
 
 
 export const metadata: Metadata = {
@@ -85,6 +96,8 @@ export default async function DashboardPage() {
             </div>
             <div className="flex items-center space-x-2">
               <Button>test</Button>
+              <GroupSelect  />
+              
             </div>
           </div>
           <Tabs defaultValue="overview" className="space-y-4">
