@@ -82,9 +82,6 @@ export default async function DashboardPage() {
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="people">People</TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Notifications
-              </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <DashboardCards />
