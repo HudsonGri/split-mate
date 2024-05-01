@@ -59,7 +59,7 @@ async function getData(): Promise<Request[]> {
   if (error5) {
     console.error('Error fetching all users:', error5.message);
   } else {
-    console.log("All users = ", allusers);
+    //console.log("All users = ", allusers);
   }
   
   if (expenses && allusers && paybacks) {
