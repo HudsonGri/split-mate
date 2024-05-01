@@ -102,7 +102,7 @@ export const columns: ColumnDef<Payback>[] = [
     accessorKey: "amount",
     header: () => <div>Amount</div>,
     cell: ({ row }) => {
-      const amount = parseInt(row.getValue("amount")) / 100;
+      const amount = parseInt(row.getValue("amount"));
 
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",

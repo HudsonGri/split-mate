@@ -60,23 +60,6 @@ export function DashboardContent() {
       .finally(() => setIsLoading(false));
   }, []);
 
-  useEffect(() => {
-    async function testFetch() {
-      const response = await fetch("/api/debt", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          group_id: "7146eef7-5f38-4113-a212-80ee31b63b8a",
-        }),
-      });
-      const data = await response.json();
-       console.log(data);
-    }
-
-    testFetch();
-  }, []);
 
   const handleGroupChange = (groupId) => {
     setCurrentGroup(groupId);
