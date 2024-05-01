@@ -71,7 +71,7 @@ export function DashboardContent() {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
-          <h2 className="text-xl mb-4">Loading Dashboard...</h2>
+          <h2 className="text-xl d mb-4">Loading Dashboard...</h2>
           <div className="flex justify-center">
             <Icons.spinner className="mt-2 h-8 w-8 animate-spin" />
           </div>
@@ -90,7 +90,7 @@ export function DashboardContent() {
           </p>
           <Link
             href="/creategroup"
-            className={buttonVariants({ variant: "primary" })}
+            className={buttonVariants({ variant: "default" })}
           >
             Create/Join a Group
           </Link>
