@@ -2,7 +2,7 @@
 import { useEffect, useState } from 'react';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectLabel, SelectTrigger, SelectValue } from "@/components/ui/select";
 
-export function GroupSelect() {
+export function GroupSelect({ onGroupChange, defaultValue }) {
   const [groups, setGroups] = useState([]);
 
   useEffect(() => {
@@ -24,8 +24,12 @@ export function GroupSelect() {
     fetchGroups();
   }, []);
 
+  const handleChange = (e) => {
+    onGroupChange(e);
+  };
+
   return (
-    <Select>
+    <Select onValueChange={handleChange} defaultValue={defaultValue}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a group" />
       </SelectTrigger>
