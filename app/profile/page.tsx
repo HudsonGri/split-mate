@@ -69,6 +69,7 @@ import {
 } from "../../components/ui/table"
 import { Switch } from "@/components/ui/switch"
 import { UserEdit } from "@/components/user-edit"
+import { LeaveGroup } from "@/components/leave-group"
 
 
 export const metadata: Metadata = {
@@ -233,9 +234,7 @@ export default async function ProfilePage() {
                           <h3 className="text-sm font-medium leading-none">{group.name}</h3>
                         </div>
                       </div>
-                      <Link href={`/groups/${group.group_id}`}>
-                        <Button>View</Button>
-                      </Link>
+                      <LeaveGroup groupId={group.group_id} />
                     </div>
                   </div>
                 )) : <p>No groups found.</p>}
