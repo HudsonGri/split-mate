@@ -1,5 +1,4 @@
 "use client";
-//import { History } from "../app/dashboard/history/history";
 import {
   Card,
   CardContent,
@@ -18,6 +17,7 @@ import {
   TableCell,
   TableCaption,
 } from "@/components/ui/table";
+import { Skeleton } from "@/components/ui/skeleton";
 
 import { Overview } from "@/components/overview";
 import { RecentRequests } from "@/components/recent-requests";
@@ -29,12 +29,34 @@ import { redirect } from "next/navigation";
 import { GroupSelect } from "@/components/group-select";
 import { DashboardCards } from "@/components/dashboard-cards";
 import { useState, useEffect } from "react";
+import { Icons } from "@/components/icons";
 
 export function DashboardContent() {
-  const [defaultValue, setDefaultValue] = useState(
-    "7146eef7-5f38-4113-a212-80ee31b63b8a",
-  );
-  const [currentGroup, setCurrentGroup] = useState(defaultValue);
+  const [currentGroup, setCurrentGroup] = useState("");
+  const [hasGroups, setHasGroups] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
+
+  useEffect(() => {
+    fetch("/api/listgroups", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({}),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data && data.length > 0) {
+          setHasGroups(true);
+          data.sort((a, b) => b.userCount - a.userCount);
+          setCurrentGroup(data[0].group_id);
+        } else {
+          setHasGroups(false);
+        }
+      })
+      .catch((error) => console.error("Failed to fetch groups", error))
+      .finally(() => setIsLoading(false));
+  }, []);
 
   const handleGroupChange = (groupId) => {
     setCurrentGroup(groupId);
@@ -45,6 +67,38 @@ export function DashboardContent() {
     console.log("Refreshing Overview and Cards with group_id:", currentGroup);
   }, [currentGroup]);
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h2 className="text-xl mb-4">Loading Dashboard...</h2>
+          <div className="flex justify-center">
+            <Icons.spinner className="mt-2 h-8 w-8 animate-spin" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasGroups) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">No Groups Found</h2>
+          <p className="mb-6">
+            You are not part of any groups. Please join or create a new group.
+          </p>
+          <Link
+            href="/creategroup"
+            className={buttonVariants({ variant: "primary" })}
+          >
+            Create/Join a Group
+          </Link>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="flex-1 space-y-4 px-8 pb-8">
       <div className="flex items-center justify-between space-y-2">
@@ -54,7 +108,7 @@ export function DashboardContent() {
         <div className="flex items-center space-x-2">
           <GroupSelect
             onGroupChange={handleGroupChange}
-            defaultValue={defaultValue}
+            defaultValue={currentGroup}
           />
           <Link href="/" className={buttonVariants({ variant: "default" })}>
             Join/Create Group
@@ -128,5 +182,3 @@ export function DashboardContent() {
     </div>
   );
 }
-
-export default DashboardContent;
