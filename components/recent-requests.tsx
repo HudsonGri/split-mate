@@ -4,18 +4,18 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Skeleton } from "@/components/ui/skeleton"; // Assuming Skeleton is imported from a similar path
 
-export function RecentRequests() {
+export function RecentRequests({ group_id }) {
   const [requests, setRequests] = useState([]);
   const [isLoading, setIsLoading] = useState(true); // Added state to track loading status
-  const groupId = "7146eef7-5f38-4113-a212-80ee31b63b8a"; // Hardcoded group_id for testing
 
   useEffect(() => {
+    setIsLoading(true); // Set loading to true when group_id changes
     fetch(`/api/requests`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ group_id: groupId }),
+      body: JSON.stringify({ group_id: group_id }),
     })
       .then((response) => response.json())
       .then((data) => {
@@ -26,7 +26,7 @@ export function RecentRequests() {
         console.error("Error fetching data: ", error);
         setIsLoading(false); // Ensure loading is set to false on error as well
       });
-  }, [groupId]);
+  }, [group_id]);
 
   if (isLoading) {
     return (
