@@ -36,6 +36,7 @@ import { History } from "@/components/history/history";
 export function DashboardContent() {
   const [currentGroup, setCurrentGroup] = useState("");
   const [hasGroups, setHasGroups] = useState(false);
+  const [peopleData, setPeopleData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -44,14 +45,23 @@ export function DashboardContent() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({}),
+      body: JSON.stringify({ list_all_members: true }),
     })
       .then((response) => response.json())
       .then((data) => {
+        console.log(data);
         if (data && data.length > 0) {
           setHasGroups(true);
           data.sort((a, b) => b.userCount - a.userCount);
           setCurrentGroup(data[0].group_id);
+
+          const groupData = data.find(
+            (group) => group.group_id === data[0].group_id,
+          );
+          if (groupData) {
+            // Set the people data for the current group
+            setPeopleData(groupData.members);
+          }
         } else {
           setHasGroups(false);
         }
@@ -59,7 +69,6 @@ export function DashboardContent() {
       .catch((error) => console.error("Failed to fetch groups", error))
       .finally(() => setIsLoading(false));
   }, []);
-
 
   const handleGroupChange = (groupId) => {
     setCurrentGroup(groupId);
@@ -161,22 +170,19 @@ export function DashboardContent() {
             <TableCaption>A list of people in this group.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableHead className="w-[200px]">Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead className="text-right">Phone Number</TableHead>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
               </TableRow>
             </TableHeader>
             <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Albert Gator</TableCell>
-                <TableCell>algator@ufl.edu</TableCell>
-                <TableCell className="text-right">123-456-7890</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Alberta Gator</TableCell>
-                <TableCell>alberta.gator@ufl.edu</TableCell>
-                <TableCell className="text-right">111-444-7777</TableCell>
-              </TableRow>
+              {peopleData.map((person) => (
+                <TableRow key={person.id}>
+                  <TableCell>
+                    {person.first_name} {person.last_name}
+                  </TableCell>
+                  <TableCell>{person.email}</TableCell>
+                </TableRow>
+              ))}
             </TableBody>
           </Table>
         </TabsContent>

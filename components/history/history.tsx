@@ -6,12 +6,15 @@ import { NavBar } from "@/components/nav";
 
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
+import { Icons } from "@/components/icons"; // Assuming Icons is exported from a certain path
 
 export default function History({ groupId }) {
   const [requestData, setRequestData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     async function fetchData() {
+      setIsLoading(true);
       const response = await fetch("/api/history", {
         method: "POST",
         headers: {
@@ -26,6 +29,7 @@ export default function History({ groupId }) {
         console.error("Failed to fetch data");
         // Handle errors appropriately
       }
+      setIsLoading(false);
     }
 
     fetchData();
@@ -33,14 +37,15 @@ export default function History({ groupId }) {
 
   return (
     <>
-      {/* <div>
-        <h1><pre>{JSON.stringify(data.user.user_metadata.full_name, null, 2)}</pre></h1><br></br>
-        <h1><pre>{JSON.stringify(data, null, 2)}</pre></h1>
-        <h1><pre>{data.user.}</pre></h1>
-      </div> */}
-      <div className="container mx-auto">
-        <DataTable columns={columns} data={requestData} />
-      </div>
+      {isLoading ? (
+        <div className="flex justify-center items-center">
+          <Icons.spinner className="mt-2 h-8 w-8 animate-spin" />
+        </div>
+      ) : (
+        <div className="container mx-auto">
+          <DataTable columns={columns} data={requestData} />
+        </div>
+      )}
     </>
   );
 }
