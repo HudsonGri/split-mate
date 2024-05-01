@@ -1,22 +1,10 @@
 "use client"
-import React, { useState } from 'react';
-import {
-    Select,
-    SelectGroup,
-    SelectValue,
-    SelectTrigger,
-    SelectContent,
-    SelectLabel,
-    SelectItem,
-    SelectSeparator,
-    SelectScrollUpButton,
-    SelectScrollDownButton,
-  } from "../../components/ui/select"
+  import React from 'react';
+  import { useEffect, useState } from 'react';
+  
   import type { ChangeEvent } from "react";
   import { usePathname, useRouter, useSearchParams } from "next/navigation";
-  import {
-    Button,
-  } from "../../components/ui/button"
+
 
 
   // export async function getGroups(user_details: any): Promise<Group_ID[]>{
@@ -53,9 +41,7 @@ import {
   // }
 
   interface SelectGroupsProps<TData> {
-    data: Group_ID[]
     selected: string
-    // onValueChange: Function
   }
 
   export type Group_ID = {
@@ -63,13 +49,9 @@ import {
   }
 
   export function SelectGroups<TData>({
-    data,
     selected,
-    // onValueChange,
+
   }: SelectGroupsProps<TData>) {
-    // const [selectedGroup, setSelectedGroup] = React.useState<string>(
-    //     data[0].id
-    // )
     const router = useRouter();
     const pathname = usePathname();
     const searchParams = useSearchParams();
@@ -91,18 +73,27 @@ import {
       router.push(`${pathname}${query}`);
     };
 
-    // const [selectedGroup, setSelectedGroup] = React.useState('');
-    // const handleValueChange = (value: string) => {
-    //   setSelectedGroup(value);
-    // };
 
-    // const handleChange = (selected) => {
-    //   setSelectedGroup(selected);
-    //   // Call the callback function with the selected value
-    //   if (onValueChange) {
-    //     onValueChange(selected ? selected.value : '');
-    //   }
-    // };
+    const [groups, setGroups] = useState([]);
+
+    useEffect(() => {
+      async function fetchGroups() {
+        const res = await fetch('/api/listgroups', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+        const data = await res.json();
+        if (res.ok) {
+          setGroups(data);
+        } else {
+          console.error('Failed to fetch groups:', data.error);
+        }
+      }
+
+      fetchGroups();
+    }, []);
 
     return (
         // <Select value={selected} onChange={onSelect}>
@@ -122,8 +113,8 @@ import {
 
         <select value={selected} onChange={onSelect}>
           <option value="">Select Group</option>
-          {(data).map((item) => (
-            <option value={item.id}>{item.id}</option>
+          {(groups).map(group => (
+            <option key={group.id} value={group.group_id}>{group.name}</option>
           ))}
         </select>
     )
