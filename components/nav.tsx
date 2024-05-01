@@ -58,7 +58,7 @@ export function NavBar({
                 {link == "Log In" && (
                   <Link
                     className={buttonVariants({
-                      variant: isActive(link) ? "outline" : "ghost",
+                      variant: "outline"
                     })}
                     href="/login"
                   >
@@ -105,7 +105,7 @@ export function NavBar({
                 {link == "Log In" && (
                   <Link
                     className={buttonVariants({
-                      variant: isActive(link) ? "outline" : "ghost",
+                      variant: "outline"
                     })}
                     href="/login"
                   >
