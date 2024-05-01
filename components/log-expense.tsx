@@ -103,12 +103,16 @@ export function LogExpense({ user_details, group_id, requestdata }: {user_detail
                     <Input
                       type="number"
                       min={0.00}
+                      step="0.01"
                       placeholder="0.00"
-                      pattern="^[0-9]{1,}\.[0-9]{2}$"
+                      pattern="^[0-9]+(\.[0-9]{1,2})?$" // Updated regex pattern for float numbers
                       id="amount"
                       className="col-span-3"
                       value={expenseAmount}
-                      onChange={(e) => setExpenseAmount(e.target.value)}
+                      onChange={(e) => {
+                        const numValue = parseFloat(e.target.value);
+                        setExpenseAmount(isNaN(numValue) ? '' : numValue.toString());
+                      }}
                     />
                   </div>
                 </div>

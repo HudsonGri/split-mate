@@ -60,6 +60,7 @@ export function DashboardContent() {
       .finally(() => setIsLoading(false));
   }, []);
 
+
   const handleGroupChange = (groupId) => {
     setCurrentGroup(groupId);
     console.log(groupId);
