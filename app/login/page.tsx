@@ -1,5 +1,5 @@
 "use client"
-import Image from "next/image";
+import React, { Suspense } from 'react';
 import Link from "next/link";
 
 import { UserAuthForm } from "@/components/user-auth-form";
@@ -22,6 +22,7 @@ export default async function AuthenticationPage() {
 
   return (
     <>
+    <Suspense fallback={<div>Loading...</div>}>
       <NavBar links={[]} />
       <div className="container relative h-[600px] pt-10 flex-col items-center justify-center md:pt-0 md:grid lg:max-w-none lg:px-0">
         <div className="mx-auto flex w-full flex-col justify-center space-y-6 sm:w-[350px]">
@@ -44,6 +45,7 @@ export default async function AuthenticationPage() {
           </Link>
         </div>
       </div>
+      </Suspense>
     </>
   );
 }
