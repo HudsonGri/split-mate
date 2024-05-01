@@ -34,7 +34,6 @@ export function DashboardContent() {
   const [defaultValue, setDefaultValue] = useState(
     "7146eef7-5f38-4113-a212-80ee31b63b8a",
   );
-
   const [currentGroup, setCurrentGroup] = useState(defaultValue);
 
   const handleGroupChange = (groupId) => {
@@ -45,6 +44,7 @@ export function DashboardContent() {
   useEffect(() => {
     console.log("Refreshing Overview and Cards with group_id:", currentGroup);
   }, [currentGroup]);
+
   return (
     <div className="flex-1 space-y-4 px-8 pb-8">
       <div className="flex items-center justify-between space-y-2">

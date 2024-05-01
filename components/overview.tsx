@@ -1,14 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Bar, BarChart, ResponsiveContainer, XAxis, YAxis } from "recharts";
+import {
+  Bar,
+  BarChart,
+  ResponsiveContainer,
+  XAxis,
+  YAxis,
+  Text,
+} from "recharts";
 
-const fetchPaybackData = async () => {
+const fetchPaybackData = async ({ group_id }) => {
   const response = await fetch("/api/paybacks/list", {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
     },
-    body: JSON.stringify({ group_id: "7146eef7-5f38-4113-a212-80ee31b63b8a" }),
+    body: JSON.stringify({ group_id: group_id }),
   });
   const data = await response.json();
   return data;
@@ -38,15 +45,23 @@ const processPaybacks = (paybacks) => {
   }));
 };
 
-export function Overview() {
+export function Overview({ group_id }) {
   const [data, setData] = useState([]);
 
   useEffect(() => {
-    fetchPaybackData().then((paybacks) => {
+    fetchPaybackData({ group_id }).then((paybacks) => {
       const processedData = processPaybacks(paybacks);
       setData(processedData);
     });
-  }, []);
+  }, [group_id]);
+
+  if (data.length === 0) {
+    return (
+      <div className="flex justify-center items-center h-max">
+        No data to display
+      </div>
+    );
+  }
 
   return (
     <ResponsiveContainer width="100%" height={350}>
