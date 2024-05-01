@@ -2,11 +2,11 @@ import { createClient } from "@/utils/supabase/server";
 
 export async function POST(req: Request, res: Response) {
   const supabase = createClient();
-
   const {
     data: { user },
     error: authError,
   } = await supabase.auth.getUser();
+
   if (authError || !user) {
     return new Response(JSON.stringify({ error: "User not authenticated" }), {
       status: 401,
@@ -17,37 +17,24 @@ export async function POST(req: Request, res: Response) {
   const user_id = user.id;
   const { group_id } = await req.json();
 
-  // Query for all expenses and paybacks related to the group and user
-  const [groupUsers, expenses, userPaybacks, paybacksToUser] =
-    await Promise.all([
-      supabase
-        .from("group_membership")
-        .select("user_id")
-        .eq("group_id", group_id),
-      supabase.from("expenses").select("*").eq("group_id", group_id),
-      supabase
-        .from("paybacks")
-        .select("*")
-        .eq("payer_id", user_id)
-        .eq("group_id", group_id),
-      supabase
-        .from("paybacks")
-        .select("*")
-        .eq("recipient_id", user_id)
-        .eq("group_id", group_id)
-        .eq("approved", true),
-    ]);
+  // Fetch group members and profiles in one combined query to get names
+  const { data: groupMembers, error: groupMembersError } = await supabase
+    .from("group_membership")
+    .select(
+      `
+      user_id,
+      profiles (
+        id,
+        first_name,
+        last_name
+      )
+    `,
+    )
+    .eq("group_id", group_id);
 
-  if (
-    groupUsers.error ||
-    expenses.error ||
-    userPaybacks.error ||
-    paybacksToUser.error
-  ) {
+  if (groupMembersError) {
     return new Response(
-      JSON.stringify({
-        error: "Failed to retrieve data",
-      }),
+      JSON.stringify({ error: "Failed to retrieve group members" }),
       {
         status: 500,
         headers: { "Content-Type": "application/json" },
@@ -55,45 +42,73 @@ export async function POST(req: Request, res: Response) {
     );
   }
 
-  // Calculate the total debt the user owes for expenses they did not initiate
-  const totalOwed = expenses.data.reduce((acc, expense) => {
+  // Convert group members list into a map for quick access
+  let memberNames = {};
+  groupMembers.forEach((member) => {
+    if (member.profiles) {
+      memberNames[member.user_id] =
+        `${member.profiles.first_name} ${member.profiles.last_name}`;
+    }
+  });
+
+  const [expenses, userPaybacks, paybacksToUser] = await Promise.all([
+    supabase.from("expenses").select("*").eq("group_id", group_id),
+    supabase
+      .from("paybacks")
+      .select("*")
+      .eq("payer_id", user_id)
+      .eq("group_id", group_id),
+    supabase
+      .from("paybacks")
+      .select("*")
+      .eq("recipient_id", user_id)
+      .eq("group_id", group_id)
+      .eq("approved", true),
+  ]);
+
+  let amountsOwedPerUser = {};
+  let totalOwed = 0;
+
+  expenses.data.forEach((expense) => {
     if (expense.payer_id !== user_id) {
-      const sharedAmount = expense.amount / groupUsers.data.length;
-      return acc + sharedAmount;
+      const sharedAmount = expense.amount / groupMembers.length;
+      totalOwed += sharedAmount;
+      if (!amountsOwedPerUser[expense.payer_id]) {
+        amountsOwedPerUser[expense.payer_id] = [];
+      }
+      amountsOwedPerUser[expense.payer_id].push({
+        amount: sharedAmount.toFixed(2),
+        expense_id: expense.expense_id,
+        name: memberNames[expense.payer_id], // Include the payer's full name
+      });
     }
-    return acc;
-  }, 0);
+  });
 
-  const totalPaidBack = userPaybacks.data.reduce(
+  let totalPaidBack = userPaybacks.data.reduce(
     (acc, payback) => acc + payback.amount,
     0,
   );
+  const netOwed = Math.max(0, totalOwed - totalPaidBack);
 
-  // Net amount the user still owes
-  const netOwed = Math.max(0, totalOwed - totalPaidBack); // Prevent negative values
-
-  // Calculate the total amount the user is owed for expenses they paid
-  const totalOwedToUser = expenses.data.reduce((acc, expense) => {
+  let totalOwedToUser = 0;
+  expenses.data.forEach((expense) => {
     if (expense.payer_id === user_id) {
-      const sharedAmount = expense.amount / groupUsers.data.length;
-      return acc + (expense.amount - sharedAmount);
+      const sharedAmount = expense.amount / groupMembers.length;
+      totalOwedToUser += expense.amount - sharedAmount;
     }
-    return acc;
-  }, 0);
+  });
 
-  const totalPaidToUser = paybacksToUser.data.reduce(
+  let totalPaidToUser = paybacksToUser.data.reduce(
     (acc, payback) => acc + payback.amount,
     0,
   );
+  const netOwedToUser = Math.max(0, totalOwedToUser - totalPaidToUser);
 
-  // Net amount owed to the user
-  const netOwedToUser = Math.max(0, totalOwedToUser - totalPaidToUser); // Prevent negative values
-
-  // Return the results
   return new Response(
     JSON.stringify({
       netOwed: netOwed.toFixed(2),
       netOwedToUser: netOwedToUser.toFixed(2),
+      amountsOwedPerUser: amountsOwedPerUser,
     }),
     {
       status: 200,

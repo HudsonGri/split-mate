@@ -1,7 +1,21 @@
 "use client";
 import { useEffect, useState } from "react";
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardHeader,
+  CardTitle,
+  CardDescription,
+  CardFooter,
+} from "@/components/ui/card";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+import Link from "next/link";
+import { buttonVariants } from "./ui/button";
 
 export function DashboardCards({ group_id }) {
   const [dashboardData, setDashboardData] = useState({
@@ -13,6 +27,7 @@ export function DashboardCards({ group_id }) {
   const [debtData, setDebtData] = useState({
     netOwed: 0,
     netOwedToUser: 0,
+    amountsOwedPerUser: {},
   });
   const [loading, setLoading] = useState(true);
 
@@ -53,47 +68,81 @@ export function DashboardCards({ group_id }) {
     fetchDashboardData();
   }, [group_id]);
 
+  const renderDebtDetails = () => {
+    return Object.values(debtData.amountsOwedPerUser).flatMap((userDebts) =>
+      userDebts.map((debt) => (
+        <div
+          key={debt.expense_id}
+          className="flex items-center justify-between"
+        >
+          <div>{debt.name}</div>
+          <div className="font-medium">${debt.amount}</div>
+        </div>
+      )),
+    );
+  };
+
   return (
     <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Card>
-        <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-          <CardTitle className="text-sm font-medium">Amount Owed</CardTitle>
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            viewBox="0 0 24 24"
-            width={24}
-            height={24}
-            className="h-4 w-4 text-muted-foreground"
-            fill={"none"}
-          >
-            <path
-              d="M17.9583 8.38889C17.9583 6.24111 15.2907 4.5 12 4.5C8.7093 4.5 6.04167 6.24111 6.04167 8.38889C6.04167 10.5367 7.66667 11.7222 12 11.7222C16.3333 11.7222 18.5 12.8333 18.5 15.6111C18.5 18.3889 15.5899 19.5 12 19.5C8.41015 19.5 5.5 17.7589 5.5 15.6111"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-            />
-            <path
-              d="M12.5 2.5V4.21M12.5 21.5V19.79"
-              stroke="currentColor"
-              strokeWidth="1.5"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </CardHeader>
-        <CardContent>
-          {loading ? (
-            <Skeleton className="h-8 w-24" />
-          ) : (
-            <div className="text-2xl font-bold">
-              ${" "}
-              {debtData.netOwed.toLocaleString("en", {
-                minimumFractionDigits: 2,
-              })}
-            </div>
-          )}
-        </CardContent>
-      </Card>
+      <HoverCard>
+        <HoverCardTrigger asChild>
+          <div>
+            <Card>
+              <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+                <CardTitle className="text-sm font-medium">
+                  Amount Owed
+                </CardTitle>
+                <svg
+                  xmlns="http://www.w3.org/2000/svg"
+                  viewBox="0 0 24 24"
+                  width={24}
+                  height={24}
+                  className="h-4 w-4 text-muted-foreground"
+                  fill={"none"}
+                >
+                  <path
+                    d="M17.9583 8.38889C17.9583 6.24111 15.2907 4.5 12 4.5C8.7093 4.5 6.04167 6.24111 6.04167 8.38889C6.04167 10.5367 7.66667 11.7222 12 11.7222C16.3333 11.7222 18.5 12.8333 18.5 15.6111C18.5 18.3889 15.5899 19.5 12 19.5C8.41015 19.5 5.5 17.7589 5.5 15.6111"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                  />
+                  <path
+                    d="M12.5 2.5V4.21M12.5 21.5V19.79"
+                    stroke="currentColor"
+                    strokeWidth="1.5"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  />
+                </svg>
+              </CardHeader>
+              <CardContent>
+                {loading ? (
+                  <Skeleton className="h-8 w-24" />
+                ) : (
+                  <div className="text-2xl font-bold">
+                    $
+                    {debtData.netOwed.toLocaleString("en", {
+                      minimumFractionDigits: 2,
+                    })}
+                  </div>
+                )}
+              </CardContent>
+            </Card>
+          </div>
+        </HoverCardTrigger>
+        <HoverCardContent>
+          {loading ? <Skeleton className="w-64 h-20" /> : renderDebtDetails()}
+
+          <div className="flex justify-center">
+            <Link
+              className={`${buttonVariants({ variant: "default" })} mt-6`}
+              href="/payback"
+            >
+              Pay Now
+            </Link>
+          </div>
+        </HoverCardContent>
+      </HoverCard>
       <Card>
         <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
           <CardTitle className="text-sm font-medium">
