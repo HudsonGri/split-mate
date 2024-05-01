@@ -23,14 +23,14 @@ import { LogExpense } from "@/components/log-expense";
 export const dynamic = "force-dynamic";
 
 async function getData(selectedGroup: string): Promise<Expense[]> {
-    //if (selectedGroup != "") {
+    if (selectedGroup != "") {
         // Fetch data from your API here.
         const supabase = createClient();
 
         let { data, error } = await supabase
             .from("expenses")
-            .select("*, profiles!expenses_payer_id_fkey(id, first_name, last_name)");
-            //.eq("group_id", selectedGroup);
+            .select("*, profiles!expenses_payer_id_fkey(id, first_name, last_name)")
+            .eq("group_id", selectedGroup);
 
         if (error) {
             console.log(error);
@@ -42,7 +42,11 @@ async function getData(selectedGroup: string): Promise<Expense[]> {
             //console.log(items)
             return items;
         }
-    //}
+    }
+    else {
+        const items: Expense[] = [];
+        return items;
+    }
 }
 
 function setItems(value) {
