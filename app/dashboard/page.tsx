@@ -63,7 +63,11 @@ export default async function DashboardPage() {
   return (
     <>
       <div className="flex flex-col">
-        <NavBar links={["Profile"]} user_details={user} />
+        <NavBar
+          links={["Dashboard", "Request List", "Paybacks", "Profile"]}
+          user_details={user}
+          currentPage="Dashboard"
+        />
         <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-between space-y-2">
             <div>
@@ -78,9 +82,6 @@ export default async function DashboardPage() {
               <TabsTrigger value="overview">Overview</TabsTrigger>
               <TabsTrigger value="history">History</TabsTrigger>
               <TabsTrigger value="people">People</TabsTrigger>
-              <TabsTrigger value="notifications" disabled>
-                Notifications
-              </TabsTrigger>
             </TabsList>
             <TabsContent value="overview" className="space-y-4">
               <DashboardCards />
