@@ -1,35 +1,34 @@
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { PaybackTable } from "@/components/payback-table";
-import { PaybackForm } from "@/components/payback-form"
+import { PaybackForm } from "@/components/payback-form";
 import { NavBar } from "@/components/nav";
-import { createClient } from '@/utils/supabase/server';
-import { redirect } from 'next/navigation';import type { Metadata } from 'next';
+import { createClient } from "@/utils/supabase/server";
+import { redirect } from "next/navigation";
+import type { Metadata } from "next";
 
-export const metadata : Metadata = {
+export const metadata: Metadata = {
   title: "Split Mate|Paybacks",
   description: "Split Mate Paybacks Page",
-}
+};
 
 export default async function PaybackPage() {
-
   const supabase = createClient();
 
-  const { data, error } = await supabase.auth.getUser()
+  const { data, error } = await supabase.auth.getUser();
   if (error || !data?.user) {
     console.log("redirect to main");
-    redirect('/');
+    redirect("/");
   }
   const user = data.user;
 
   return (
     <>
       <div className="flex flex-col">
-        <NavBar links={["Profile"]} user_details={user} />
+        <NavBar
+          links={["Dashboard", "Request List", "Paybacks", "Profile"]}
+          user_details={user}
+          currentPage="Paybacks"
+        />
         <div className="flex-1 space-y-4 px-8 pb-8">
           <div className="flex items-center justify-between space-y-2">
             <div>
@@ -54,9 +53,8 @@ export default async function PaybackPage() {
               </CardContent>
             </Card>
           </div>
-          
         </div>
       </div>
     </>
-  )
+  );
 }
