@@ -223,27 +223,62 @@ export default async function ProfilePage() {
                 <CardTitle>Your Groups</CardTitle>
               </CardHeader>
               <CardContent>
-                {groups.length > 0 ? groups.map(({ group }, index) => (
-                  <div key={index} className="divide-y divide-gray-200 dark:divide-gray-800">
-                    <div className="flex items-center justify-between p-3">
-                      <div className="flex items-center space-x-4">
-                        <Avatar className="mx-auto">
-                          <AvatarFallback>{group.name.charAt(0)}</AvatarFallback>
-                        </Avatar>
-                        <div className="leading-none">
-                          <h3 className="text-sm font-medium leading-none">{group.name}</h3>
+                {groups.length > 0 ? (
+                  groups.slice(0, 3).map(({ group }, index) => (
+                    <div key={index} className="divide-y divide-gray-200 dark:divide-gray-800">
+                      <div className="flex items-center justify-between p-3">
+                        <div className="flex items-center space-x-4">
+                          <Avatar className="mx-auto">
+                            <AvatarFallback>{group.name.charAt(0)}</AvatarFallback>
+                          </Avatar>
+                          <div className="leading-none">
+                            <h3 className="text-sm font-medium leading-none">{group.name}</h3>
+                          </div>
                         </div>
+                        <LeaveGroup groupId={group.group_id} />
                       </div>
-                      <LeaveGroup groupId={group.group_id} />
                     </div>
-                  </div>
-                )) : <p>No groups found.</p>}
+                  ))
+                ) : (
+                  <p>No groups found.</p>
+                )}
                 <div className="mt-4 flex justify-center items-center gap-2 p-4">
-                  <Link href="/groups" className="flex items-center gap-2 underline">
-                    <span>View All Groups</span>
-                    <FiChevronRight className="text-base" />
-                  </Link>
-                </div>
+                <Dialog>
+                  <div className="z-40"></div>
+                  <div className="max-w-md">
+                    <DialogTrigger asChild>
+                      <div className="flex items-center gap-2 underline">
+                        <span>View All Groups</span>
+                      </div>
+                    </DialogTrigger>
+                    <DialogContent className="flex flex-col">
+                      <DialogTitle>All Groups</DialogTitle>
+                      {groups.length > 0 ? groups.map(({ group }, index) => (
+                        <div key={index} className="divide-y divide-gray-200 dark:divide-gray-800">
+                          <div className="flex items-center justify-between px-2 py-1">
+                            <div className="flex items-center space-x-2">
+                              <Avatar className="mx-auto">
+                                <AvatarFallback>{group.name.charAt(0)}</AvatarFallback>
+                              </Avatar>
+                              <div className="leading-none">
+                                <h3 className="text-sm font-medium leading-none">{group.name}</h3>
+                              </div>
+                            </div>
+                            <LeaveGroup groupId={group.group_id} />
+                          </div>
+                        </div>
+                      )) : <p>No groups found.</p>}
+                      <div className="mt-auto p-3 flex justify-end">
+                        <DialogClose asChild>
+                          <Button>
+                            Done
+                          </Button>
+                        </DialogClose>
+                      </div>
+                    </DialogContent>
+                  </div>
+                </Dialog>
+              </div>
               </CardContent>
             </Card>
 

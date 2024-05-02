@@ -35,7 +35,7 @@ export function LeaveGroup({ groupId }) {
     } else {
       
       if (data.error === "User not authenticated") {
-        window.location.href = "/login?group=leave"; // Redirect to login
+        window.location.href = "/login?group=leave";
       } else {
         setError(data.message || "Failed to leave the group.");
       }
@@ -45,7 +45,7 @@ export function LeaveGroup({ groupId }) {
   return (
     <Dialog>
       <DialogTrigger asChild>
-        <Button className="text-base bg-red-500">
+        <Button className="bg-red-500">
           Leave
         </Button>
       </DialogTrigger>
@@ -53,11 +53,13 @@ export function LeaveGroup({ groupId }) {
         <DialogTitle>Leave group</DialogTitle>
         Are you sure you want to leave this group?
         <div className="mt-4 flex justify-end space-x-4">
+        <DialogClose asChild>
+            <Button className="text-black dark:text-white bg-transparent border border-black dark:border-white hover:bg-transparent hover:border-gray-400 dark:hover:border-gray-500">
+                Cancel
+            </Button>
+        </DialogClose>
           <DialogClose asChild>
-            <Button className="text-black bg-transparent hover:bg-gray-100">Cancel</Button>
-          </DialogClose>
-          <DialogClose asChild>
-            <Button onClick={handleLeaveGroup} className="text-base bg-red-500 hover:bg-red-600" disabled={isLoading}>
+            <Button onClick={handleLeaveGroup} className=" bg-red-500 hover:bg-red-600" disabled={isLoading}>
               Confirm
             </Button>
           </DialogClose>
