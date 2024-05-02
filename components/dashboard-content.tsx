@@ -32,11 +32,13 @@ import { useState, useEffect } from "react";
 import { Icons } from "@/components/icons";
 
 import { History } from "@/components/history/history";
+import {PeopleTable} from "@/components/people-table";
 
 export function DashboardContent() {
   const [currentGroup, setCurrentGroup] = useState("");
   const [hasGroups, setHasGroups] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
+  const [groupPeople, setGroupPeople] = useState([]);
 
   useEffect(() => {
     fetch("/api/listgroups", {
@@ -55,6 +57,7 @@ export function DashboardContent() {
         } else {
           setHasGroups(false);
         }
+
       })
       .catch((error) => console.error("Failed to fetch groups", error))
       .finally(() => setIsLoading(false));
@@ -156,28 +159,7 @@ export function DashboardContent() {
           <History groupId={currentGroup} />
         </TabsContent>
         <TabsContent value="people" className="space-y-4">
-          <Table>
-            <TableCaption>A list of people in this group.</TableCaption>
-            <TableHeader>
-              <TableRow>
-                <TableHead className="w-[200px]">Name</TableHead>
-                <TableHead>Email</TableHead>
-                <TableHead className="text-right">Phone Number</TableHead>
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              <TableRow>
-                <TableCell className="font-medium">Albert Gator</TableCell>
-                <TableCell>algator@ufl.edu</TableCell>
-                <TableCell className="text-right">123-456-7890</TableCell>
-              </TableRow>
-              <TableRow>
-                <TableCell className="font-medium">Alberta Gator</TableCell>
-                <TableCell>alberta.gator@ufl.edu</TableCell>
-                <TableCell className="text-right">111-444-7777</TableCell>
-              </TableRow>
-            </TableBody>
-          </Table>
+          <PeopleTable groupId={currentGroup} />
         </TabsContent>
       </Tabs>
     </div>
