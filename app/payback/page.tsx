@@ -1,10 +1,17 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
 import { PaybackTable } from "@/components/payback-table";
 import { PaybackForm } from "@/components/payback-form";
 import { NavBar } from "@/components/nav";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import type { Metadata } from "next";
+import { PaybackOwed } from "@/components/payback-owed";
 
 export const metadata: Metadata = {
   title: "Split Mate|Paybacks",
@@ -25,7 +32,13 @@ export default async function PaybackPage() {
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
+          links={[
+            "Dashboard",
+            "Request List",
+            "Paybacks",
+            "Expenses",
+            "Profile",
+          ]}
           user_details={user}
           currentPage="Paybacks"
         />
@@ -47,9 +60,19 @@ export default async function PaybackPage() {
             <Card className="col-span-4">
               <CardHeader>
                 <CardTitle>Pending Approvals</CardTitle>
+                <CardDescription>
+                  Approve that a payback has been made.
+                </CardDescription>
               </CardHeader>
               <CardContent>
                 <PaybackTable />
+                <CardTitle>Amounts Owed</CardTitle>
+                <CardDescription className="mt-2">
+                  View the amount you owe to others.
+                </CardDescription>
+                <div className="mt-6">
+                  <PaybackOwed />
+                </div>
               </CardContent>
             </Card>
           </div>

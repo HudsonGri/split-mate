@@ -41,28 +41,6 @@ export type Payback = {
 
 export const columns: ColumnDef<Payback>[] = [
   {
-    id: "select",
-    header: ({ table }) => (
-      <Checkbox
-        checked={
-          table.getIsAllPageRowsSelected() ||
-          (table.getIsSomePageRowsSelected() && "indeterminate")
-        }
-        onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-        aria-label="Select all"
-      />
-    ),
-    cell: ({ row }) => (
-      <Checkbox
-        checked={row.getIsSelected()}
-        onCheckedChange={(value) => row.toggleSelected(!!value)}
-        aria-label="Select row"
-      />
-    ),
-    enableSorting: false,
-    enableHiding: false,
-  },
-  {
     accessorKey: "payer",
     header: ({ column }) => {
       return (
@@ -100,7 +78,7 @@ export const columns: ColumnDef<Payback>[] = [
     accessorKey: "amount",
     header: () => <div>Amount</div>,
     cell: ({ row }) => {
-      const amount = parseInt(row.getValue("amount"));
+      const amount = parseFloat(row.getValue("amount"));
 
       const formatted = new Intl.NumberFormat("en-US", {
         style: "currency",
@@ -133,48 +111,57 @@ export const columns: ColumnDef<Payback>[] = [
   },
 ];
 
-export function PaybackTable() {
-  const fetchPaybacks = async () => {
-    const res = await fetch("/api/paybacks/approve", { method: "GET" });
+export function PaybackOwed() {
+  React.useEffect(() => {
+    const fetchDebts = async () => {
+      try {
+        // Fetch groups
+        const groupRes = await fetch("/api/listgroups", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ list_all_members: true }),
+        });
+        if (!groupRes.ok) throw new Error("Failed to fetch groups");
+        const groups = await groupRes.json();
 
-    if (!res.ok) {
-      return router.push("/error");
-    }
+        // Fetch debts for each group and accumulate results
+        const debtsPromises = groups.map((group) =>
+          fetch("/api/debt", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ group_id: group.group_id }),
+          }).then((res) => res.json()),
+        );
+        const debtsResults = await Promise.all(debtsPromises);
 
-    const data = await res.json();
-    setData(data);
-    table.toggleAllPageRowsSelected(false);
-  };
+        const formattedData = debtsResults.flatMap((debt, index) =>
+          Object.entries(debt.amountsOwedPerUser).flatMap(([userId, amounts]) =>
+            amounts.map((amount) => ({
+              id: amount.expense_id,
+              payer: amount.name,
+              amount: parseFloat(amount.amount),
+              group: groups[index].name,
+              description: amount.description,
+            })),
+          ),
+        );
+        setData(formattedData);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
 
-  const approvePaybacks = async (approvedPaybacks: string[]) => {
-    setSubmitting(true);
-
-    const res = await fetch("/api/paybacks/approve", {
-      method: "PUT",
-      headers: { "Content-type": "application/json" },
-      body: JSON.stringify({ approvedPaybacks }),
-    });
-
-    if (res.ok) {
-      await fetchPaybacks();
-      setSubmitting(false);
-    } else {
-      router.push("/error");
-    }
-  };
-
+    fetchDebts();
+  }, []);
   const [sorting, setSorting] = React.useState<SortingState>([]);
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     [],
   );
-  const [rowSelection, setRowSelection] = React.useState({});
   const [submitting, setSubmitting] = React.useState<boolean>(false);
   const [data, setData] = React.useState<Payback[]>([]);
   const router = useRouter();
-
-  React.useEffect(() => {
-    fetchPaybacks();
-  }, []);
 
   const table = useReactTable({
     data,
@@ -184,11 +171,9 @@ export function PaybackTable() {
     getCoreRowModel: getCoreRowModel(),
     getSortedRowModel: getSortedRowModel(),
     getFilteredRowModel: getFilteredRowModel(),
-    onRowSelectionChange: setRowSelection,
     state: {
       sorting,
       columnFilters,
-      rowSelection,
     },
   });
 
@@ -217,10 +202,7 @@ export function PaybackTable() {
           <TableBody>
             {table.getRowModel().rows?.length ? (
               table.getRowModel().rows.map((row) => (
-                <TableRow
-                  key={row.id}
-                  data-state={row.getIsSelected() && "selected"}
-                >
+                <TableRow key={row.id}>
                   {row.getVisibleCells().map((cell) => (
                     <TableCell key={cell.id}>
                       {flexRender(
@@ -243,32 +225,6 @@ export function PaybackTable() {
             )}
           </TableBody>
         </Table>
-      </div>
-      <div className="flex items-center justify-end space-x-2 py-4">
-        <div className="flex-1 text-sm text-muted-foreground">
-          {table.getFilteredSelectedRowModel().rows.length} of{" "}
-          {table.getFilteredRowModel().rows.length} row(s) selected.
-        </div>
-        <div className="space-x-2">
-          <Button
-            size="sm"
-            onClick={() =>
-              approvePaybacks(
-                table
-                  .getRowModel()
-                  .rows.filter((row) => row.getIsSelected())
-                  .map((row) => row.original.id),
-              )
-            }
-            disabled={
-              table.getFilteredSelectedRowModel().rows.length === 0 ||
-              submitting
-            }
-          >
-            {submitting && <Loader2 className="mr-2 h-4 w-4 animate-spin" />}
-            Approve Paybacks
-          </Button>
-        </div>
       </div>
     </div>
   );

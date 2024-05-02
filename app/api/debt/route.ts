@@ -79,6 +79,7 @@ export async function POST(req: Request, res: Response) {
       amountsOwedPerUser[expense.payer_id].push({
         amount: sharedAmount.toFixed(2),
         expense_id: expense.expense_id,
+        description: expense.description,
         name: memberNames[expense.payer_id], // Include the payer's full name
       });
     }
