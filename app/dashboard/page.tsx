@@ -65,11 +65,17 @@ export default async function DashboardPage() {
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
+          links={[
+            "Dashboard",
+            "Request List",
+            "Paybacks",
+            "Expenses",
+            "Profile",
+          ]}
           user_details={user}
           currentPage="Dashboard"
         />
-        <DashboardContent />
+        <DashboardContent user_details={user} />
       </div>
     </>
   );

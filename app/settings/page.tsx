@@ -130,12 +130,12 @@ export default async function SettingsPage() {
                             className="w-full h-full object-cover rounded-full"
                           />
                           <AvatarFallback>
-                            {user.user_metadata.first_name
-                              .slice(0, 1)
-                              .toUpperCase()}
-                            {user.user_metadata.last_name
-                              .slice(0, 1)
-                              .toUpperCase()}
+                            {(user.user_metadata.first_name
+                              ?.slice(0, 1)
+                              .toUpperCase() ?? "") +
+                              (user.user_metadata.last_name
+                                ?.slice(0, 1)
+                                .toUpperCase() ?? "")}
                           </AvatarFallback>
                         </Avatar>
                       </div>

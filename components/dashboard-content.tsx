@@ -33,7 +33,7 @@ import { Icons } from "@/components/icons";
 
 import { History } from "@/components/history/history";
 
-export function DashboardContent() {
+export function DashboardContent({ user_details }) {
   const [currentGroup, setCurrentGroup] = useState("");
   const [hasGroups, setHasGroups] = useState(false);
   const [peopleData, setPeopleData] = useState([]);
@@ -79,6 +79,27 @@ export function DashboardContent() {
     console.log("Refreshing Overview and Cards with group_id:", currentGroup);
   }, [currentGroup]);
 
+  if (!user_details.user_metadata.first_name) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h2 className="text-2xl font-semibold mb-4">
+            Welcome to Split Mate!
+          </h2>
+          <p className="mb-6">
+            Please update your profile to include your first and last name to
+            start using Split Mate!
+          </p>
+          <Link
+            href="/settings"
+            className={buttonVariants({ variant: "default" })}
+          >
+            Update Profile
+          </Link>
+        </div>
+      </div>
+    );
+  }
   if (!hasGroups && !isLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
