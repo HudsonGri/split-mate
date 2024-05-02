@@ -26,6 +26,7 @@ import Link from "next/link";
 import { JoinGroup } from "@/components/join-group";
 import { useRouter } from 'next/navigation';
 import { useSearchParams } from 'next/navigation'
+import { Suspense } from "react";
 
 const features = [
     {
@@ -108,7 +109,7 @@ export function Landing() {
   return (
     
     <>
-
+<Suspense fallback={<div></div>}>
         <header className="py-8 sm:grid sm:grid-flow-col">
           <div className="max-w-4xl px-4 mx-auto lg:ml-12 py-2 sm:py-10 text-zinc-50">
             <motion.div
@@ -242,7 +243,8 @@ export function Landing() {
             </div>
           </motion.div>
         </main>
-       
+        </Suspense>
     </>
+    
   );
 }
