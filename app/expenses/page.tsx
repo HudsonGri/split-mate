@@ -1,6 +1,6 @@
-import { Expense, columns } from "./columns";
+import { Expense, columns } from "../../components/expenses/columns";
 import { Button } from "../../components/ui/button";
-import { DataTable } from "./data-table-expense";
+import { DataTable } from "../../components/expenses/data-table-expense";
 import { NavBar } from "@/components/nav";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
