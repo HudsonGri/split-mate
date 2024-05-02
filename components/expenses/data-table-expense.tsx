@@ -21,21 +21,21 @@ import {
   TableHead,
   TableHeader,
   TableRow,
-} from "../../components/ui/table"
+} from "../ui/table"
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[]
   data: TData[]
 }
 
-import { Button } from "../../components/ui/button"
+import { Button } from "../ui/button"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuTrigger,
-  } from "../../components/ui/dropdown-menu"
-import { Input } from "../../components/ui/input"
+  } from "../ui/dropdown-menu"
+import { Input } from "../ui/input"
 
 export function DataTable<TData, TValue>({
   columns,

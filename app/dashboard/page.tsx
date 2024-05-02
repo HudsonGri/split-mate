@@ -61,6 +61,39 @@ export default async function DashboardPage() {
     }
   };
 
+  async function getAdminData(): Promise<boolean> {
+    // Fetch data from your API here.
+    const userID = user.id;
+
+    let { data, error } = await supabase
+    .from('groups')
+    .select('*')
+    .eq('admin', userID);
+
+    if (error) {
+      console.log(error);
+      redirect("/error");
+    }
+
+    if (data) {
+        // Handle success (e.g., show a success message)
+        console.log("Data fetched successfully");
+        if (data.length > 0) {
+          return true;
+        }
+        else {
+          return false;
+        }
+        //window.location.reload();
+    } else {
+        // Handle error
+        console.error("Failed to fetch admin data");
+        return false;
+    }
+  }
+
+  const isAdmin: boolean = await getAdminData();
+  console.log("ADMIN: ", isAdmin);
   return (
     <>
       <div className="flex flex-col">
@@ -74,6 +107,7 @@ export default async function DashboardPage() {
           ]}
           user_details={user}
           currentPage="Dashboard"
+          isAdmin={isAdmin}
         />
         <DashboardContent user_details={user} />
       </div>

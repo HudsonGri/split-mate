@@ -15,10 +15,12 @@ export function NavBar({
   links,
   user_details,
   currentPage,
+  isAdmin,
 }: {
   links: string[];
   user_details?: any;
   currentPage: string;
+  isAdmin: boolean;
 }) {
   const { theme, resolvedTheme } = useTheme();
   const [mounted, setMounted] = useState(false);
@@ -105,7 +107,7 @@ export function NavBar({
                     Expenses
                   </Link>
                 )}
-                {link == "Profile" && <UserNav user_details={user_details} />}
+                {link == "Profile" && <UserNav user_details={user_details} isAdmin={isAdmin}/>}
               </div>
             ))}
           </div>
@@ -162,7 +164,7 @@ export function NavBar({
                     Expenses
                   </Link>
                 )}
-                {link == "Profile" && <UserNav user_details={user_details} />}
+                {link == "Profile" && <UserNav user_details={user_details} isAdmin={isAdmin} />}
               </div>
             ))}
           </div>

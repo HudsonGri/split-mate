@@ -2,7 +2,7 @@
 
 import { ColumnDef } from "@tanstack/react-table"
 import { ArrowUpDown, MoreHorizontal } from "lucide-react"
-import { Checkbox } from "../../components/ui/checkbox"
+import { Checkbox } from "../ui/checkbox"
 
 import { Button } from "@/components/ui/button"
 import {
@@ -12,7 +12,7 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from "../../components/ui/dropdown-menu"
+} from "../ui/dropdown-menu"
 import { User } from "lucide-react"
 
 // This type is used to define the shape of our data.
@@ -26,7 +26,7 @@ export type Expense = {
   description: string
 }
 
-export const columns: ColumnDef<Expense>[] = [
+export const admincolumns: ColumnDef<Expense>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -53,7 +53,28 @@ export const columns: ColumnDef<Expense>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-            const expense = row.original
+            const expense = row.original;
+            async function deleteExpense(expenseID: string, groupID: string) {
+                // Fetch data from your API here.
+            
+                const response = await fetch("/api/expenses/delete", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ expenseID , groupID}),
+                });
+            
+                const data = await response.json();
+                    if (data.success) {
+                        // Handle success (e.g., show a success message)
+                        console.log("Name updated successfully");
+                        window.location.reload();
+                    } else {
+                        // Handle error
+                        console.error("Failed to update group name");
+                    }
+            }
         
             return (
             <DropdownMenu>
@@ -68,10 +89,15 @@ export const columns: ColumnDef<Expense>[] = [
                 <DropdownMenuItem
                     onClick={() => navigator.clipboard.writeText(expense.id)}
                 >
-                    Copy payment ID
+                    Copy expense ID
+                </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => deleteExpense(expense.id, expense.group)}
+                >
+                    Delete expense
                 </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>View expenseor</DropdownMenuItem>
+                <DropdownMenuItem>View expense</DropdownMenuItem>
                 <DropdownMenuItem>View expense details</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

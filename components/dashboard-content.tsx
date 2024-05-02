@@ -32,6 +32,7 @@ import { useState, useEffect } from "react";
 import { Icons } from "@/components/icons";
 
 import { History } from "@/components/history/history";
+import {PeopleTable} from "@/components/people-table";
 
 export function DashboardContent({ user_details }) {
   const [currentGroup, setCurrentGroup] = useState("");
@@ -65,6 +66,7 @@ export function DashboardContent({ user_details }) {
         } else {
           setHasGroups(false);
         }
+
       })
       .catch((error) => console.error("Failed to fetch groups", error))
       .finally(() => setIsLoading(false));
@@ -209,7 +211,7 @@ export function DashboardContent({ user_details }) {
           <History groupId={currentGroup} />
         </TabsContent>
         <TabsContent value="people" className="space-y-4">
-          <Table>
+        <Table>
             <TableCaption>A list of people in this group.</TableCaption>
             <TableHeader>
               <TableRow>
