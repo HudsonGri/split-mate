@@ -95,7 +95,7 @@ export default async function ProfilePage() {
     {
       name: "CHASM",
       type: "Group",
-      image: "http://localhost:3000/_next/image?url=%2Fhero-graphic.png&w=1920&q=75",
+      image: "https://www.split-mate.com/_next/image?url=%2Fhero-graphic.png&w=1920&q=75",
       url: "https://github.com/HudsonGri/split-mate",
     }
   ];
