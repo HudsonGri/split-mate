@@ -4,7 +4,7 @@
 <!-- PROJECT LOGO -->
 <br />
 <div align="center">
-  <a href="https://github.com/github_username/repo_name">
+  <a href="https://split-mate-mu.vercel.app/">
     <img src="app/favicon.ico" alt="Logo" width="80" height="80">
   </a>
 
@@ -56,8 +56,28 @@ All group purchase history is logged and saved to generate automatic expense rep
 
 <!-- USAGE EXAMPLES -->
 ## Usage
+These images show describe the basic navigation and usage of Split-Mate.
 
-<h1><mark>PUT IMAGES HERE</mark></h1>
+#### Home Page
+<img src="images/home.png" alt="Home Page" width="80" height="80">
+
+#### Dashboard
+<img src="images/dashboard.png" alt="Dashboard" width="80" height="80">
+
+#### Item List
+<img src="images/items.png" alt="Item List" width="80" height="80">
+
+#### Expenses
+<img src="images/expenses.png" alt="Expenses" width="80" height="80">
+
+#### Paybacks
+<img src="images/paybacks.png" alt="Paybacks" width="80" height="80">
+
+
+## Database Diagrams
+These diagrams descripe the structure and layout of our database.
+<img src="images/erd.png" alt="ER Diagram" width="80" height="80">
+<img src="images/tables.png" alt="Table Schematic" width="80" height="80">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
