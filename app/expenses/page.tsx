@@ -99,7 +99,7 @@ export default async function RequestListPage({
           currentPage="Expenses"
         />
         <div className="flex-1 space-y-4 px-8 pb-8">
-          <div className="flex items-center justify-center space-y-2">
+          <div className="flex space-y-2">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">
                 Expenses
