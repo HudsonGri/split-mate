@@ -190,7 +190,7 @@ export default async function ProfilePage() {
           <div className="order-0 md:order-none flex-1 flex items-center justify-center">
             <div className="flex flex-col items-center justify-center">
               <div className="flex items-center justify-center">
-                <h1 className="font-bold text-2xl mr-4">{user.user_metadata.full_name}</h1>
+                <h1 className="font-bold text-2xl mr-4">{user.user_metadata.first_name} {user.user_metadata.last_name}</h1>
 
                 {/* edit name, email, and avatar */}
                 <UserEdit user_details={user}/>

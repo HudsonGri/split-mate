@@ -32,7 +32,7 @@ export function UserNav({ user_details }: { user_details?: any }) {
         <Link href="/profile" className="font-normal">
           <DropdownMenuLabel>
             <div className="flex flex-col space-y-1">
-              <p className="text-sm font-medium leading-none">{user_details.user_metadata.full_name}</p>
+              <p className="text-sm font-medium leading-none">{user_details.user_metadata.first_name} {user_details.user_metadata.last_name}</p>
               <p className="text-xs leading-none text-muted-foreground">
                 {user_details.email}
               </p>
