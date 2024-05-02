@@ -159,7 +159,6 @@ export function DashboardContent() {
           <History groupId={currentGroup} />
         </TabsContent>
         <TabsContent value="people" className="space-y-4">
-          {/* <PeopleTable groupId={currentGroup} /> */}
         </TabsContent>
       </Tabs>
     </div>
