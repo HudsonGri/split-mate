@@ -14,8 +14,7 @@ import type { Metadata } from "next";
 import { PaybackOwed } from "@/components/payback-owed";
 
 export const metadata: Metadata = {
-  title: "Split Mate|Paybacks",
-  description: "Split Mate Paybacks Page",
+  title: "Paybacks",
 };
 
 export default async function PaybackPage() {

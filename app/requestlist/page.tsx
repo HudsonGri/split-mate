@@ -19,6 +19,11 @@ import { Label } from "@/components/ui/label";
 import { AddRequest } from "@/components/add-request";
 import { SelectGroups } from "../../components/ui/select-groups";
 import { LogExpense } from "@/components/log-expense";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Request List',
+}
 
 export const dynamic = "force-dynamic";
 
