@@ -24,6 +24,8 @@ import { NavBar } from "@/components/nav";
 import { buttonVariants } from "@/components/ui/button";
 import Link from "next/link";
 import { JoinGroup } from "@/components/join-group";
+import { useRouter } from 'next/navigation';
+import { useSearchParams } from 'next/navigation'
 
 const features = [
     {
@@ -47,6 +49,17 @@ const features = [
   ];
 
 export function Landing() {
+    const router = useRouter();
+    const searchParams = useSearchParams()
+ 
+    
+    useEffect(() => {
+    const code = searchParams.get('code')
+      if (code) {
+        router.push(`/auth/callback?code=${code}`);
+      }
+    }, [router]);
+
     const headerWords =
     "Manage group expenses the fair way with smarter splits.".split(" ");
   const controls = useAnimation();
@@ -93,6 +106,7 @@ export function Landing() {
 
   
   return (
+    
     <>
 
         <header className="py-8 sm:grid sm:grid-flow-col">
