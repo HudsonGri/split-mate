@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { History } from "../../components/history/history";
+import { History } from "./history/history";
 import {
   Card,
   CardContent,
@@ -65,7 +65,7 @@ export default async function DashboardPage() {
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
+          links={["Dashboard", "Request List", "Paybacks", "Profile"]}
           user_details={user}
           currentPage="Dashboard"
         />

@@ -31,12 +31,9 @@ import { DashboardCards } from "@/components/dashboard-cards";
 import { useState, useEffect } from "react";
 import { Icons } from "@/components/icons";
 
-import { History } from "@/components/history/history";
-
 export function DashboardContent() {
   const [currentGroup, setCurrentGroup] = useState("");
   const [hasGroups, setHasGroups] = useState(false);
-  const [peopleData, setPeopleData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
@@ -45,23 +42,14 @@ export function DashboardContent() {
       headers: {
         "Content-Type": "application/json",
       },
-      body: JSON.stringify({ list_all_members: true }),
+      body: JSON.stringify({}),
     })
       .then((response) => response.json())
       .then((data) => {
-        console.log(data);
         if (data && data.length > 0) {
           setHasGroups(true);
           data.sort((a, b) => b.userCount - a.userCount);
           setCurrentGroup(data[0].group_id);
-
-          const groupData = data.find(
-            (group) => group.group_id === data[0].group_id,
-          );
-          if (groupData) {
-            // Set the people data for the current group
-            setPeopleData(groupData.members);
-          }
         } else {
           setHasGroups(false);
         }
@@ -79,7 +67,20 @@ export function DashboardContent() {
     console.log("Refreshing Overview and Cards with group_id:", currentGroup);
   }, [currentGroup]);
 
-  if (!hasGroups && !isLoading) {
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="text-center">
+          <h2 className="text-xl d mb-4">Loading Dashboard...</h2>
+          <div className="flex justify-center">
+            <Icons.spinner className="mt-2 h-8 w-8 animate-spin" />
+          </div>
+        </div>
+      </div>
+    );
+  }
+
+  if (!hasGroups) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="text-center">
@@ -87,7 +88,10 @@ export function DashboardContent() {
           <p className="mb-6">
             You are not part of any groups. Please join or create a new group.
           </p>
-          <Link href="/" className={buttonVariants({ variant: "default" })}>
+          <Link
+            href="/creategroup"
+            className={buttonVariants({ variant: "default" })}
+          >
             Create/Join a Group
           </Link>
         </div>
@@ -118,30 +122,14 @@ export function DashboardContent() {
           <TabsTrigger value="people">People</TabsTrigger>
         </TabsList>
         <TabsContent value="overview" className="space-y-4">
-          {isLoading ? (
-            <div className="flex justify-between w-full">
-              <Skeleton className="h-[100px] w-[320px] rounded-lg" />
-              <Skeleton className="h-[100px] w-[320px] rounded-lg" />
-              <Skeleton className="h-[100px] w-[320px] rounded-lg" />
-              <Skeleton className="h-[100px] w-[320px] rounded-lg" />
-            </div>
-          ) : (
-            <DashboardCards group_id={currentGroup} />
-          )}
-
+          <DashboardCards group_id={currentGroup} />
           <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
             <Card className="col-span-4">
               <CardHeader>
                 <CardTitle>Paybacks</CardTitle>
               </CardHeader>
               <CardContent className="pl-2">
-                {isLoading ? (
-                  <div className="flex justify-center items-center h-full">
-                    <Skeleton className="h-[300px] w-[500px] rounded-lg" />
-                  </div>
-                ) : (
-                  <Overview group_id={currentGroup} />
-                )}
+                <Overview group_id={currentGroup} />
               </CardContent>
             </Card>
             <Card className="col-span-3">
@@ -152,26 +140,7 @@ export function DashboardContent() {
                 </CardDescription>
               </CardHeader>
               <CardContent>
-                {isLoading ? (
-                  <div className="space-y-8">
-                    <div className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                    <div className="flex items-center space-x-4">
-                      <Skeleton className="h-12 w-12 rounded-full" />
-                      <div className="space-y-2">
-                        <Skeleton className="h-4 w-[250px]" />
-                        <Skeleton className="h-4 w-[200px]" />
-                      </div>
-                    </div>
-                  </div>
-                ) : (
-                  <RecentRequests group_id={currentGroup} />
-                )}
+                <RecentRequests group_id={currentGroup} />
               </CardContent>
               <CardFooter className="justify-center">
                 <Link
@@ -184,27 +153,28 @@ export function DashboardContent() {
             </Card>
           </div>
         </TabsContent>
-        <TabsContent value="history" className="space-y-4">
-          <History groupId={currentGroup} />
-        </TabsContent>
+        <TabsContent value="history" className="space-y-4"></TabsContent>
         <TabsContent value="people" className="space-y-4">
           <Table>
             <TableCaption>A list of people in this group.</TableCaption>
             <TableHeader>
               <TableRow>
-                <TableCell>Name</TableCell>
-                <TableCell>Email</TableCell>
+                <TableHead className="w-[200px]">Name</TableHead>
+                <TableHead>Email</TableHead>
+                <TableHead className="text-right">Phone Number</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>
-              {peopleData.map((person) => (
-                <TableRow key={person.id}>
-                  <TableCell>
-                    {person.first_name} {person.last_name}
-                  </TableCell>
-                  <TableCell>{person.email}</TableCell>
-                </TableRow>
-              ))}
+              <TableRow>
+                <TableCell className="font-medium">Albert Gator</TableCell>
+                <TableCell>algator@ufl.edu</TableCell>
+                <TableCell className="text-right">123-456-7890</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell className="font-medium">Alberta Gator</TableCell>
+                <TableCell>alberta.gator@ufl.edu</TableCell>
+                <TableCell className="text-right">111-444-7777</TableCell>
+              </TableRow>
             </TableBody>
           </Table>
         </TabsContent>

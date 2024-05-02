@@ -10,7 +10,8 @@ import { createClient } from '@/utils/supabase/server'
 import { redirect } from 'next/navigation'
 
 export const metadata: Metadata = {
-  title: "Sign Up",
+  title: "Authentication",
+  description: "Authentication forms built using the components.",
 }
 
 export default async function AuthenticationPage() {

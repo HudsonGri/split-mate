@@ -2,6 +2,7 @@ import { createClient } from '@/utils/supabase/server'; // Adjust the path as ne
 
 export async function POST(req: Request, res: Response) {
   const { group_id, itemName } = await req.json(); // Parse the request body
+  //console.log("REQUEST: ", req);
   console.log("GROUP ID (route): ", group_id);
   // Create a Supabase client instance
   const supabase = createClient();

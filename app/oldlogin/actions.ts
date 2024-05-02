@@ -17,7 +17,6 @@ export async function login(formData: FormData) {
 
   const { error } = await supabase.auth.signInWithPassword(data)
 
-
   if (error) {
     redirect('/error')
   }
@@ -26,50 +25,34 @@ export async function login(formData: FormData) {
   redirect('/dashboard')
 }
 
-export async function signup(formData: FormData): Promise<boolean>  {
+export async function signup(formData: FormData) {
   const supabase = createClient()
 
   // type-casting here for convenience
   // in practice, you should validate your inputs
-
   const data = {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
-    options: {
-      emailRedirectTo: 'http://localhost:3000/login',
-      data: {
-        first_name: formData.get('first-name') as string,
-        last_name: formData.get('last-name') as string,
-        full_name: formData.get('first-name') as string + " " +  formData.get('last-name') as string,
-      }
-    }
   }
 
-
   const { error } = await supabase.auth.signUp(data)
-  console.log(error)
 
   if (error) {
     redirect('/error')
-    return false; // Signup failed
-  } else {
-    return true; // Signup successful
   }
+
+  revalidatePath('/', 'layout')
+  redirect('/')
 }
 
-export async function signInWithGithub() {
+export async function signout() {
   const supabase = createClient()
 
-  const { data, error } = await supabase.auth.signInWithOAuth({
-    provider: 'github',
-    options: {
-      redirectTo: 'http://localhost:3000/auth/callback'
-    }
-  })
-  if (error == null) {
-    redirect(data.url)
+  const { error } = await supabase.auth.signOut()
+  console.log(error)
+  if (error) {
+    redirect('/error')
   }
 
-  console.log(error)
-  console.log(data)
+  redirect('/')
 }

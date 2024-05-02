@@ -1,8 +1,7 @@
-import { createClient } from "@/utils/supabase/server";
+import { createClient } from "@/utils/supabase/server"; // Adjust the path as necessary
 
 export async function POST(req: Request, res: Response) {
   const supabase = createClient();
-  const { list_all_members } = await req.json();
 
   const {
     data: { user },
@@ -52,11 +51,12 @@ export async function POST(req: Request, res: Response) {
     });
   }
 
-  const groupsWithDetails = await Promise.all(
+  // Fetch the number of users in each group
+  const groupsWithUserCount = await Promise.all(
     groups.map(async (group) => {
       const { data: members, error: membersError } = await supabase
         .from("group_membership")
-        .select("user_id")
+        .select("user_id", { count: "exact" })
         .eq("group_id", group.group_id);
 
       if (membersError) {
@@ -64,27 +64,11 @@ export async function POST(req: Request, res: Response) {
         return { ...group, userCount: 0 }; // Fallback in case of an error
       }
 
-      // Fetch detailed member profiles if requested
-      let memberDetails = [];
-      if (list_all_members === true) {
-        const memberIds = members.map((m) => m.user_id);
-        const { data: profiles, error: profilesError } = await supabase
-          .from("profiles")
-          .select("id, first_name, last_name, email")
-          .in("id", memberIds);
-
-        if (profilesError) {
-          console.log(profilesError);
-          return { ...group, members: [] };
-        }
-        memberDetails = profiles;
-      }
-
-      return { ...group, userCount: members.length, members: memberDetails };
+      return { ...group, userCount: members.length };
     }),
   );
 
-  return new Response(JSON.stringify(groupsWithDetails), {
+  return new Response(JSON.stringify(groupsWithUserCount), {
     status: 200,
     headers: { "Content-Type": "application/json" },
   });

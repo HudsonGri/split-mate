@@ -1,13 +1,31 @@
+import {
+  CardTitle,
+  CardDescription,
+  CardHeader,
+  CardContent,
+  CardFooter,
+  Card,
+} from "@/components/ui/card";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
+import { Button, buttonVariants } from "@/components/ui/button";
 import { NavBar } from "@/components/nav";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/components/ui/alert-dialog";
+import Link from "next/link";
 import { createClient } from "@/utils/supabase/server";
 import { redirect } from "next/navigation";
 import { CreateGroup } from "@/components/create-group";
-import type { Metadata } from 'next'
-
-export const metadata: Metadata = {
-  title: 'Create a Group',
-}
-
 
 export default async function Create() {
   const supabase = createClient();
@@ -16,6 +34,7 @@ export default async function Create() {
 
   if (error || !data?.user) {
     redirect("/login?group=create");
+    console.log("Show dialog");
   }
 
   const user = data.user;
