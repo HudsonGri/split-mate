@@ -13,8 +13,7 @@
   <p align="center">
     A streamlined application for managing expense splitting across all of your social groups.
     <br />
-    <br />
-    <a href="https://github.com/github_username/repo_name"><h1><mark>PUT LINK HERE</mark></h1>Go To Split-Mate</a>
+    <a href="https://split-mate-mu.vercel.app/"><h3>Go To Split-Mate</h3></a>
   </p>
 </div>
 
@@ -64,7 +63,7 @@ All group purchase history is logged and saved to generate automatic expense rep
 
 <!-- ACKNOWLEDGMENTS -->
 ## Acknowledgments
-Project Link: [https://github.com/github_username/repo_name](https://github.com/github_username/repo_name)
+Project Link: [https://github.com/HudsonGri/split-mate](https://github.com/HudsonGri/split-mate)
 
 ### Contributors
 * (Claudio Sciotto)[https://github.com/ClaudioGSDB]
