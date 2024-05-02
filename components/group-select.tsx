@@ -11,7 +11,8 @@ export function GroupSelect({ onGroupChange, defaultValue }) {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
-        }
+        },
+        body: JSON.stringify({ list_all_members: false }),
       });
       const data = await res.json();
       if (res.ok) {
