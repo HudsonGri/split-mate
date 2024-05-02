@@ -78,3 +78,17 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  body {
+    width: 100%;
+    max-width: 100%;
+    page-break-after: avoid;
+    page-break-before: avoid;
+  }
+  .print:p-0, .print:w-auto, .print:h-auto {
+    padding: 0;
+    width: auto;
+    height: auto;
+  }
+}

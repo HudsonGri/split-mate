@@ -56,11 +56,11 @@ export function NavBar({
           </a>
           <div className="hidden sm:flex items-center space-x-4 text-zinc-300 ">
             {links.map((link, index) => (
-              <div key={index} className={isActive(link) ? "text-white" : ""}>
+              <div key={index}>
                 {link == "Log In" && (
                   <Link
                     className={buttonVariants({
-                      variant: "outline"
+                      variant: "outline",
                     })}
                     href="/login"
                   >
@@ -117,7 +117,7 @@ export function NavBar({
                 {link == "Log In" && (
                   <Link
                     className={buttonVariants({
-                      variant: "outline"
+                      variant: "outline",
                     })}
                     href="/login"
                   >
