@@ -159,6 +159,25 @@ export function DashboardContent() {
           <History groupId={currentGroup} />
         </TabsContent>
         <TabsContent value="people" className="space-y-4">
+        <Table>
+            <TableCaption>A list of people in this group.</TableCaption>
+            <TableHeader>
+              <TableRow>
+                <TableCell>Name</TableCell>
+                <TableCell>Email</TableCell>
+              </TableRow>
+            </TableHeader>
+            <TableBody>
+              {peopleData.map((person) => (
+                <TableRow key={person.id}>
+                  <TableCell>
+                    {person.first_name} {person.last_name}
+                  </TableCell>
+                  <TableCell>{person.email}</TableCell>
+                </TableRow>
+              ))}
+            </TableBody>
+          </Table>
         </TabsContent>
       </Tabs>
     </div>
