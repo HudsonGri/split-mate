@@ -36,7 +36,7 @@ export async function signup(formData: FormData): Promise<boolean>  {
     email: formData.get('email') as string,
     password: formData.get('password') as string,
     options: {
-      emailRedirectTo: 'http://localhost:3000/login',
+      emailRedirectTo: 'https://www.split-mate.com/login',
       data: {
         first_name: formData.get('first-name') as string,
         last_name: formData.get('last-name') as string,
@@ -63,7 +63,7 @@ export async function signInWithGithub() {
   const { data, error } = await supabase.auth.signInWithOAuth({
     provider: 'github',
     options: {
-      redirectTo: 'http://localhost:3000/auth/callback'
+      redirectTo: 'https://www.split-mate.com/auth/callback'
     }
   })
   if (error == null) {
