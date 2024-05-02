@@ -16,7 +16,10 @@ import {
 } from "./ui/dropdown-menu"
 import Link from 'next/link';
 
-export function UserNav({ user_details }: { user_details?: any }) {
+export function UserNav({ user_details, isAdmin }: { user_details?: any, isAdmin: boolean }) {
+
+  //const isAdmin = getAdminData();
+
   return (
     <DropdownMenu>
       <DropdownMenuTrigger asChild>
@@ -47,6 +50,17 @@ export function UserNav({ user_details }: { user_details?: any }) {
             </DropdownMenuItem>
           </Link>
         </DropdownMenuGroup>
+        {isAdmin ? (
+            <DropdownMenuGroup>
+            <Link href="/admin">
+              <DropdownMenuItem>
+                Admin Settings
+              </DropdownMenuItem>
+            </Link>
+          </DropdownMenuGroup>
+        ) : (
+          ""
+        )}
       <DropdownMenuSeparator />
         <a href="/logout">
           <DropdownMenuItem>

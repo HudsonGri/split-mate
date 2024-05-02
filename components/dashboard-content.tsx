@@ -39,7 +39,6 @@ export function DashboardContent({ user_details }) {
   const [hasGroups, setHasGroups] = useState(false);
   const [peopleData, setPeopleData] = useState([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [groupPeople, setGroupPeople] = useState([]);
 
   useEffect(() => {
     fetch("/api/listgroups", {
