@@ -66,11 +66,11 @@ All group purchase history is logged and saved to generate automatic expense rep
 Project Link: [https://github.com/HudsonGri/split-mate](https://github.com/HudsonGri/split-mate)
 
 ### Contributors
-* (Claudio Sciotto)[https://github.com/ClaudioGSDB]
-* (Hudson Griffith)[https://github.com/HudsonGri]
-* (Adam Horton)[https://github.com/adam-horton]
-* (Miguel Camitoc)[https://github.com/mcamitoc]
-* (Santiago Carpio)[https://github.com/scarpio02]
+* [Claudio Sciotto](https://github.com/ClaudioGSDB)
+* [Hudson Griffith](https://github.com/HudsonGri)
+* [Adam Horton](https://github.com/adam-horton)
+* [Miguel Camitoc](https://github.com/mcamitoc)
+* [Santiago Carpio](https://github.com/scarpio02)
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
