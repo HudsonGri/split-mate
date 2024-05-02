@@ -61,7 +61,13 @@ export default async function SettingsPage() {
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile"]}
+          links={[
+            "Dashboard",
+            "Request List",
+            "Paybacks",
+            "Expenses",
+            "Profile",
+          ]}
           user_details={user}
           currentPage="Settings"
         />
