@@ -126,7 +126,7 @@ export async function POST(req: Request, res: Response) {
         .insert({
             payer_id: user.id,
             group_id: group_id,
-            amount: expenseAmount * 100,
+            amount: expenseAmount,
             description: itemName,
             creation_date: new Date()
         });

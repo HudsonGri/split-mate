@@ -36,7 +36,7 @@ export function NavBar({
   const isActive = (link) => currentPage === link;
 
   return (
-    <nav className="sticky top-0 z-50 backdrop-blur dark:bg-black/70 bg-white">
+    <nav className="sticky top-0 z-50 backdrop-blur dark:bg-background/70 bg-white">
       <div className="px-4 sm:px-6 lg:px-16">
         <div className="flex justify-between items-center h-20">
           <a href="/dashboard">
@@ -95,6 +95,16 @@ export function NavBar({
                     Request List
                   </Link>
                 )}
+                {link == "Expenses" && (
+                  <Link
+                    className={buttonVariants({
+                      variant: isActive(link) ? "outline" : "ghost",
+                    })}
+                    href="/expenses"
+                  >
+                    Expenses
+                  </Link>
+                )}
                 {link == "Profile" && <UserNav user_details={user_details} />}
               </div>
             ))}
@@ -140,6 +150,16 @@ export function NavBar({
                     href="/dashboard"
                   >
                     Dashboard
+                  </Link>
+                )}
+                {link == "Expenses" && (
+                  <Link
+                    className={buttonVariants({
+                      variant: isActive(link) ? "outline" : "ghost",
+                    })}
+                    href="/expenses"
+                  >
+                    Expenses
                   </Link>
                 )}
                 {link == "Profile" && <UserNav user_details={user_details} />}

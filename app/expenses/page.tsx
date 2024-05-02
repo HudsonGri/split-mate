@@ -19,6 +19,11 @@ import { Label } from "@/components/ui/label";
 import { AddRequest } from "@/components/add-request";
 import { SelectGroups } from "../../components/ui/select-groups";
 import { LogExpense } from "@/components/log-expense";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Expenses',
+}
 
 export const dynamic = "force-dynamic";
 
@@ -54,7 +59,7 @@ function setItems(value) {
     id: value.expense_id,
     group: value.group_id,
     payer: value.profiles.first_name + ' ' + value.profiles.last_name,
-    amount: '$' + (value.amount/100).toFixed(2),
+    amount: '$' + (value.amount).toFixed(2),
     date: value.creation_date,
     description: value.description,
   };
@@ -89,12 +94,12 @@ export default async function RequestListPage({
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile", "Expenses"]}
+          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
           user_details={user}
           currentPage="Expenses"
         />
         <div className="flex-1 space-y-4 px-8 pb-8">
-          <div className="flex items-center justify-center space-y-2">
+          <div className="flex space-y-2">
             <div>
               <h2 className="text-3xl font-bold tracking-tight">
                 Expenses

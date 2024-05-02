@@ -1,4 +1,4 @@
-"use client"
+
 import React, { Suspense } from 'react';
 import Image from "next/image";
 import Link from "next/link";
@@ -8,6 +8,11 @@ import { NavBar } from "@/components/nav";
 import { createClient } from "@/utils/supabase/client";
 import { redirect } from "next/navigation";
 import { ConitionalText } from '@/components/conditional-text';
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Login',
+}
 
 
 export default function AuthenticationPage() {
@@ -17,7 +22,7 @@ export default function AuthenticationPage() {
   // Async fetch operations need to be handled differently in Next.js
   // Consider using getServerSideProps or getStaticProps for initial data fetching
   // Here, we use useEffect to simulate fetching the user state
-  React.useEffect(() => {
+
     async function checkUser() {
       const { data, error } = await supabase.auth.getUser();
 
@@ -28,7 +33,7 @@ export default function AuthenticationPage() {
     }
 
     checkUser();
-  }, [supabase]);
+
 
   return (
     <>

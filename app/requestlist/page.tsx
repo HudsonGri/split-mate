@@ -19,6 +19,11 @@ import { Label } from "@/components/ui/label";
 import { AddRequest } from "@/components/add-request";
 import { SelectGroups } from "../../components/ui/select-groups";
 import { LogExpense } from "@/components/log-expense";
+import type { Metadata } from 'next'
+
+export const metadata: Metadata = {
+  title: 'Request List',
+}
 
 export const dynamic = "force-dynamic";
 
@@ -94,7 +99,7 @@ export default async function RequestListPage({
     <>
       <div className="flex flex-col">
         <NavBar
-          links={["Dashboard", "Request List", "Paybacks", "Profile", "Expenses"]}
+          links={["Dashboard", "Request List", "Paybacks", "Expenses", "Profile"]}
           user_details={user}
           currentPage="Request List"
         />
