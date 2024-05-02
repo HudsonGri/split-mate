@@ -59,25 +59,27 @@ All group purchase history is logged and saved to generate automatic expense rep
 These images show describe the basic navigation and usage of Split-Mate.
 
 #### Home Page
-<img src="images/home.png" alt="Home Page" width="80" height="80">
+<img src="images/home.png" alt="Home Page" width="1920" height="1080">
 
 #### Dashboard
-<img src="images/dashboard.png" alt="Dashboard" width="80" height="80">
+<img src="images/dashboard.png" alt="Dashboard" width="1920" height="1080">
 
 #### Item List
-<img src="images/items.png" alt="Item List" width="80" height="80">
+<img src="images/items.png" alt="Item List" width="1920" height="1080">
 
 #### Expenses
-<img src="images/expenses.png" alt="Expenses" width="80" height="80">
+<img src="images/expenses.png" alt="Expenses" width="1920" height="1080">
 
 #### Paybacks
-<img src="images/paybacks.png" alt="Paybacks" width="80" height="80">
+<img src="images/paybacks.png" alt="Paybacks" width="1920" height="1080">
 
 
 ## Database Diagrams
 These diagrams descripe the structure and layout of our database.
-<img src="images/erd.png" alt="ER Diagram" width="80" height="80">
-<img src="images/tables.png" alt="Table Schematic" width="80" height="80">
+
+<img src="images/erd.png" alt="ER Diagram" width="1920" height="1080">
+
+<img src="images/tables.png" alt="Table Schematic" width="1920" height="1080">
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
