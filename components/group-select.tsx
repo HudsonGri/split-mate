@@ -30,7 +30,7 @@ export function GroupSelect({ onGroupChange, defaultValue }) {
   };
 
   return (
-    <Select onValueChange={handleChange} defaultValue={defaultValue}>
+    <Select onValueChange={handleChange} value={defaultValue}>
       <SelectTrigger className="w-[180px]">
         <SelectValue placeholder="Select a group" />
       </SelectTrigger>

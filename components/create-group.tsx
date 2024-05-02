@@ -8,10 +8,12 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { useRouter } from 'next/navigation'
 
 interface CreateGroupProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function CreateGroup({ className, ...props }: CreateGroupProps) {
+  const router = useRouter()
   const [isLoading, setIsLoading] = React.useState<boolean>(false);
   const [emails, setEmails] = React.useState<string[]>([]);
   const [emailError, setEmailError] = React.useState<string | null>(null);
@@ -45,7 +47,7 @@ export function CreateGroup({ className, ...props }: CreateGroupProps) {
     setIsLoading(false);
 
     if (response.ok) {
-      window.location.href = "/dashboard";
+      router.push("/dashboard")
     } else {
       console.error(data.message);
     }
