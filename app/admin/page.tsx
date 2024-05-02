@@ -1,7 +1,7 @@
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Button } from "../../components/ui/button";
-import { Expense, columns } from "../../components/expenses/columns";
-import { DataTable } from "../../components/expenses/data-table-expense";
+import { Expense, admincolumns } from "../../components/expenses/admin-columns";
+import { AdminDataTable } from "../../components/expenses/admin-table-expenses";
 import {
   Card,
   CardContent,
@@ -43,6 +43,7 @@ import { Separator } from "@/components/ui/separator";
 import { Switch } from "@/components/ui/switch";
 import { GroupEdit } from "@/components/group-edit";
 import { ApprovalToggle } from "@/components/toggle-approval";
+import PeopleTable from "@/components/people-table";
 
 export const dynamic = "force-dynamic";
 
@@ -260,9 +261,6 @@ export default async function AdminPage({
                       </div>
                     </div>
                   </CardContent>
-                  {/* <CardFooter className="flex justify-end">
-                    <Button>Save Changes</Button>
-                  </CardFooter> */}
                 </Card>
               </div>
 
@@ -270,19 +268,18 @@ export default async function AdminPage({
                 <Card>
                   <CardHeader>Edit Expenses</CardHeader>
                   <CardContent>
-                    <DataTable columns={columns} data={expensedata} />
+                    <AdminDataTable columns={admincolumns} data={expensedata} />
                   </CardContent>
                   <CardFooter className="justify-center">
                   </CardFooter>
                 </Card>
               </div>
 
-              {/* display settings */}
               <div id="edit-group">
                 <Card>
                   <CardHeader>Edit Group</CardHeader>
                   <CardContent>
-                    
+                    <PeopleTable groupId={selectedGroup} />
                   </CardContent>
                 </Card>
               </div>

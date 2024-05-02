@@ -26,7 +26,7 @@ export type Expense = {
   description: string
 }
 
-export const columns: ColumnDef<Expense>[] = [
+export const admincolumns: ColumnDef<Expense>[] = [
     {
         id: "select",
         header: ({ table }) => (
@@ -53,7 +53,28 @@ export const columns: ColumnDef<Expense>[] = [
     {
         id: "actions",
         cell: ({ row }) => {
-            const expense = row.original
+            const expense = row.original;
+            async function deleteExpense(expenseID: string, groupID: string) {
+                // Fetch data from your API here.
+            
+                const response = await fetch("/api/expenses/delete", {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                  body: JSON.stringify({ expenseID , groupID}),
+                });
+            
+                const data = await response.json();
+                    if (data.success) {
+                        // Handle success (e.g., show a success message)
+                        console.log("Name updated successfully");
+                        window.location.reload();
+                    } else {
+                        // Handle error
+                        console.error("Failed to update group name");
+                    }
+            }
         
             return (
             <DropdownMenu>
@@ -70,8 +91,13 @@ export const columns: ColumnDef<Expense>[] = [
                 >
                     Copy expense ID
                 </DropdownMenuItem>
+                <DropdownMenuItem
+                    onClick={() => deleteExpense(expense.id, expense.group)}
+                >
+                    Delete expense
+                </DropdownMenuItem>
                 <DropdownMenuSeparator />
-                <DropdownMenuItem>View expenseor</DropdownMenuItem>
+                <DropdownMenuItem>View expense</DropdownMenuItem>
                 <DropdownMenuItem>View expense details</DropdownMenuItem>
                 </DropdownMenuContent>
             </DropdownMenu>

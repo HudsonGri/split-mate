@@ -8,7 +8,7 @@ import {
   TableCell,
   TableCaption,
 } from "@/components/ui/table";
-
+import { Button } from "@/components/ui/button";
 import { useState, useEffect } from "react";
 
 export default function PeopleTable({ groupId }) {
@@ -35,6 +35,28 @@ export default function PeopleTable({ groupId }) {
     fetchData();
   }, []);
 
+  async function deleteMember(userID: string, groupID: string) {
+    // Fetch data from your API here.
+
+    const response = await fetch("/api/group/deletemember", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ userID , groupID}),
+    });
+
+    const data = await response.json();
+        if (data.success) {
+            // Handle success (e.g., show a success message)
+            console.log("Name updated successfully");
+            window.location.reload();
+        } else {
+            // Handle error
+            console.error("Failed to update group name");
+        }
+  }
+
   return (
     <>
       <Table>
@@ -50,6 +72,9 @@ export default function PeopleTable({ groupId }) {
                  <TableRow>
                   <TableCell className="font-medium">{person.profiles.first_name + " " + person.profiles.last_name}</TableCell>
                   <TableCell>{person.profiles.email}</TableCell>
+                  <TableCell>
+                    <Button variant={"destructive"} onClick={() => deleteMember(person.profiles.id, groupId)}>Delete</Button>
+                    </TableCell>
                  </TableRow>
               ))}
             </TableBody>
