@@ -1,8 +1,9 @@
 "use client";
 import { Request, columns } from "./columns";
-import { Button } from "../ui/button";
+import Link from "next/link";
 import { DataTable } from "../ui/data-table-history";
 import { NavBar } from "@/components/nav";
+import { buttonVariants } from "@/components/ui/button";
 
 import { redirect } from "next/navigation";
 import { useEffect, useState } from "react";
@@ -43,7 +44,9 @@ export default function History({ groupId }) {
         </div>
       ) : (
         <div className="container mx-auto">
+
           <DataTable columns={columns} data={requestData} />
+          <Link className={buttonVariants({ variant: "default" })} href={`/report?group_id=${groupId}`}>Download Expense Report</Link>
         </div>
       )}
     </>
