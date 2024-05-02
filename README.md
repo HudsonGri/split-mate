@@ -13,7 +13,7 @@
   <p align="center">
     A streamlined application for managing expense splitting across all of your social groups.
     <br />
-    <a href="https://split-mate-mu.vercel.app/"><h3>Go To Split-Mate</h3></a>
+    <h3><a href="https://split-mate-mu.vercel.app/">Go To Split-Mate</a></h3>
   </p>
 </div>
 
